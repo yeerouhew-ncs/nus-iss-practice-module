@@ -1,0 +1,460 @@
+/* ==============================================
+　　RESPONSIVE SET
+==============================================*/
+
+/* 基本 */
+
+.hidden-desktop {
+    display: none !important;
+}
+
+.hidden-desktop-block {
+    display: none !important;
+}
+
+.visible-table {
+    display: none !important;
+}
+
+.visible-desktop {
+    *display: inherit !important;
+}
+
+
+@media only screen and (min-height: 400px) {
+    .con-height {
+        min-height: 260px;
+    }
+}
+
+@media only screen and (min-height: 768.99px) {
+    .con-height {
+        min-height: 460px;
+    }
+}
+
+@media only screen and (min-width: 950px) {
+    form div.row > label {
+        float: left;
+        width: 15%;
+        text-align: right;
+    }
+}
+
+@media only screen and (min-width: 768.99px) and (max-width: 949px) {
+    form div.row > label {
+        float: left;
+        width: 15%;
+        text-align: right;
+    }
+
+}
+
+
+
+/*  首頁小BANNER-平板顯示 */
+@media (min-width: 768px) and (max-width: 991px) {
+    .visible-table {
+        display: inherit !important;
+    }
+    #sad .hidden-desktop, #sad .visible-desktop {
+        display: none !important;
+    }
+}
+
+
+@media (max-width: 767px) {
+    
+    .hidden-desktop {
+        display: inherit !important;
+        *display: inline-block;
+    }
+    .hidden-desktop-block {
+        display: inline-block !important;
+    }
+    .visible-desktop {
+        display: none !important;
+    }
+
+
+    /* ==============================================
+	　　Structure Module
+	============================================== */
+    html {
+        font-size: 100%;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    body {
+        margin: 0px;
+        
+    }
+    /* ==============================================
+	　　Other Element
+	============================================== */
+    label {
+        display: block;
+        font-weight: bold;
+    }
+    /* ==============================================
+　　Margin
+	============================================== */
+    /*Top*/
+    .mTop {
+        margin-top: 5%;
+    }
+    /* ==============================================
+　　Table
+	==============================================*/
+    /* Force table to not be like tables anymore */
+    table:not(.ui-datepicker-calendar),
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr,
+    thead th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        padding: 1%;        
+    }
+    tr :last-child {        
+    }
+
+    td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #BFBFBF;
+        position: relative;
+        padding-left: 50%;
+    }
+    /*
+	Label the data
+	*/
+    table {
+        border: 0px;
+    }
+    table th {
+        padding: 1px 5px;
+        border: 0px;
+    }
+    table td {
+        padding: 2px 0px;
+        border: 0px;
+        font-size: 15px;
+    }
+    
+    table.normal tr.gridc td {
+        text-align: left;
+    }
+    /* order 特別指定*/
+    table.normal tr th.dark {
+        padding: 2%;
+        color: #ffffff;
+        background: #45bbff;
+    }
+    .order table.now tr {
+        border: 1px solid #BFBFBF;
+    }
+    .order table tr.wideline {
+        /*[欣燕]140513 手機板加上粗的訂單分隔線*/
+        border-top: 5px solid #999999;
+    }
+    .order table.normal tr td span {}
+    .order table.normal tr td em,
+    .order table.normal tr td div {
+        
+    }
+    .order table.normal.now tr td span {}
+    .order table.normal.now tr td em {}
+    .order tr.tinfo_tr {
+        /*[欣燕]140513 訂單票券資料格式設定(因把div放在table裡，要把框線除掉)*/
+        border: none;
+    }
+
+	/* ui-datepicker-calendar +200203 */
+	table.ui-datepicker-calendar thead {
+		display: table-header-group;
+		vertical-align: middle;
+		border-color: inherit;
+	}
+	table.ui-datepicker-calendar tbody {
+		display: table-row-group;
+		vertical-align: middle;
+		border-color: inherit;
+	}
+	table.ui-datepicker-calendar th {
+		display: table-cell;
+		vertical-align: inherit;
+	}
+	table.ui-datepicker-calendar tr {
+		display: table-row;
+		vertical-align: inherit;
+		border-color: inherit;
+	}
+	table.ui-datepicker-calendar td {
+		display: table-cell;
+		vertical-align: inherit;
+	}
+
+
+    /* ==============================================
+　　List Style
+	==============================================*/
+    ul.disc {
+        margin: 0px;
+        padding: 2%;
+        list-style-type: none;
+    }
+    ul.disc li {
+        white-space: normal;
+        /*[diane]140418 手機版因應刪節號設定(手機板可以換行，所以不會有刪節號)*/
+        border-bottom: 1px solid #BFBFBF;
+    }
+    ul.disc li div {}
+    ul.disc li a {}
+    ul.disc li a:hover {}
+
+    /* faq */
+    ul.disc.device {
+        overflow: visible;
+        /*[diane]140418 手機版因應刪節號設定*/
+        padding: 2% 2% 2% 35px;
+        list-style-position: outside;
+        /*[diane]140418 手機版因應刪節號設定*/
+        list-style-image: url(/image/icon_faq.png);
+        background: #06466a;
+    }
+    ul.disc.device li {
+        padding: 1% 2%;
+        padding-left: 0%;
+        border: 0px;
+        white-space: normal;
+        /*[diane]140418 手機版因應刪節號設定(手機板可以換行，所以不會有刪節號)*/
+        overflow: visible;
+        /*[diane]140418 手機版因應刪節號設定*/
+    }
+    ul.disc.device li a {
+        vertical-align: top;
+        color: #ffffff;
+    }
+
+    /* ========== 網頁區塊 ========== */
+    /* ---------- #wrapper ---------- */
+    /* ( #header + contain + #footer ) */
+    #wrapper {
+        margin: 0px;
+        width: 100%;
+        border: 0px;
+        background: #ffffff;
+    }
+    #header {
+        margin: 0px;
+        padding: 0;
+        width: 100%;        
+        display: inline-block;
+    }
+    #footer {
+        margin: 0px;
+        padding: 4% 2%;
+        height: 100%;
+        font-size: 80%;
+        text-align: center;
+    }
+    .container {
+        margin: 10px;
+    }
+    .container .container {
+        margin: 10px 0px;
+    }
+
+    /* ---------- #header ---------- */
+    /* ( logo + narbar + func ) */
+    #header .logo {
+        margin: 4% 2% 0 3%;
+        width: 35%;
+    }
+	
+    #header .func {
+        margin: 6% 3%;
+        margin-left: 0;
+        vertical-align: middle;
+        *height: 30px;
+        overflow: hidden;
+    }
+    /* ----- #header -> navbar ----- */
+	
+    #header .nav div a span {
+        *margin: 2%;
+        padding: 1.8%;
+        width: auto;
+		font-family: 'Averta', helvetica, arial, sans-serif;
+        color: #007cc3;
+        font-size: 1.4em;
+    }
+    #header .nav div a:hover {
+        color: #ff00ff;
+    }
+    /* ----- #header -> #header .func ----- */
+    .search {
+        width: 201px;
+        background: url(/image/bg_search.png) no-repeat right;
+    }
+    .search input {
+        margin-left: 10px;
+    }
+    .community {
+        clear: both;
+        margin-top: 10%;
+    }
+    .community span {
+        float: left;
+        padding-left: 1%;
+    }
+    /* ---------- #footer ---------- */
+    #footer .info {
+        clear: both;
+    }
+    #footer a {
+        color: #ffffff;
+    }
+
+
+    /* ----- contain -> container ----- */
+    /* page-title & page-info */
+    .container.page-title {
+        margin-top: -10px;
+        padding: 1% 2%;
+        font-size: 80%;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    .page-title span {}
+    .page-info span {}
+    /* common */
+    .date {
+        *font-size: 0.8em;
+    }
+    .narrow_show,
+    .narrow_hide {}
+    .narrow_hide {}
+    .caret {
+        left: 10px;
+    }
+    /* activity */    
+    .login-area .community div {
+        margin: 0 0 10px;
+    }
+    /* btn */
+    .btn_narrow {}
+    .btn_narrow.L {}
+    /* article-list */
+    ul.article-list {
+        padding: 2%;
+        background: #ececec;
+    }
+    ul.article-list li {
+        margin-bottom: 5px;
+        padding: 2%;
+        width: 96%;
+        border-left: 0px;                
+    }
+    ul.article-list div.con {
+        /*14/4/8欣燕:因常見問題動態效果，加上此css*/
+        margin-bottom: 5px;
+        padding: 2%;
+        width: 96%;
+        border-left: 0px;
+        
+    }
+    ul.article-list div.line {
+        /*14/4/8欣燕:因常見問題動態效果，加上此css*/
+        border-bottom: 1px solid #c2c1c1;
+    }
+    ul.article-list.faq li {
+        width: 96%;
+    }
+    ul.article-list.faq li .title {
+        width: auto;
+        font-size: 1.1em;
+    }
+    ul.article-list.faq li a .title {}
+    ul.article-list.faq li a:hover .title {}
+    ul.article-list.faq li .switch {
+        display: block;
+        *position: static;
+    }
+    ul.article-list.faq div .answer {
+        /*14/4/8欣燕:因常見問題動態效果，將li改成div*/
+        *margin-top: 2%;
+        padding: 3%;
+        background: #ffffff;
+    }
+    ul.article-list div.con {
+        /*14/4/8欣燕:因常見問題動態效果，將li改成div*/
+    }
+    /* order */
+    
+    .venue {
+        clear: both;
+        width: auto;
+    }
+    .area_select {
+        clear: both;
+        margin-top: 10px;
+        width: 100%;
+    }
+    .zone {
+        padding: 2%;
+    }
+    .zone.area-list {
+        
+        height: auto;
+    }
+    .zone.area-list.line1 {
+        height: auto;
+    }
+    .area-list div {}
+    .area-list span {}
+    .short-contain {
+        width: 100%;
+    }
+    .order .caret {}
+    .order .zone {
+        padding: 0px;
+        border: 0px;
+        background: #ffffff;
+    }
+    /* #pagination */
+    #pagination {
+        width: 95%;
+        margin: 5% 0px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 500px) {
+    #header .nav div a span {
+        font-size: 1em;
+    }
+    .search {
+        width: 150px;
+        background: url(/image/bg_searchS.png) no-repeat right;
+    }
+    .search input {
+        margin-left: 4px;
+        width: 113px;
+        /*修改文字欄位寬度與圖相同*/
+    }
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+    <defs>
+        <circle id="dk_a" cx="6" cy="6" r="6"></circle>
+        <rect id="dk_c" width="16.957" height="12" rx="2"></rect>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="dk_b" fill="#fff">
+            <use xlink:href="#dk_a"></use>
+        </mask>
+        <use fill="#FFF" xlink:href="#dk_a"></use>
+        <g mask="url(#dk_b)">
+            <g transform="translate(-2.4)">
+                <mask id="dk_d" fill="#fff">
+                    <use xlink:href="#dk_c"></use>
+                </mask>
+                <use fill="#FFF" fill-rule="nonzero" xlink:href="#dk_c"></use>
+                <path d="M4.845 0v4.8H0V2.009C0 .899.888 0 1.995 0h2.85zm2.422 0h7.695c1.101 0 1.995.902 1.995 2.009V4.8h-9.69V0zm9.69 7.2v2.791c0 1.11-.888 2.009-1.995 2.009H7.267V7.2h9.69zM4.845 12h-2.85A2.004 2.004 0 0 1 0 9.991V7.2h4.845V12z" fill="#EF264D" mask="url(#dk_d)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

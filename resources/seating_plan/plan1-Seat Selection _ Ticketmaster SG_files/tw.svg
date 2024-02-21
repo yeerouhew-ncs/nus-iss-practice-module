@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+    <defs>
+        <circle id="path-1" cx="7.90697674" cy="7.90697674" r="7.90697674"></circle>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F0F0F0" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-4" x="0" y="0" width="22.4031008" height="15.8139535" rx="2"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon-Taiwan">
+            <g id="Flag/Singapore" transform="translate(0.093023, 0.093023)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Oval"></g>
+                <g id="TW" mask="url(#mask-2)">
+                    <g transform="translate(-0.658915, 0.000000)">
+                        <mask id="mask-5" fill="white">
+                            <use xlink:href="#path-4"></use>
+                        </mask>
+                        <use id="Mask" stroke="none" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-4"></use>
+                        <rect id="Rectangle-2" stroke="none" fill="#FE3030" fill-rule="evenodd" mask="url(#mask-5)" x="-0.658914729" y="-1.31782946" width="24.379845" height="17.7906977"></rect>
+                        <rect id="Rectangle-2" stroke="none" fill="#0909B6" fill-rule="evenodd" mask="url(#mask-5)" x="-0.658914729" y="-0.658914729" width="12.5193798" height="9.2248062"></rect>
+                        <polygon id="Star-27" stroke="none" fill="#FFFFFF" fill-rule="evenodd" mask="url(#mask-5)" points="6.58914729 5.93023256 5.58052429 7.04743443 5.65730114 5.54424925 4.15411596 5.6210261 5.27131783 4.6124031 4.15411596 3.6037801 5.65730114 3.68055696 5.58052429 2.17737177 6.58914729 3.29457364 7.59777029 2.17737177 7.52099343 3.68055696 9.02417861 3.6037801 7.90697674 4.6124031 9.02417861 5.6210261 7.52099343 5.54424925 7.59777029 7.04743443"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

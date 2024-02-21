@@ -1,0 +1,106 @@
+function notWorkingProperlyWarning(blockedPaths, adblockPage) {
+    const currentPath = window.location.pathname;
+    const splitPath = currentPath.split('/');
+    let usingAdblock = false;
+    let targetPath = '/' + splitPath[1];
+
+    // 比對規則:
+    // 1. 如果 pathname 只有一個(ex. /activity)，比對單一 pathname
+    // 2. 如果 pathname 大於一個(ex. /ticket/area/20_abl2021/163)，比對前兩個 pathname (ex. /ticket/area)
+    // 3. 如果 blockedPath 是模糊比對 (ex. /transfer/*)，只要是 /tranfer 開頭的，都比對成功 (ex. /transfer/history, /transfer/xxx)
+
+    if (splitPath[2]) {
+        targetPath += '/' + splitPath[2];
+    }
+
+    for (const path of blockedPaths) {
+        if (path == targetPath) {
+            usingAdblock = true;
+            break;
+        }
+
+        const isFuzzy = path.split('/')[2] == '*';
+        const firstFragment = '/' + path.split('/')[1];
+
+        if (isFuzzy && targetPath.startsWith(firstFragment)) {
+            usingAdblock = true;
+            break;
+        }
+    }
+
+    if (!usingAdblock) {
+        return false;
+    }
+
+    const gtmURL = 'https://www.googletagmanager.com/gtm.js?id=GTM-ABC1DE2';
+    const request = new Request(gtmURL, {
+        method: 'HEAD',
+        mode: 'no-cors',
+    });
+    let adblockModal = null;
+
+    fetch(request)
+        .then(function (response) {
+            if (response.ok === true) {
+                adblockModal = showAdblockModal(adblockPage);
+            }
+        })
+        .catch(function () {
+            adblockModal = showAdblockModal(adblockPage);
+        });
+
+    if (adblockModal === null) {
+        let successCount = 0;
+        let failCount = 0;
+        detector = window.setInterval(function() {
+            if (window.dataLayer.find(function(obj){return obj.event === "gtm.dom"}) === undefined) {
+                successCount = 0;
+                ++failCount;
+            } else {
+                ++successCount;
+                failCount = 0;
+            }
+
+            if (adblockModal !== null && successCount !== 0) {
+                adblockModal.dispose();
+                adblockModal = null;
+            }
+
+            if (adblockModal === null && failCount >= 3) {
+                showAdblockModal(adblockPage);
+                window.clearInterval(detector);
+            }
+
+            if (successCount >= 3) {
+                window.clearInterval(detector);
+            }
+        }, 1000);
+    }
+}
+
+function showAdblockModal(adblockPage) {
+    jQuery('body').append(`
+        <div
+            id="adblockModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="adblockModal"
+            class="modal fade"
+        >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+    `);
+
+    var adblockModal = new bootstrap.Modal(jQuery("#adblockModal"), {
+        backdrop: "static",
+        keyboard: false,
+        focus: true
+    });
+    jQuery("#adblockModal").find(".modal-content").load(adblockPage);
+    adblockModal.show();
+
+    return adblockModal;
+}

@@ -1,0 +1,162 @@
+/*
+文字主色 #262626 (#555全面替換)
+*/
+
+.image-stacked {
+	margin-left: -5px; 
+	margin-right:-5px;
+}
+
+.image-stacked span {
+    padding: 5px;
+	line-height: 14px;
+}
+.image-stacked span .note-end > span {
+    padding: 5px 0px;
+}
+.image-stacked .thumbnails {
+    width: 100%;
+    display: inline-block;
+	*background: #026CDF;
+	background: #fff;
+}
+/*diane200108 不區分 @home
+.image-stacked .thumbnails.activity, .image-stacked .thumbnails.tour {
+	background: #026CDF; /*diane191224*
+    border: 1px solid #ddd;
+}
+*/
+.image-stacked .thumbnails img {
+	width: 100%; /*diane191231*/
+}
+/*diane200110 目前應該沒用到
+.image-stacked .wrap {
+    background:#000;
+    position: relative;
+}
+.image-stacked .wrap:after {
+    padding-top: 133.33333333%;
+    content: "";
+    display: block;
+}
+.image-stacked .wrap > img {
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    margin:auto;
+    *max-width: 100%;
+}
+*/
+.image-stacked .data {
+	padding: 10px;
+	height: 80px;
+    line-height: 18px;
+    letter-spacing: 1px; 
+	border: 1px solid #BFBFBF;
+	border-top: transparent;
+}
+.image-stacked .data div {
+    font-size: 15px;
+	color: #026CDF; 
+}
+.image-stacked .data div.date {
+    padding-bottom: 5px;
+	*color: #262626;
+    *font-size: 14px;
+	color: #666;
+	font-size: 12px;
+	font-weight: 600;
+}
+.image-stacked a:hover .data div:not(.date) {
+	color: #0151A7;
+}
+.image-stacked a:hover .data div.date {
+	color: #000;
+}
+.image-stacked .multi_ellipsis {
+	font-weight: 600;
+    word-wrap: break-word; 
+}
+.image-stacked .note-end {
+    position: absolute;
+	margin-top: -28px;
+    padding: 5px 0px;
+	width: 100%;
+    color: #FFF;
+    font-size: 14px;
+	line-height: 18px;
+    text-align: center;
+    background: rgba(240,30,30,0.65);
+}
+
+/* category, tour */ /*diane191224*/
+.image-stacked.category .data { 
+	height: 40px !important;
+}
+
+/* venues */ /*diane200110 @home @partner*/
+.image-stacked.avatar .thumbnails {
+	background: #fff;
+}
+.image-stacked.avatar .thumbnails img {
+	border: 1px solid #BFBFBF;
+}
+.image-stacked.avatar .data { 
+	height: 40px !important;
+	border: transparent;
+}
+.image-stacked.avatar .data div { 
+	text-align: center;
+	color: #262626;
+	font-weight: 500;
+}
+.image-stacked.avatar a:hover .data div {
+	color: #0151A7; 
+}
+.image-stacked.avatar .multi_ellipsis {
+	font-weight: 500;
+}
+
+@media (max-width: 767px) {
+	.image-stacked .data {
+		height: 80px;
+	}
+	.image-stacked .data div.date {
+		color: #262626;
+		font-weight: 500;
+	}
+	.image-stacked .data div:not(.date) {
+		font-size: 15px;
+        line-height: 20px;
+	}
+    .image-stacked .note-end { 
+		*font-size:12px;
+		*padding: 3px 0;
+    }
+	.image-stacked.avatar .data { 
+		height: 60px !important;
+	}
+	.image-stacked.avatar .data div { 
+		font-size: 14px;
+		letter-spacing: 0px;
+	}
+}
+/*diane200110 要再看會用到多小
+@media (max-width: 414px) {
+	.image-stacked .data {
+		height: 80px;
+	}
+}
+@media (max-width: 410px) {
+	.image-stacked .data {
+		*height: 80px;
+	}
+}
+@media (max-width: 320px) {
+	.image-stacked .data {
+		height: 90px;
+	}
+}
+*/

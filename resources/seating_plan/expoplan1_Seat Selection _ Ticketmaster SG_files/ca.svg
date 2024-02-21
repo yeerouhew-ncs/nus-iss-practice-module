@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+    <defs>
+        <circle id="ca_a" cx="6" cy="6" r="6"></circle>
+        <rect id="ca_c" width="17.92" height="12.8" rx="2"></rect>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="ca_b" fill="#fff">
+            <use xlink:href="#ca_a"></use>
+        </mask>
+        <use fill="#FFF" xlink:href="#ca_a"></use>
+        <g mask="url(#ca_b)">
+            <g transform="translate(-3 -.4)">
+                <mask id="ca_d" fill="#fff">
+                    <use xlink:href="#ca_c"></use>
+                </mask>
+                <use fill="#FFF" fill-rule="nonzero" xlink:href="#ca_c"></use>
+                <path fill="#FF3131" mask="url(#ca_d)" d="M12.8 0h5.12v12.8H12.8zM0 0h5.12v12.8H0zM10.047 6.167c-.13.129-.206.093-.167-.1l.36-1.8-.853.426-.427-1.28-.427 1.28-.853-.426.36 1.8c.037.184-.038.228-.167.1l-.386-.387a.325.325 0 0 0-.467 0l-.193.193-.854-.426.427.853-.193.193a.327.327 0 0 0 .001.468l1.045 1.046h1.28l.214 1.28h.426l.214-1.28h1.28l1.045-1.046a.326.326 0 0 0 .001-.468L11.52 6.4l.427-.853-.854.426-.193-.193a.33.33 0 0 0-.467 0l-.386.387z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

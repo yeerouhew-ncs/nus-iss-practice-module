@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20">
+    <defs>
+        <circle id="za_a" cx="10" cy="10" r="10"></circle><rect id="za_c" x="0" y="0" width="28" height="20" rx="2"></rect>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="za_b" fill="#fff">
+        <use xlink:href="#za_a"></use>
+        </mask>
+        <circle stroke="#979797" cx="10" cy="10" r="9.5"></circle>
+        <g mask="url(#za_b)">
+            <g transform="translate(-2)">
+                <mask id="za_d" fill="#fff">
+                    <use xlink:href="#za_c"></use>
+                </mask>
+                <use fill="#06A86E" xlink:href="#za_c"></use>
+                <path fill="#FFBF2E" mask="url(#za_d)" d="M0 2.67L9.33 10 0 17.33z"></path>
+                <path fill="#262626" mask="url(#za_d)" d="M-1.33 3l9 7-9 7z"></path>
+                <path fill="#FFF" mask="url(#za_d)" d="M12 8L2.67 0H28v8z"></path>
+                <path fill="#F44E46" mask="url(#za_d)" d="M12.33 6.67L4.33 0H28v6.67z"></path>
+                <path fill="#FFF" mask="url(#za_d)" d="M2.67 20H28v-8H12z"></path>
+                <path fill="#072CB4" mask="url(#za_d)" d="M4.33 20H28v-6.67H12.33z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

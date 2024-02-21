@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+    <defs>
+        <circle id="gr_a" cx="6" cy="6" r="6"></circle>
+        <rect id="gr_c" width="16.8" height="12" rx="2"></rect>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="gr_b" fill="#fff">
+            <use xlink:href="#gr_a"></use>
+        </mask>
+        <g mask="url(#gr_b)">
+            <g transform="translate(-1.6)">
+                <mask id="gr_d" fill="#fff">
+                    <use xlink:href="#gr_c"></use>
+                </mask>
+                <use fill="#FFF" fill-rule="nonzero" xlink:href="#gr_c"></use>
+                <path d="M8 8.036H4.8V4.82H8V6.43h8.8v1.607H8zM8 0h8.8v1.607H8v1.607H4.8V0H8zM0 0h3.2v3.214H0V0zm8 3.214h8.8v1.607H8V3.214zM0 9.643h16.8v1.607H0V9.643zM0 4.82h3.2v3.215H0V4.82z" fill="#1C6DC1" mask="url(#gr_d)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

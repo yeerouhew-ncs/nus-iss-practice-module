@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 12">
+    <mask id="br_a" width="12" height="12" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+        <circle cx="6" cy="6" r="6" fill="#fff"></circle>
+    </mask>
+    <g mask="url(#br_a)">
+        <path fill="#128A60" fill-rule="evenodd" d="M0 12h12V0H0v12Z" clip-rule="evenodd"></path>
+        <path fill="#FFCF3C" fill-rule="evenodd" d="m6 2 5 4-5 4-5-4" clip-rule="evenodd"></path>
+        <circle cx="6.05" cy="6.05" r="2.05" fill="#2C56A2"></circle>
+        <path fill="#fff" d="M6 5.5C5.265 5.185 4.3 5 4.3 5l-.2.5c.5 0 1.219.147 1.9.5.737.383 1.6 1.4 1.6 1.4l.3-.5S6.735 5.815 6 5.5Z"></path>
+    </g>
+</svg>

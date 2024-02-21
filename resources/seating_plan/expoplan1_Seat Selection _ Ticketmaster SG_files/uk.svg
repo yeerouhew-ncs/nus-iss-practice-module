@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+    <defs>
+        <circle id="uk_a" cx="6" cy="6" r="6"></circle>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="uk_b" fill="#fff">
+            <use xlink:href="#uk_a"></use>
+        </mask>
+        <g mask="url(#uk_b)">
+            <path fill="#006" d="M-6.086-.429h24.157v12.884H-6.086z"></path>
+            <path d="M-6.086-.429v1.44L15.37 12.456h2.701v-1.44L-3.385-.43h-2.7zm24.157 0v1.44L-3.385 12.456h-2.7v-1.44L15.37-.43h2.701z" fill="#FFF"></path>
+            <path d="M8.006 3.866H18.07v4.295H8.006v4.294H3.98V8.161H-6.086V3.866H3.98V-.429h4.026v4.295z" fill="#FFF"></path>
+            <path d="M4.785 4.725V-.43H7.2v5.154h10.871v2.577H7.201v5.153H4.784V7.302h-10.87V4.725h10.87zm-10.87 7.73l8.052-4.294h1.8l-8.052 4.294h-1.8zm0-12.884l8.052 4.295h-1.8L-6.087.532v-.96zM8.217 3.866l8.053-4.295h1.8L10.02 3.866h-1.8zm9.853 8.59L10.02 8.16h1.8l6.252 3.334v.96z" fill="#C00"></path>
+        </g>
+    </g>
+</svg>

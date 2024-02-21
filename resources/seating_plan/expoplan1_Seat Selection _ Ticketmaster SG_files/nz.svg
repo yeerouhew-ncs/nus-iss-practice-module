@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+    <defs>
+        <circle id="nz_a" cx="6" cy="6" r="6"></circle>
+        <rect id="nz_c" width="16.8" height="12" rx="2"></rect>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="nz_b" fill="#fff">
+            <use xlink:href="#nz_a"></use>
+        </mask>
+        <g mask="url(#nz_b)">
+            <g transform="translate(-1.333)">
+                <mask id="nz_d" fill="#fff">
+                    <use xlink:href="#nz_c"></use>
+                </mask>
+                <use fill="#FFF" xlink:href="#nz_c"></use>
+                <path fill="#0A17A7" mask="url(#nz_d)" d="M0 0h16.8v12H0z"></path>
+                <path d="M2.467 2.553L-.901-.333H.4l.194.062 2.713 1.938h.597l3.63-2.268v.663c0 .297-.175.634-.419.808L4.733 2.572v.475L7.16 5.125c.294.253.256.609-.021.749v.06c-.048 0-.099-.004-.15-.011a.706.706 0 0 1-.126.01V5.9a1.542 1.542 0 0 1-.534-.228L3.893 3.933h-.597l-3.63 2.268V5.028l2.8-2v-.475z" stroke="#FFF" stroke-width=".667" fill="#FF2E3B" mask="url(#nz_d)"></path>
+                <path d="M0 2v1.6h2.8v1.731c0 .37.293.669.67.669h.26c.37 0 .67-.294.67-.669V3.6h2.537a.662.662 0 0 0 .663-.67v-.26c0-.37-.295-.67-.663-.67H4.4V0H2.8v2H0z" fill="#FFF" mask="url(#nz_d)"></path>
+                <path fill="#FF2E3B" mask="url(#nz_d)" d="M0 2.4h3.2V0H4v2.4h3.2v.8H4v2.4h-.8V3.2H0z"></path>
+                <path stroke="#FFF" stroke-width=".2" fill="#CA1931" mask="url(#nz_d)" d="M12 10.4l-.566.166L11.6 10l-.166-.566L12 9.6l.566-.166L12.4 10l.166.566zM12 2.8l-.566.166.166-.566-.166-.566L12 2l.566-.166-.166.566.166.566zM9.6 6l-.566.166L9.2 5.6l-.166-.566.566.166.566-.166L10 5.6l.166.566z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

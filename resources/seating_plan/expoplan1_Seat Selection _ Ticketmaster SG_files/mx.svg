@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+    <defs>
+        <circle id="mx_a" cx="6" cy="6" r="6"></circle>
+        <rect id="mx_c" width="17.842" height="12.8" rx="2"></rect>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="mx_b" fill="#fff">
+            <use xlink:href="#mx_a"></use>
+        </mask>
+        <use fill="#FFF" xlink:href="#mx_a"></use>
+        <g mask="url(#mx_b)">
+            <g transform="translate(-3 -.4)">
+                <mask id="mx_d" fill="#fff">
+                    <use xlink:href="#mx_c"></use>
+                </mask>
+                <use fill="#FFF" fill-rule="nonzero" xlink:href="#mx_c"></use>
+                <path fill="#E3283E" mask="url(#mx_d)" d="M11.83 0h6.012v12.8H11.83z"></path>
+                <path fill="#128A60" mask="url(#mx_d)" d="M0 0h6.012v12.8H0z"></path>
+                <path d="M7.176 6.012c0 .663.35 1.241.87 1.552m1.814-.04c.485-.32.807-.877.807-1.512" stroke="#8C9157" stroke-width="1.333" stroke-linecap="round" mask="url(#mx_d)"></path>
+                <ellipse fill="#C59262" mask="url(#mx_d)" cx="9.018" cy="5.527" rx="1" ry="1.261"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>
