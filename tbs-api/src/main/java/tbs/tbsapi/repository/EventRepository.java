@@ -6,5 +6,5 @@ import tbs.tbsapi.domain.Event;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, String> {
-    Event findByEventId(String eventId);
+//    Event findByEventId(Integer eventId);
 }

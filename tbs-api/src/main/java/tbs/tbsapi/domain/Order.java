@@ -1,9 +1,6 @@
 package tbs.tbsapi.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,8 +15,9 @@ import java.time.LocalDateTime;
 @Table(name = "TBS_ORDER")
 public class Order {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "ORDER_ID")
-    private String orderId;
+    private Integer orderId;
 
     @Column(name = "ORDER_DT")
     private LocalDateTime orderDateTime;
@@ -30,9 +28,9 @@ public class Order {
     @Column(name = "ORDER_STATUS")
     private String orderStatus;
 
-    @Column(name = "USER_ID")
-    private String userId;
+    @Column(name = "SUBJECT_ID")
+    private Integer subjectId;
 
     @Column(name = "EVENT_ID")
-    private String eventId;
+    private Integer eventId;
 }

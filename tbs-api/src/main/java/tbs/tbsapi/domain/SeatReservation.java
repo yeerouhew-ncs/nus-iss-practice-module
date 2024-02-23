@@ -1,9 +1,6 @@
 package tbs.tbsapi.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,15 +13,16 @@ import lombok.*;
 @Table(name = "SEAT_RESERVATION")
 public class SeatReservation {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "RESERVATION_ID")
-    private String reservationId;
+    private Integer reservationId;
 
     @Column(name = "ORDER_ID")
-    private String orderId;
+    private Integer orderId;
 
     @Column(name = "SEAT_ID")
     private String seatId;
 
     @Column(name = "SECTION_ID")
-    private String sectionId;
+    private Integer sectionId;
 }

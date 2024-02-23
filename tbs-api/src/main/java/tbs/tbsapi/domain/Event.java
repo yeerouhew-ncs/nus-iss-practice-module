@@ -1,9 +1,6 @@
 package tbs.tbsapi.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,8 +15,9 @@ import java.time.LocalDateTime;
 @Table(name = "EVENT")
 public class Event {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "EVENT_ID")
-    private String eventId;
+    private Integer eventId;
 
     @Column(name = "EVENT_NAME")
     private String eventName;
@@ -34,8 +32,8 @@ public class Event {
     private LocalDateTime eventToDt;
 
     @Column(name = "PLAN_ID")
-    private String planId;
+    private Integer planId;
 
-    @Column(name = "USER_ID")
-    private String userId;
+    @Column(name = "SUBJECT_ID")
+    private Integer subjectId;
 }
