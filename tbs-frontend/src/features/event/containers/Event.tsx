@@ -7,9 +7,36 @@ import { getEventListApi } from "../event.api";
 import { setegid } from "process";
 import { EventResponse } from "../../../interfaces/event-interface";
 import EventItem from "../components/EventItem";
+import { Controller, FieldValues, useForm } from "react-hook-form";
+import { ErrorBar } from "../../../common/error-bar/ErrorBar";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import { mapGetEventList } from "../../../mapper/event-mapper";
+import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 
 const Event = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
+  const [error, setErrors] = useState<boolean>(false);
+
+  const {
+    control,
+    formState,
+    handleSubmit,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+    register,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      eventName: "",
+      artistName: "",
+      eventFromDt: null,
+      eventToDt: null,
+    },
+  });
 
   useEffect(() => {
     const onLoadEvents = async () => {
@@ -32,29 +59,236 @@ const Event = () => {
 
         // TODO: handle errors
       } catch (error) {
-        // TODO: handle errors
-        console.log(error);
+        setErrors(true);
       }
     };
 
     onLoadEvents();
   }, []);
 
+  const handleSearchTermOnChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: FieldValues
+  ) => {
+    let { value, name } = e.target;
+
+    value = value.toUpperCase();
+
+    field.onChange(value);
+  };
+
+  const handleClearOnClick = () => {
+    setValue("eventName", "");
+    setValue("artistName", "");
+    setValue("eventFromDt", null);
+    setValue("eventToDt", null);
+    clearErrors();
+  };
+
+  const handleSearchOnClick = async (data: any) => {
+    const mapResult = mapGetEventList(data, 0);
+
+    try {
+      const response = await getEventListApi(mapResult);
+
+      if (response.statusCode === "200" && response.message === "SUCCESS") {
+        setEvents(response.eventList.content);
+      }
+    } catch (error) {
+      setErrors(true);
+    }
+  };
+
+  const onErrors = () => {
+    setErrors(true);
+  };
+
   return (
     <div>
-      <div className="row">
+      {error && (
+        <AlertPopUp
+          type="danger"
+          message="There's been an error while trying to retrieving data"
+          duration={5000}
+        />
+      )}
+      <div className={`row ${styles.eventHeader}`}>
         <div className="col-md-4">
           <h2>Upcoming Events</h2>
         </div>
-        <div className={`col-md-8 ${styles.inputIcon}`}>
+        {/* <div className={`col-md-8 ${styles.inputIcon}`}>
           <FontAwesomeIcon icon={faSearch} />
 
           <input
             className="form-control rounded-0 border-0 border-bottom"
             placeholder="Search"
           />
+        </div> */}
+      </div>
+      <div className={styles.searchContainer}>
+        <div className={`row form-group`}>
+          <div className={`col-md-2 ${styles.searchRow}`}>
+            <label htmlFor="eventName" className="form-contol-label">
+              Event Name
+            </label>
+          </div>
+          <div className="col-md-4">
+            <Controller
+              name="eventName"
+              control={control}
+              rules={{
+                validate: {},
+              }}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="form-control"
+                  id="eventName"
+                  name="eventName"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleSearchTermOnChange(e, field);
+                  }}
+                />
+              )}
+            />
+            {formState.errors?.eventName && (
+              <ErrorBar errorMsg={formState.errors.eventName?.message} />
+            )}
+          </div>
+
+          <div className={`col-md-2 ${styles.searchRow}`}>
+            <label htmlFor="artistName" className="form-contol-label">
+              Artist Name
+            </label>
+          </div>
+          <div className="col-md-4">
+            <Controller
+              name="artistName"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="form-control"
+                  id="artistName"
+                  name="artistName"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleSearchTermOnChange(e, field);
+                  }}
+                />
+              )}
+            />
+            {formState.errors?.artistName && (
+              <ErrorBar errorMsg={formState.errors.artistName?.message} />
+            )}
+          </div>
+        </div>
+
+        <div className="form-group row">
+          <div className={`col-md-2 ${styles.searchRow}`}>
+            <label htmlFor="eventFromDt" className="form-contol-label">
+              Event Start Date
+            </label>
+          </div>
+          <div className={`col-md-4`}>
+            <Controller
+              name="eventFromDt"
+              control={control}
+              rules={{
+                validate: {},
+              }}
+              render={({ field }) => (
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    {...field}
+                    sx={{
+                      width: "100%",
+                      "& .MuiInputBase-input": {
+                        height: "30px",
+                        padding: "6px 12px",
+                      },
+                      "& .MuiInputBase-root": {
+                        borderRadius: "var(--bs-border-radius)",
+                        color: "var(--bs-body-color)",
+                      },
+                    }}
+                    slotProps={{
+                      textField: {
+                        id: "eventFromDt",
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
+              )}
+            />
+            {formState.errors?.eventFromDt && (
+              <ErrorBar errorMsg={formState.errors.eventFromDt?.message} />
+            )}
+          </div>
+
+          <div className={`col-md-2 ${styles.searchRow}`}>
+            <label htmlFor="eventToDt" className="form-contol-label">
+              Event End Date
+            </label>
+          </div>
+          <div className={`col-md-4`}>
+            <Controller
+              name="eventToDt"
+              control={control}
+              rules={{
+                validate: {},
+              }}
+              render={({ field }) => (
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    {...field}
+                    sx={{
+                      width: "100%",
+                      "& .MuiInputBase-input": {
+                        height: "30px",
+                        padding: "6px 12px",
+                      },
+                      "& .MuiInputBase-root": {
+                        borderRadius: "var(--bs-border-radius)",
+                        color: "var(--bs-body-color)",
+                      },
+                    }}
+                    slotProps={{
+                      textField: {
+                        id: "eventToDt",
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
+              )}
+            />
+            {formState.errors?.eventToDt && (
+              <ErrorBar errorMsg={formState.errors.eventToDt?.message} />
+            )}
+          </div>
+        </div>
+
+        <div className={styles.searchBtnRow}>
+          <button
+            type="button"
+            className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+            onClick={handleClearOnClick}
+          >
+            <span>Clear All</span>
+          </button>
+          <button
+            type="submit"
+            className={`btn ${styles.primaryBtn} btn-sm`}
+            onClick={handleSubmit(handleSearchOnClick, onErrors)}
+          >
+            <span>Search</span>
+          </button>
         </div>
       </div>
+
       <div className={styles.eventItemList}>
         {events &&
           events.map((eventInfo, index) => <EventItem eventInfo={eventInfo} />)}

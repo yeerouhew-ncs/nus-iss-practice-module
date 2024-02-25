@@ -29,6 +29,7 @@ public class EventController {
     @PostMapping(path = "/get-list")
     public ResponseEntity<?> getListOfEvents(@RequestBody GetListOfEventRequest getListOfEventRequest) throws Exception{
         log.info("START: GET ALL EVENTS");
+        log.info(getListOfEventRequest);
         return eventManager.getListOfEvents(getListOfEventRequest);
     }
 
