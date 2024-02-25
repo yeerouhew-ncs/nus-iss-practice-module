@@ -23,9 +23,17 @@ const Event = () => {
         usesrId: null,
         page: 0,
       };
-      const response = await getEventListApi(mappingResult);
-      if (response.statusCode === "200" && response.message === "SUCCESS") {
-        setEvents(response.eventList.content);
+
+      try {
+        const response = await getEventListApi(mappingResult);
+        if (response.statusCode === "200" && response.message === "SUCCESS") {
+          setEvents(response.eventList.content);
+        }
+
+        // TODO: handle errors
+      } catch (error) {
+        // TODO: handle errors
+        console.log(error);
       }
     };
 
