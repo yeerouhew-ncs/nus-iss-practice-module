@@ -46,7 +46,7 @@ public class EventManager {
 
         log.info("END: GET ALL EVENTS SUCCESSFUL");
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-                "statusCode",200,
+                "statusCode","200",
                 "message", "SUCCESS",
                 "eventList", response
         ));
@@ -59,13 +59,13 @@ public class EventManager {
 
         if(eventResponse.getEventId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-                    "statusCode", 200,
+                    "statusCode", "200",
                     "message", "SUCCESS",
                     "eventDetails", eventResponse
             ));
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-                    "statusCode", 200,
+                    "statusCode", "200",
                     "message", "NO MATCHING EVENT"
             ));
         }

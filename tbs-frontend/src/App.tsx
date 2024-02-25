@@ -7,7 +7,10 @@ import AppRoutes from "./routes";
 function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <Header />
+      <div className="wrapper">
+        <AppRoutes />
+      </div>
     </BrowserRouter>
   );
 }
