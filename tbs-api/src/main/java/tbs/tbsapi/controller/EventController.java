@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.manager.EventManager;
+import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 
 @Log4j2
@@ -29,5 +30,11 @@ public class EventController {
     public ResponseEntity<?> getListOfEvents(@RequestBody GetListOfEventRequest getListOfEventRequest) throws Exception{
         log.info("START: GET ALL EVENTS");
         return eventManager.getListOfEvents(getListOfEventRequest);
+    }
+
+    @PostMapping(path = "/event-details")
+    public ResponseEntity<?> getEventDetails(@RequestBody GetEventRequest getEventRequest) throws Exception{
+        log.info("START: GET EVENT DETAILS");
+        return eventManager.getEventDetails(getEventRequest);
     }
 }

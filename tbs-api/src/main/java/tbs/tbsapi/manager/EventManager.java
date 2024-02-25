@@ -11,9 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.service.EventService;
+import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
-import tbs.tbsapi.vo.response.GetListOfEventResponse;
+import tbs.tbsapi.vo.response.GetEventResponse;
 
 import java.util.Map;
 import java.util.Objects;
@@ -25,9 +26,10 @@ public class EventManager {
     private EventService eventService;
 
     public ResponseEntity<?> addEvent(AddEventDto addEventDto) {
-        // TODO: have validation here
+        // TODO: include validation here
         AddEventResponse addEventResponse = eventService.addEvent(addEventDto);
         if(Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
+            log.info("END: ADD EVENT SUCCESS");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", addEventResponse.getStatusCode(),
                     "message", "SUCCESS"));
@@ -38,14 +40,34 @@ public class EventManager {
     }
 
     public ResponseEntity<?> getListOfEvents(GetListOfEventRequest getListOfEventRequest) {
-        // TODO: have validation here
+        // TODO: include validation here
         Pageable pageable = PageRequest.of(getListOfEventRequest.getPage(), 10, Sort.by("eventFromDt", "eventToDt",  "eventName").ascending());
-        Page<GetListOfEventResponse> response = eventService.getListOfEvents(pageable, getListOfEventRequest);
+        Page<GetEventResponse> response = eventService.getListOfEvents(pageable, getListOfEventRequest);
 
-        log.info("END:GET ALL EVENTS SUCCESSFUL");
+        log.info("END: GET ALL EVENTS SUCCESSFUL");
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "statusCode",200,
-                "userList", response
+                "message", "SUCCESS",
+                "eventList", response
         ));
+    }
+
+    public ResponseEntity<?> getEventDetails(GetEventRequest getEventRequest) {
+        // TODO: include validation here
+        GetEventResponse eventResponse = eventService.getEventDetails(getEventRequest);
+        log.info("END: GET EVENT DETAILS SUCCESS");
+
+        if(eventResponse.getEventId() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "statusCode", 200,
+                    "message", "SUCCESS",
+                    "eventDetails", eventResponse
+            ));
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "statusCode", 200,
+                    "message", "NO MATCHING EVENT"
+            ));
+        }
     }
 }

@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tbs.tbsapi.domain.Event;
-import tbs.tbsapi.vo.response.GetListOfEventResponse;
+import tbs.tbsapi.vo.response.GetEventResponse;
 
 import java.time.LocalDateTime;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, String> {
-    @Query("SELECT NEW tbs.tbsapi.vo.response.GetListOfEventResponse(" +
+    @Query("SELECT NEW tbs.tbsapi.vo.response.GetEventResponse(" +
             "e.eventId, e.eventName, e.artistName, e.eventFromDt, e.eventToDt, e.subjectId, e.planId) " +
             "FROM Event e " +
             "WHERE (:eventId IS NULL OR e.eventId = :eventId) AND " +
@@ -23,7 +23,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
             "(:eventToDt IS NULL OR e.eventToDt <= :eventToDt) AND " +
             "(:subjectId IS NULL OR e.subjectId = :subjectId) "
     )
-    Page<GetListOfEventResponse> findEventList(
+    Page<GetEventResponse> findEventList(
             @Param("eventId") Integer eventId,
             @Param("eventName") String eventName,
             @Param("artistName") String artistName,
@@ -32,4 +32,6 @@ public interface EventRepository extends JpaRepository<Event, String> {
             @Param("subjectId") Integer subjectId,
             Pageable pageable
     );
+
+    Event findByEventId(Integer eventId);
 }

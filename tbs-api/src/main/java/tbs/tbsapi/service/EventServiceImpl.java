@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import tbs.tbsapi.domain.Event;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.repository.EventRepository;
+import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
-import tbs.tbsapi.vo.response.GetListOfEventResponse;
+import tbs.tbsapi.vo.response.GetEventResponse;
 
 import java.util.Objects;
 
@@ -47,7 +48,7 @@ public class EventServiceImpl implements EventService {
         return eventResponse;
     }
 
-    public Page<GetListOfEventResponse> getListOfEvents(Pageable pageable, GetListOfEventRequest getListOfEventRequest) {
+    public Page<GetEventResponse> getListOfEvents(Pageable pageable, GetListOfEventRequest getListOfEventRequest) {
         if(Objects.equals(getListOfEventRequest.getEventName(), "")) getListOfEventRequest.setEventName(null);
         if(Objects.equals(getListOfEventRequest.getArtistName(), "")) getListOfEventRequest.setArtistName(null);
 
@@ -60,6 +61,24 @@ public class EventServiceImpl implements EventService {
                 getListOfEventRequest.getSubjectId(),
                 pageable
         );
+    }
 
+    public GetEventResponse getEventDetails(GetEventRequest getEventRequest) {
+        // TODO: change GetEventResponse return type
+        Event event = eventRepository.findByEventId(getEventRequest.getEventId());
+
+        GetEventResponse eventResponse = new GetEventResponse();
+        eventResponse.setEventName(event.getEventName());
+        eventResponse.setEventId(event.getEventId());
+        eventResponse.setEventFromDt(event.getEventFromDt());
+        eventResponse.setArtistName(event.getArtistName());
+        eventResponse.setPlanId(event.getPlanId());
+        eventResponse.setEventToDt(event.getEventToDt());
+        eventResponse.setSubjectId(event.getSubjectId());
+
+        // TODO: get plan details
+        // TODO: get subject details
+
+        return eventResponse;
     }
 }
