@@ -14,6 +14,5 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GetEventRequest {
     private Integer eventId;
-
     private Integer subjectId;
 }

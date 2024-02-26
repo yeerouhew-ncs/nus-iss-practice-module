@@ -1,5 +1,6 @@
 package tbs.tbsapi.service;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -7,12 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.domain.Event;
 import tbs.tbsapi.dto.AddEventDto;
+import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.repository.EventRepository;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
 import tbs.tbsapi.vo.response.GetEventResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Log4j2
@@ -80,5 +84,34 @@ public class EventServiceImpl implements EventService {
         // TODO: get subject details
 
         return eventResponse;
+    }
+
+    @Transactional
+    public List<String> editEvent(EditEventDto editEventDto) {
+        List<String> response = new ArrayList<>();
+
+        if(eventRepository.findByEventId(editEventDto.getEventId()) == null) {
+            response.add("200");
+            response.add("Event does not exist");
+            return response;
+        }
+
+        Integer updatedEvent = eventRepository.updateUser(editEventDto.getEventId(),
+                editEventDto.getEventName(),
+                editEventDto.getArtistName(),
+                editEventDto.getEventFromDt(),
+                editEventDto.getEventToDt(),
+                editEventDto.getPlanId(),
+                editEventDto.getSubjectId());
+
+        if(updatedEvent == 1) {
+            response.add("200");
+            response.add("Event updated successfully");
+            return response;
+        }
+
+        response.add("400");
+        response.add("Event not updated");
+        return response;
     }
 }

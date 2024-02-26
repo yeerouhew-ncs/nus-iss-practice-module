@@ -1,4 +1,4 @@
-package tbs.tbsapi.dto;
+package tbs.tbsapi.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
