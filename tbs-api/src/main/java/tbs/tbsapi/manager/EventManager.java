@@ -10,12 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.dto.AddEventDto;
+import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.service.EventService;
+import tbs.tbsapi.validation.ValidationError;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
 import tbs.tbsapi.vo.response.GetEventResponse;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,7 +29,16 @@ public class EventManager {
     private EventService eventService;
 
     public ResponseEntity<?> addEvent(AddEventDto addEventDto) {
-        // TODO: include validation here
+        List<ValidationError> validationErrorList = addEventDto.validate();
+
+        if(!validationErrorList.isEmpty()) {
+            log.info("END: ADD EVENT VALIDATION FAILED " + validationErrorList);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
+                    "statusCode", "422",
+                    "message", "VALIDATION FAILED",
+                    "validationError", validationErrorList
+            ));
+        }
         AddEventResponse addEventResponse = eventService.addEvent(addEventDto);
         if(Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
             log.info("END: ADD EVENT SUCCESS");
@@ -40,7 +52,17 @@ public class EventManager {
     }
 
     public ResponseEntity<?> getListOfEvents(GetListOfEventRequest getListOfEventRequest) {
-        // TODO: include validation here
+        List<ValidationError> validationErrorList = getListOfEventRequest.validate();
+
+        if(!validationErrorList.isEmpty()) {
+            log.info("END: GET ALL EVENTS VALIDATION FAILED " + validationErrorList);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
+                    "statusCode", "422",
+                    "message", "VALIDATION FAILED",
+                    "validationError", validationErrorList
+            ));
+        }
+
         Pageable pageable = PageRequest.of(getListOfEventRequest.getPage(), 10, Sort.by("eventFromDt", "eventToDt",  "eventName").ascending());
         Page<GetEventResponse> response = eventService.getListOfEvents(pageable, getListOfEventRequest);
 
@@ -53,7 +75,6 @@ public class EventManager {
     }
 
     public ResponseEntity<?> getEventDetails(GetEventRequest getEventRequest) {
-        // TODO: include validation here
         GetEventResponse eventResponse = eventService.getEventDetails(getEventRequest);
         log.info("END: GET EVENT DETAILS SUCCESS");
 
@@ -68,6 +89,32 @@ public class EventManager {
                     "statusCode", "200",
                     "message", "NO MATCHING EVENT"
             ));
+        }
+    }
+
+    public ResponseEntity<?> editEvent(EditEventDto editEventDto) {
+        List<ValidationError> validationErrorList = editEventDto.validate();
+
+        if(!validationErrorList.isEmpty()) {
+            log.info("END: EDIT EVENT VALIDATION FAILED " + validationErrorList);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
+                    "statusCode", "422",
+                    "message", "VALIDATION FAILED",
+                    "validationError", validationErrorList
+            ));
+        }
+
+        List<String> response = eventService.editEvent(editEventDto);
+        if(Objects.equals(response.get(0), "200")) {
+            log.info("END: EDIT EVENT SUCCESS");
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "statusCode", response.get(0),
+                    "message", "SUCCESS"));
+        } else {
+            log.info("END: EDIT EVENT FAILED");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
+                    "statusCode", response.get(0),
+                    "message", response.get(1)));
         }
     }
 }

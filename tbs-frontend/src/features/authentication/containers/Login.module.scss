@@ -1,0 +1,36 @@
+.loginWrapper {
+  margin: auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .loginHeader {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .loginContainer {
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    width: 40%;
+    padding: 20px;
+  }
+
+  .loginInput {
+    margin-top: 10px;
+  }
+
+  .primaryBtn {
+    color: white;
+    background-color: var(--secondary-color);
+    text-decoration-line: none;
+  }
+
+  .primaryBtn:hover {
+    color: white;
+    background-color: var(--secondary-color);
+    text-decoration-line: underline;
+  }
+}
