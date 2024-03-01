@@ -8,6 +8,7 @@ import { setegid } from "process";
 import { EventResponse } from "../../../interfaces/event-interface";
 import EventItem from "../components/EventItem";
 import { Controller, FieldValues, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { ErrorBar } from "../../../common/error-bar/ErrorBar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -77,6 +78,12 @@ const Event = () => {
     field.onChange(value);
   };
 
+  const navigate = useNavigate();
+
+  const redirectCreateOnClick = () => {
+    navigate("/eventCreate");
+  }
+
   const handleClearOnClick = () => {
     setValue("eventName", "");
     setValue("artistName", "");
@@ -113,8 +120,16 @@ const Event = () => {
         />
       )}
       <div className={`row ${styles.eventHeader}`}>
-        <div className="col-md-4">
+        <div className="col-md-10">
           <h2>Upcoming Events</h2>
+        </div>
+        <div className="col-md-2 float-right">
+          <button 
+            type="button"
+            className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+            onClick={redirectCreateOnClick}>
+              <span>Create an Event</span>
+            </button>
         </div>
         {/* <div className={`col-md-8 ${styles.inputIcon}`}>
           <FontAwesomeIcon icon={faSearch} />
