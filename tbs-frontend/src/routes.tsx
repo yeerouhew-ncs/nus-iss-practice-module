@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Event from "./features/event/containers/Event";
 import Login from "./features/authentication/containers/Login";
 import EventCreate from "./features/event/containers/EventCreate";
+import EventView from "./features/event/containers/EventView";
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />}></Route>
       <Route path="/event" element={<Event />}></Route>
       <Route path="/eventCreate" element={<EventCreate />}></Route>
+      <Route path="/eventView/:eventId" element={<EventView />}></Route>
     </Routes>
   );
 };

@@ -1,16 +1,21 @@
 .eventHeader {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
+}
+
+.createBtnGroup {
+  display: flex;
+  justify-content: space-between;
 }
 
 .primaryBtn {
   color: white !important;
-  // background-color: var(--secondary-color) !important;
+  background-color: var(--primary-color) !important;
   text-decoration-line: none !important;
 }
 
 .primaryBtn:hover {
   color: white !important;
-  // background-color: var(--secondary-color) !important;
+  background-color: var(--primary-color) !important;
   text-decoration-line: underline !important;
 }
 

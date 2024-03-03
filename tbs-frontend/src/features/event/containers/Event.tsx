@@ -20,6 +20,8 @@ const Event = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [error, setErrors] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   const {
     control,
     formState,
@@ -78,11 +80,9 @@ const Event = () => {
     field.onChange(value);
   };
 
-  const navigate = useNavigate();
-
   const redirectCreateOnClick = () => {
     navigate("/eventCreate");
-  }
+  };
 
   const handleClearOnClick = () => {
     setValue("eventName", "");
@@ -110,6 +110,10 @@ const Event = () => {
     setErrors(true);
   };
 
+  const navigateEventView = (eventId: string) => {
+    navigate("/eventView/" + eventId);
+  };
+
   return (
     <div>
       {error && (
@@ -119,26 +123,19 @@ const Event = () => {
           duration={5000}
         />
       )}
-      <div className={`row ${styles.eventHeader}`}>
-        <div className="col-md-10">
+      <div className={`${styles.eventHeader}`}>
+        <div>
           <h2>Upcoming Events</h2>
         </div>
-        <div className="col-md-2 float-right">
-          <button 
+        <div>
+          <button
             type="button"
             className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
-            onClick={redirectCreateOnClick}>
-              <span>Create an Event</span>
-            </button>
+            onClick={redirectCreateOnClick}
+          >
+            <span>Create an Event</span>
+          </button>
         </div>
-        {/* <div className={`col-md-8 ${styles.inputIcon}`}>
-          <FontAwesomeIcon icon={faSearch} />
-
-          <input
-            className="form-control rounded-0 border-0 border-bottom"
-            placeholder="Search"
-          />
-        </div> */}
       </div>
       <div className={styles.searchContainer}>
         <div className={`row form-group`}>
@@ -304,10 +301,39 @@ const Event = () => {
         </div>
       </div>
 
-      <div className={styles.eventItemList}>
-        {events &&
-          events.map((eventInfo, index) => <EventItem eventInfo={eventInfo} />)}
-      </div>
+      {events.length === 0 && (
+        <div className={styles.eventItemList}>There is no matching event.</div>
+      )}
+
+      {events.length > 0 && (
+        <div>
+          <div className={styles.eventItemListHeader}>
+            <div className={`row ${styles.eventDateTimeHeaderRow}`}>
+              <div className={`col-md-3 ${styles.eventDateTimeHeaderCol}`}>
+                Event Date
+              </div>
+              <div className={`col-md-5 ${styles.eventDateTimeHeaderCol}`}>
+                Event Name
+              </div>
+              <div className={`col-md-4 ${styles.eventDateTimeHeaderCol}`}>
+                Artist Name
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.eventItemList}>
+            {events &&
+              events.map((eventInfo, index) => (
+                <div
+                  key={index}
+                  onClick={() => navigateEventView(eventInfo.eventId)}
+                >
+                  <EventItem eventInfo={eventInfo} />
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -40,3 +40,14 @@ export interface AddEventResponse {
   statusCode: string;
   message: string;
 }
+
+export interface IGetEventDetailsRequest {
+  eventId: string | undefined;
+  subjectId: string | undefined;
+}
+
+export interface IGetEventDetailsResponse {
+  message: string;
+  statusCode: string;
+  eventDetails: EventResponse;
+}
