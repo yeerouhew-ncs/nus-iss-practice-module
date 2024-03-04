@@ -4,6 +4,8 @@ import Event from "./features/event/containers/Event";
 import Login from "./features/authentication/containers/Login";
 import EventCreate from "./features/event/containers/EventCreate";
 import EventView from "./features/event/containers/EventView";
+import PlanCreate from "./features/plan/containers/PlanCreate";
+import PlanEdit from "./features/plan/containers/PlanEdit";
 
 const AppRoutes = () => {
   return (
@@ -13,6 +15,8 @@ const AppRoutes = () => {
       <Route path="/event" element={<Event />}></Route>
       <Route path="/eventCreate" element={<EventCreate />}></Route>
       <Route path="/eventView/:eventId" element={<EventView />}></Route>
+      <Route path="/planCreate" element={<PlanCreate />}></Route>
+      <Route path="/planEdit" element={<PlanEdit />}></Route>
     </Routes>
   );
 };

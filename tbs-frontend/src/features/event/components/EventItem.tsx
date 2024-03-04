@@ -13,6 +13,7 @@ const EventItem = ({ eventInfo }: { eventInfo: EventResponse }) => {
   };
 
   const displayMonth = (month: number): string => {
+    month += 1;
     switch (month) {
       case 1:
         return "JAN";
