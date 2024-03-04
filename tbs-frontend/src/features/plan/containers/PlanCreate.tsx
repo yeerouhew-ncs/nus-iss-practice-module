@@ -34,7 +34,7 @@ const PlanCreate = () => {
 
     return (
         <div>
-            <div className={`row ${styles.eventHeader}`}>
+            <div className={`row ${styles.planHeader}`}>
                 <div className="col-md-12">
                 <h2>Add New Layout</h2>
                 </div>
