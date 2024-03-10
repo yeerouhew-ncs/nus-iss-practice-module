@@ -20,9 +20,6 @@ public class SectionSeat {
     @Column(name = "PLAN_ID")
     private Integer planId;
 
-    @Column(name = "SEAT_ID")
-    private String seatId;
-
     @Column(name = "TOTAL_SEATS")
     private Integer totalSeats;
 
@@ -32,5 +29,12 @@ public class SectionSeat {
     @Column(name = "SEAT_PRICE")
     private Double seatPrice;
 
+    @Column(name = "SECTION_DESC")
+    private String seatSectionDescription;
 
+    @Column(name = "SECTION_ROW")
+    private Integer seatRow;
+
+    @Column(name = "SECTION_COL")
+    private Integer seatCol;
 }

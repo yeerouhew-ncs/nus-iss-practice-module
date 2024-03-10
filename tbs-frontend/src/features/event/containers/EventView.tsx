@@ -5,6 +5,8 @@ import { getEventDetailsApi } from "../event.api";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import { EventResponse } from "../../../interfaces/event-interface";
 import moment from "moment";
+import PlanViewModal from "./PlanViewModal";
+import SeatingPlanOne from "../../seating-plan/containers/SeatingPlanOne";
 
 const EventView = () => {
   const param = useParams();
@@ -14,6 +16,8 @@ const EventView = () => {
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
   const [event, setEvent] = useState<EventResponse>();
+
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -55,6 +59,11 @@ const EventView = () => {
       {errors && (
         <AlertPopUp type="danger" message={errorMsg} duration={5000} />
       )}
+      <PlanViewModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        planId={event ? event.planId : "1"}
+      />
       <div>
         <div className={` ${styles.eventViewHeader}`}>Event Details</div>
       </div>
@@ -90,13 +99,12 @@ const EventView = () => {
           </div>
 
           <div className={`col-md-12 ${styles.planCard}`}>
-            <label className="layersMenu">
-              <img
-                className={`${styles.planThumbnail}`}
-                src={require("../../../images/mock_layout.png")}
-                alt="layout2"
+            <div className={styles.disabledContainer}>
+              <SeatingPlanOne
+                planId={event ? event.planId : "1"}
+                legendVisible={false}
               />
-            </label>
+            </div>
           </div>
         </div>
 

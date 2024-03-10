@@ -58,4 +58,9 @@
   .btnMarginRight {
     margin-right: 5px;
   }
+
+  .disabledContainer {
+    pointer-events: none;
+    opacity: 0.8;
+  }
 }

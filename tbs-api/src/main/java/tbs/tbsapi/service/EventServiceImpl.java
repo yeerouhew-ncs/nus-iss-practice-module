@@ -80,6 +80,7 @@ public class EventServiceImpl implements EventService {
         eventResponse.setEventToDt(event.getEventToDt());
         eventResponse.setSubjectId(event.getSubjectId());
 
+
         // TODO: get plan details
         // TODO: get subject details
 
