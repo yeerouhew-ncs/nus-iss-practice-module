@@ -7,9 +7,34 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
+import SeatingPlanOne from "../../seating-plan/containers/SeatingPlanOne";
+import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
+import { PlanList } from "../../../interfaces/seating-plan-interface";
+import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+import PlanViewModal from "./PlanViewModal";
 
 const EventCreate = () => {
   const navigate = useNavigate();
+
+  const [planList, setPlanList] = useState<PlanList[]>();
+  const [error, setErrors] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const getListEvent = async () => {
+    try {
+      const response = await getSeatingPlanListApi();
+      if (response.statusCode === "200" && response.message === "SUCCESS") {
+        setPlanList(response.seatingPlanList);
+        console.log("response.seatingPlanList", response.seatingPlanList);
+      }
+    } catch (err) {
+      setErrors(true);
+    }
+  };
+
+  useEffect(() => {
+    getListEvent();
+  }, []);
 
   const createAddEventDto = async () => {
     alert("Event saved successfully");
@@ -66,13 +91,25 @@ const EventCreate = () => {
     navigate("/event", { replace: true });
   };
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
   return (
     <div>
+      {error && (
+        <AlertPopUp
+          type="danger"
+          message="There's been an error while trying to retrieving data"
+          duration={5000}
+        />
+      )}
       <div className={`row ${styles.eventHeader}`}>
         <div className="col-md-12">
           <h2>Create An Event</h2>
         </div>
       </div>
+
       <div className="form-group row">
         <form>
           <div className="col-md-12 mb-3">
@@ -136,41 +173,30 @@ const EventCreate = () => {
           <div className="col-md-12 mb-3">
             <label className="form-label">Seating Layout</label>
             <div className="row">
-              <div className={`col-md-6 ${styles.planCard}`}>
-                <label className="layersMenu">
-                  <input
-                    type="radio"
-                    className="form-radio"
-                    name="planId"
-                    id="exampleRadios1"
-                    value="1"
-                    defaultChecked
-                  ></input>
-                  <img
-                    className={`${styles.planThumbnail}`}
-                    src={require("../../../images/mock_layout.png")}
-                    alt="layout1"
-                  />
-                  <div>Layout 1</div>
-                </label>
-              </div>
-              <div className={`col-md-6 ${styles.planCard}`}>
-                <label className="layersMenu">
-                  <input
-                    type="radio"
-                    className="form-radio"
-                    name="planId"
-                    id="exampleRadios2"
-                    value="2"
-                  />
-                  <img
-                    className={`${styles.planThumbnail}`}
-                    src={require("../../../images/mock_layout.png")}
-                    alt="layout2"
-                  />
-                  <div>Layout 2</div>
-                </label>
-              </div>
+              {planList &&
+                planList.length > 0 &&
+                planList.map((plan, index) => (
+                  <div className={`col-md-6 ${styles.planCard}`}>
+                    <input
+                      type="radio"
+                      className="form-radio"
+                      name="planId"
+                      id="exampleRadios1"
+                      value={index + 1}
+                      defaultChecked
+                    ></input>
+                    <label className={styles.layersMenu}>
+                      <a href="" onClick={showModal}>
+                        Layout {index + 1}
+                      </a>
+                    </label>
+                    <PlanViewModal
+                      isModalVisible={isModalVisible}
+                      setIsModalVisible={setIsModalVisible}
+                      planId={plan.planId}
+                    />
+                  </div>
+                ))}
             </div>
           </div>
           <div className={`row`}>

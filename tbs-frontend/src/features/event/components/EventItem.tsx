@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./EventItem.module.scss";
 import { EventResponse } from "../../../interfaces/event-interface";
 import moment from "moment";
+import { Modal } from "react-bootstrap";
 
 const EventItem = ({ eventInfo }: { eventInfo: EventResponse }) => {
   const displayDay = (day: string): string => {
