@@ -35,7 +35,9 @@ const AlertPopUp = ({
 
   return (
     <div className={styles.alertWrapper}>
-      <Alert className={alertClass}>{message}</Alert>
+      <Alert className={alertClass} style={{ fontSize: "0.9em" }}>
+        {message}
+      </Alert>
     </div>
   );
 };

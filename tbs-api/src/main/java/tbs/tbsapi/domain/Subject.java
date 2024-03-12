@@ -2,6 +2,8 @@ package tbs.tbsapi.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import tbs.tbsapi.domain.enums.SubjectRole;
+import tbs.tbsapi.domain.enums.SubjectStatus;
 
 @Entity
 @Getter
@@ -17,15 +19,20 @@ public class Subject {
     @Column(name = "SUBJECT_ID")
     private Integer subjectId;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "FULL_NAME")
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
+
+    @Column(name = "FULL_NAME", nullable = false)
     private String fullName;
 
     @Column(name = "SUBJECT_ROLE")
-    private String subjectRole;
+    @Enumerated(EnumType.STRING)
+    private SubjectRole subjectRole;
 
     @Column(name = "STATUS")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private SubjectStatus status;
 }
