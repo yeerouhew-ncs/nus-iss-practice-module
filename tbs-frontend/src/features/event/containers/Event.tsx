@@ -15,10 +15,13 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { mapGetEventList } from "../../../mapper/event-mapper";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+import { useAuthContext } from "../../../context/AuthContext";
 
 const Event = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [error, setErrors] = useState<boolean>(false);
+
+  const { userInfo } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -81,7 +84,7 @@ const Event = () => {
   };
 
   const redirectCreateOnClick = () => {
-    navigate("/eventCreate");
+    navigate("/event/create");
   };
 
   const handleClearOnClick = () => {
@@ -111,7 +114,7 @@ const Event = () => {
   };
 
   const navigateEventView = (eventId: string) => {
-    navigate("/eventView/" + eventId);
+    navigate("/event/view/" + eventId);
   };
 
   return (
@@ -132,6 +135,7 @@ const Event = () => {
             type="button"
             className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
             onClick={redirectCreateOnClick}
+            hidden={userInfo?.authorities[0].authority === "MOP"}
           >
             <span>Create an Event</span>
           </button>

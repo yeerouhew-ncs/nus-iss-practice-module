@@ -5,4 +5,5 @@ import tbs.tbsapi.vo.response.RegisterUserResponse;
 
 public interface AuthService {
     RegisterUserResponse registerUser(AddSubjectDto addSubjectDto);
+    RegisterUserResponse getUserByEmail(String email);
 }

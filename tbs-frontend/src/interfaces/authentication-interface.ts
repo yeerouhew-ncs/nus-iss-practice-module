@@ -18,3 +18,34 @@ export interface UserResponse {
   subjectRole: string;
   status: string;
 }
+
+export interface ILoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface ILoginResponse {
+  message: string;
+  statusCode: string;
+  jwtDetails: JwtResponse;
+}
+
+export interface JwtResponse {
+  accessToken: string;
+}
+
+export interface IUserInfoResponse {
+  message: string;
+  statusCode: string;
+  userDetails: UserDetails;
+}
+
+export interface UserDetails {
+  id: string;
+  email: string;
+  authorities: [
+    {
+      authority: string;
+    }
+  ];
+}
