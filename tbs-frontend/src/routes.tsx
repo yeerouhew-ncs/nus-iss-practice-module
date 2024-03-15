@@ -15,17 +15,21 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="" element={!token ? <Login /> : <Navigate to="/event" />} />
-      <Route path="login" element={<Login />} />
+      <Route
+        path="/"
+        element={!token ? <Login /> : <Navigate to="/event/list" />}
+        // element={<Login />}
+      />
+      <Route
+        path="login"
+        element={!token ? <Login /> : <Navigate to="/event/list" />}
+      />
 
       <Route path="event">
         <Route
-          path=""
+          path="list"
           element={
-            <PrivateRoute
-              userInfo={userInfo}
-              authorities={["MOP", "ADMIN", "ORGANISER"]}
-            >
+            <PrivateRoute authorities={["MOP", "ADMIN", "ORGANISER"]}>
               <Event />
             </PrivateRoute>
           }
@@ -33,10 +37,7 @@ const AppRoutes = () => {
         <Route
           path="view/:eventId"
           element={
-            <PrivateRoute
-              userInfo={userInfo}
-              authorities={["MOP", "ADMIN", "ORGANISER"]}
-            >
+            <PrivateRoute authorities={["MOP", "ADMIN", "ORGANISER"]}>
               <EventView />
             </PrivateRoute>
           }
@@ -44,16 +45,23 @@ const AppRoutes = () => {
         <Route
           path="create"
           element={
-            <PrivateRoute
-              userInfo={userInfo}
-              authorities={["ADMIN", "ORGANISER"]}
-            >
+            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
               <EventCreate />
             </PrivateRoute>
           }
         />
       </Route>
 
+      <Route path="plan">
+        <Route
+          path="create"
+          element={
+            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
+              <PlanCreate />
+            </PrivateRoute>
+          }
+        />
+      </Route>
       {/* <Route path="/seating-plan" element={<SeatingPlanOne />} /> */}
       {/* <Route path="/planCreate" element={<PlanCreate />} /> */}
       {/* <Route path="/planEdit" element={<PlanEdit />} /> */}
