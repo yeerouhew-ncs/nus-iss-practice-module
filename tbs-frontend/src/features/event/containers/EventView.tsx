@@ -22,7 +22,7 @@ const EventView = () => {
   const navigate = useNavigate();
 
   const navigateBack = () => {
-    navigate("/event", { replace: true });
+    navigate("/event/list", { replace: true });
   };
 
   const getEventDetails = async () => {

@@ -105,7 +105,7 @@ const Login: React.FC = () => {
         setSuccessMsg(SuccessMessageConstants.SUCCESS_LOGIN);
         login(response.jwtDetails.accessToken);
         // localStorage.setItem("jwt", JSON.stringify(response.jwtDetails));
-        navigate("/event");
+        navigate("/");
       } else if (
         response.statusCode === "200" &&
         response.message === "WRONG CREDENTIALS"

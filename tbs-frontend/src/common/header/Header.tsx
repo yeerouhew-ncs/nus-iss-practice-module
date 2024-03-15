@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.scss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 
 const Header: React.FC = () => {
@@ -28,16 +28,16 @@ const Header: React.FC = () => {
         </div>
         <div className={styles.navBar}>
           <div className={styles.navContainer}>
-            <a href="" className={styles.navLink}>
+            <Link to="/event/list" className={styles.navLink}>
               <FontAwesomeIcon icon={faHome} className={styles.navIcon} />
               <span className={styles.navLabel}>Event</span>
-            </a>
+            </Link>
           </div>
           <div className={styles.navContainer}>
-            <a href="" className={styles.navLink}>
+            <Link to="/plan/create" className={styles.navLink}>
               <FontAwesomeIcon icon={faHome} className={styles.navIcon} />
-              <span className={styles.navLabel}>Event</span>
-            </a>
+              <span className={styles.navLabel}>Plan</span>
+            </Link>
           </div>
         </div>
       </div>
