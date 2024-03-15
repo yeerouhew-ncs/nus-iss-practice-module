@@ -31,6 +31,7 @@ const SeatingPlanOne = ({
       const response = await getSeatingPlanDetailsApi(mappingRequest);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         setPlan(response.seatingPlanDetails);
+        console.log("seatingPlanDetails", response.seatingPlanDetails);
 
         let catPlans = [];
         const seatPlan = response.seatingPlanDetails.sectionSeatResponses;

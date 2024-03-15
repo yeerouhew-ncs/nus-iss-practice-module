@@ -8,8 +8,6 @@ import { UserDetails } from "./interfaces/authentication-interface";
 import AppRoutes from "./routes";
 
 function App() {
-  // const [userInfo, setUserInfo] = useState<UserDetails>();
-
   const { token, user } = useAuthContext();
 
   const retrieveUserInfo = async () => {
@@ -20,7 +18,6 @@ function App() {
 
       const response = await getUserInfo(token);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
-        // setUserInfo(response.userDetails);
         user(response.userDetails);
       }
     } catch (err) {
@@ -30,7 +27,7 @@ function App() {
 
   useEffect(() => {
     retrieveUserInfo();
-  }, [token]);
+  }, []);
 
   return (
     <BrowserRouter>

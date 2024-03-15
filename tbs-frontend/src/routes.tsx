@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Event from "./features/event/containers/Event";
 import Login from "./features/authentication/containers/Login";
 import EventCreate from "./features/event/containers/EventCreate";
@@ -15,14 +15,17 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/" element={!token ? <Login /> : null} />
-      <Route path="/login" element={<Login />} />
+      <Route path="" element={!token ? <Login /> : <Navigate to="/event" />} />
+      <Route path="login" element={<Login />} />
 
-      <Route path="/event">
+      <Route path="event">
         <Route
           path=""
           element={
-            <PrivateRoute authorities={["MOP", "ADMIN", "ORGANISER"]}>
+            <PrivateRoute
+              userInfo={userInfo}
+              authorities={["MOP", "ADMIN", "ORGANISER"]}
+            >
               <Event />
             </PrivateRoute>
           }
@@ -30,7 +33,10 @@ const AppRoutes = () => {
         <Route
           path="view/:eventId"
           element={
-            <PrivateRoute authorities={["MOP", "ADMIN", "ORGANISER"]}>
+            <PrivateRoute
+              userInfo={userInfo}
+              authorities={["MOP", "ADMIN", "ORGANISER"]}
+            >
               <EventView />
             </PrivateRoute>
           }
@@ -38,7 +44,10 @@ const AppRoutes = () => {
         <Route
           path="create"
           element={
-            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
+            <PrivateRoute
+              userInfo={userInfo}
+              authorities={["ADMIN", "ORGANISER"]}
+            >
               <EventCreate />
             </PrivateRoute>
           }
