@@ -9,6 +9,9 @@ import PlanEdit from "./features/plan/containers/PlanEdit";
 import SeatingPlanOne from "./features/seating-plan/containers/SeatingPlanOne";
 import { useAuthContext } from "./context/AuthContext";
 import PrivateRoute from "./private-route";
+import PlanCreatePreview from "./features/plan/containers/PlanCreatePreview";
+import Plan from "./features/plan/containers/Plan";
+import PlanView from "./features/plan/containers/PlanView";
 
 const AppRoutes = () => {
   const { token, userInfo } = useAuthContext();
@@ -54,10 +57,42 @@ const AppRoutes = () => {
 
       <Route path="plan">
         <Route
+          path="list"
+          element={
+            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
+              <Plan />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="create"
           element={
             <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
               <PlanCreate />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="create/preview"
+          element={
+            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
+              <PlanCreatePreview />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="view/:planId"
+          element={
+            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
+              <PlanView />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="edit/:planId"
+          element={
+            <PrivateRoute authorities={["ADMIN", "ORGANISER"]}>
+              <PlanEdit />
             </PrivateRoute>
           }
         />

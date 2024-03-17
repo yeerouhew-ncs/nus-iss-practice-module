@@ -126,12 +126,8 @@ const Login: React.FC = () => {
 
   return (
     <>
-      {errorMsg && (
-        <AlertPopUp type="danger" message={errorMsg} duration={5000} />
-      )}
-      {successMsg && (
-        <AlertPopUp type="success" message={successMsg} duration={5000} />
-      )}
+      {errorMsg && <AlertPopUp type="danger" message={errorMsg} />}
+      {successMsg && <AlertPopUp type="success" message={successMsg} />}
       <div className={styles.loginContainer}>
         <div className={styles.loginMenu}>
           <div className={styles.logo}>

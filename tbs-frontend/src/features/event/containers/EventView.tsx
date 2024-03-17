@@ -53,12 +53,8 @@ const EventView = () => {
 
   return (
     <div>
-      {warning && (
-        <AlertPopUp type="warning" message={errorMsg} duration={5000} />
-      )}
-      {errors && (
-        <AlertPopUp type="danger" message={errorMsg} duration={5000} />
-      )}
+      {warning && <AlertPopUp type="warning" message={errorMsg} />}
+      {errors && <AlertPopUp type="danger" message={errorMsg} />}
       <PlanViewModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}

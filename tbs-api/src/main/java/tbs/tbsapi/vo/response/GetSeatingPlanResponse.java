@@ -12,6 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class GetSeatingPlanResponse {
     private Integer planId;
+    private String planName;
+    private Integer planRow;
+    private Integer planCol;
     private Integer venueId;
     private String venueName;
     private String address;

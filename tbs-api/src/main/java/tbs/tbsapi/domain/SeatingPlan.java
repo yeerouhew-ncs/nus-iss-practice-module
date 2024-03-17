@@ -17,9 +17,15 @@ public class SeatingPlan {
     @Column(name="PLAN_ID")
     private Integer planId;
 
-    @Column(name = "PLAN_FILE_NAME")
-    private String planFileName;
+    @Column(name = "PLAN_NAME")
+    private String planName;
 
     @Column(name = "VENUE_ID")
     private Integer venueId;
+
+    @Column(name = "PLAN_ROW")
+    private Integer planRow;
+
+    @Column(name = "PLAN_COL")
+    private Integer planCol;
 }

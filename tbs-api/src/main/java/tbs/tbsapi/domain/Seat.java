@@ -1,10 +1,8 @@
 package tbs.tbsapi.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import tbs.tbsapi.domain.enums.SeatStatus;
 
 @Entity
 @Getter
@@ -16,11 +14,16 @@ import lombok.*;
 @Table(name = "SEAT")
 public class Seat {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "SEAT_ID")
-    private String seatId;
+    private Integer seatId;
+
+    @Column(name = "SEAT_NAME")
+    private String seatName;
 
     @Column(name = "SEAT_STATUS")
-    private String seatStatus;
+    @Enumerated(EnumType.STRING)
+    private SeatStatus seatStatus;
 
     @Column(name = "SECTION_ID")
     private Integer sectionId;

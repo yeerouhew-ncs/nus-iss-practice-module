@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tbs.tbsapi.dto.AddSeatingPlanDto;
+import tbs.tbsapi.dto.EditSeatingPlanDto;
 import tbs.tbsapi.manager.SeatingPlanManager;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.request.GetSeatingPlanRequest;
@@ -15,6 +17,18 @@ import tbs.tbsapi.vo.request.GetSeatingPlanRequest;
 public class SeatingPlanController {
     @Autowired
     SeatingPlanManager seatingPlanManager;
+
+    @PostMapping(path = "/add")
+    public ResponseEntity<?> addSeatingPlan(@RequestBody AddSeatingPlanDto seatingPlanDto) {
+        log.info("START: ADD SEATING PLAN");
+        return seatingPlanManager.addSeatingPlan(seatingPlanDto);
+    }
+
+    @PostMapping(path = "/edit")
+    public ResponseEntity<?> editSeatingPlan(@RequestBody EditSeatingPlanDto seatingPlanDto) {
+        log.info("START: EDIT SEATING PLAN");
+        return seatingPlanManager.editSeatingPlan(seatingPlanDto);
+    }
 
     @PostMapping(path = "/plan-details")
     public ResponseEntity<?> getSeatingPlan(@RequestBody GetSeatingPlanRequest getSeatingPlanRequest) throws Exception{

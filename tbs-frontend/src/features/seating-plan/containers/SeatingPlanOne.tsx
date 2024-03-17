@@ -31,7 +31,7 @@ const SeatingPlanOne = ({
       const response = await getSeatingPlanDetailsApi(mappingRequest);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         setPlan(response.seatingPlanDetails);
-        console.log("seatingPlanDetails", response.seatingPlanDetails);
+        // console.log("seatingPlanDetails", response.seatingPlanDetails);
 
         let catPlans = [];
         const seatPlan = response.seatingPlanDetails.sectionSeatResponses;
@@ -44,10 +44,10 @@ const SeatingPlanOne = ({
           let c = [];
           if (i === 0) {
             start = 0;
-            end = seatPlan[0].seatRow;
+            end = seatPlan[0].sectionRow;
           } else {
-            start = seatPlan[i - 1].seatRow;
-            end = seatPlan[i].seatRow;
+            start = seatPlan[i - 1].sectionRow;
+            end = seatPlan[i].sectionRow;
           }
 
           for (let m = start; m <= end; m++) {
@@ -63,8 +63,8 @@ const SeatingPlanOne = ({
           catPlans.push(cat);
         }
 
-        start = seatPlan[seatPlan.length - 2].seatRow;
-        end = seatPlan[seatPlan.length - 1].seatRow;
+        start = seatPlan[seatPlan.length - 2].sectionRow;
+        end = seatPlan[seatPlan.length - 1].sectionRow;
         let r = [];
         for (let m = start; m <= end; m++) {
           r.push(m);

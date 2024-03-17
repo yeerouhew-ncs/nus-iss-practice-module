@@ -2,24 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Alert } from "reactstrap";
 import styles from "./AlertPopUp.module.scss";
 
-const AlertPopUp = ({
-  type,
-  message,
-  duration = 5000,
-}: {
-  type: string;
-  message: string;
-  duration: number;
-}) => {
+const AlertPopUp = ({ type, message }: { type: string; message: string }) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-    }, duration);
+    }, 5000);
 
     return () => clearTimeout(timer);
-  }, [duration]);
+  }, []);
 
   let alertClass = "custom-fade-alert";
 

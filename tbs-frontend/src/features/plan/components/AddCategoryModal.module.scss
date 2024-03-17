@@ -1,0 +1,25 @@
+.addCategoryModal {
+  //   width: 800px !important;
+}
+
+.requiredField::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
+
+.primaryBtn {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: none !important;
+}
+
+.primaryBtn:hover {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: underline !important;
+}
+
+.btnMarginRight {
+  margin-right: 5px;
+}

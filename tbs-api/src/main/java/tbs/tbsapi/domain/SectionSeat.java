@@ -33,8 +33,8 @@ public class SectionSeat {
     private String seatSectionDescription;
 
     @Column(name = "SECTION_ROW")
-    private Integer seatRow;
+    private Integer sectionRow;
 
     @Column(name = "SECTION_COL")
-    private Integer seatCol;
+    private Integer sectionCol;
 }

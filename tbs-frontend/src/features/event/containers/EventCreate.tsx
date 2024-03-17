@@ -101,7 +101,6 @@ const EventCreate = () => {
         <AlertPopUp
           type="danger"
           message="There's been an error while trying to retrieving data"
-          duration={5000}
         />
       )}
       <div className={`row ${styles.eventHeader}`}>

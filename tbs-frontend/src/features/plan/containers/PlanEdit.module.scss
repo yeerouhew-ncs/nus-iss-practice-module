@@ -1,40 +1,95 @@
-.planHeader {
-    margin-bottom: 30px;
+.default {
+  background-color: #f400d2;
 }
 
-.createBtnGroup {
-    display: flex;
-    justify-content: space-between;
+.categoryContainer {
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  margin-top: 30px;
+  padding: 10px;
+}
+
+.categoryHeaderGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.categoryHeader {
+  font-weight: 600;
+  // margin-top: 10px;
+  flex-grow: 1;
+}
+
+.categoryItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .primaryBtn {
-    color: white !important;
-    background-color: var(--primary-color) !important;
-    text-decoration-line: none !important;
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: none !important;
 }
 
 .primaryBtn:hover {
-    color: white !important;
-    background-color: var(--primary-color) !important;
-    text-decoration-line: underline !important;
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: underline !important;
 }
 
-.planCard {
-    // border: 1px solid #567567;
-    border-radius: 4px;
-    max-width: 100%;
-    height: auto;
+.btnMarginRight {
+  margin-right: 5px;
 }
 
-.planThumbnail {
-    border: 1px solid lightgrey;
-    border-radius: 4px;
-    padding: 5px;
-    max-width: 100%;
-    max-height: 300px;
+.requiredField::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
 }
 
-.hidden {
-    display: none;
+.btnGroup {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
 }
-  
+
+.rowMargin {
+  margin-bottom: 15px;
+}
+
+// .planHeader {
+//     margin-bottom: 30px;
+// }
+
+// .createBtnGroup {
+//     display: flex;
+//     justify-content: space-between;
+// }
+
+// .primaryBtn {
+//     color: white !important;
+//     background-color: var(--primary-color) !important;
+//     text-decoration-line: none !important;
+// }
+
+// .primaryBtn:hover {
+//     color: white !important;
+//     background-color: var(--primary-color) !important;
+//     text-decoration-line: underline !important;
+// }
+
+// .planCard {
+//     // border: 1px solid #567567;
+//     border-radius: 4px;
+//     max-width: 100%;
+//     height: auto;
+// }
+
+// .planThumbnail {
+//     border: 1px solid lightgrey;
+//     border-radius: 4px;
+//     padding: 5px;
+//     max-width: 100%;
+//     max-height: 300px;
+// }

@@ -1,0 +1,1 @@
+INSERT INTO venue (venue_id, venue_name, address) VALUES (1,'The Star Performing Arts Centre', '1 Vista Exchange Green, #04-01, Singapore 138617'), (2, 'Sands Theatre', '10 Bayfront Ave, Singapore 018956');

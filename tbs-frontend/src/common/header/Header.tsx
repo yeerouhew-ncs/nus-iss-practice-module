@@ -34,7 +34,7 @@ const Header: React.FC = () => {
             </Link>
           </div>
           <div className={styles.navContainer}>
-            <Link to="/plan/create" className={styles.navLink}>
+            <Link to="/plan/list" className={styles.navLink}>
               <FontAwesomeIcon icon={faHome} className={styles.navIcon} />
               <span className={styles.navLabel}>Plan</span>
             </Link>
