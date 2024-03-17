@@ -18,3 +18,14 @@ export const mapGetEventList = (data: any, page: number) => {
     page: page,
   };
 };
+
+export const mapAddEventList = (formData: string) => {
+  const jsonData = JSON.parse(formData);
+  return {
+    eventName: jsonData["eventName"],
+    artistName: jsonData["artistName"],
+    eventFromDt: jsonData["eventFromDt"],
+    eventToDt: jsonData["eventToDt"],
+    planId: jsonData["planId"],
+  };
+};

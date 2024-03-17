@@ -24,5 +24,30 @@ export interface EventResponse {
   eventFromDt: string;
   eventToDt: string;
   planId: string;
-  usesrId: string;
+  userId: string;
+}
+
+export interface AddEventRequest {
+  eventName: string;
+  artistName: string;
+  eventFromDt: string;
+  eventToDt: string;
+  planId: string;
+  // subjectId: string;
+}
+
+export interface AddEventResponse {
+  statusCode: string;
+  message: string;
+}
+
+export interface IGetEventDetailsRequest {
+  eventId: string | undefined;
+  subjectId: string | undefined;
+}
+
+export interface IGetEventDetailsResponse {
+  message: string;
+  statusCode: string;
+  eventDetails: EventResponse;
 }

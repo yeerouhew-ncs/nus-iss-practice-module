@@ -21,4 +21,7 @@ public class Seat {
 
     @Column(name = "SEAT_STATUS")
     private String seatStatus;
+
+    @Column(name = "SECTION_ID")
+    private Integer sectionId;
 }

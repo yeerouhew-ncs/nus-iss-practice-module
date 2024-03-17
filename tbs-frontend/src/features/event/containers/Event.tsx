@@ -8,16 +8,22 @@ import { setegid } from "process";
 import { EventResponse } from "../../../interfaces/event-interface";
 import EventItem from "../components/EventItem";
 import { Controller, FieldValues, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { ErrorBar } from "../../../common/error-bar/ErrorBar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { mapGetEventList } from "../../../mapper/event-mapper";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+import { useAuthContext } from "../../../context/AuthContext";
 
 const Event = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [error, setErrors] = useState<boolean>(false);
+
+  const { userInfo } = useAuthContext();
+
+  const navigate = useNavigate();
 
   const {
     control,
@@ -77,6 +83,10 @@ const Event = () => {
     field.onChange(value);
   };
 
+  const redirectCreateOnClick = () => {
+    navigate("/event/create");
+  };
+
   const handleClearOnClick = () => {
     setValue("eventName", "");
     setValue("artistName", "");
@@ -103,6 +113,10 @@ const Event = () => {
     setErrors(true);
   };
 
+  const navigateEventView = (eventId: string) => {
+    navigate("/event/view/" + eventId);
+  };
+
   return (
     <div>
       {error && (
@@ -112,18 +126,20 @@ const Event = () => {
           duration={5000}
         />
       )}
-      <div className={`row ${styles.eventHeader}`}>
-        <div className="col-md-4">
+      <div className={`${styles.eventHeader}`}>
+        <div>
           <h2>Upcoming Events</h2>
         </div>
-        {/* <div className={`col-md-8 ${styles.inputIcon}`}>
-          <FontAwesomeIcon icon={faSearch} />
-
-          <input
-            className="form-control rounded-0 border-0 border-bottom"
-            placeholder="Search"
-          />
-        </div> */}
+        <div>
+          <button
+            type="button"
+            className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+            onClick={redirectCreateOnClick}
+            hidden={userInfo?.authorities[0].authority === "MOP"}
+          >
+            <span>Create an Event</span>
+          </button>
+        </div>
       </div>
       <div className={styles.searchContainer}>
         <div className={`row form-group`}>
@@ -289,10 +305,39 @@ const Event = () => {
         </div>
       </div>
 
-      <div className={styles.eventItemList}>
-        {events &&
-          events.map((eventInfo, index) => <EventItem eventInfo={eventInfo} />)}
-      </div>
+      {events.length === 0 && (
+        <div className={styles.eventItemList}>There is no matching event.</div>
+      )}
+
+      {events.length > 0 && (
+        <div>
+          <div className={styles.eventItemListHeader}>
+            <div className={`row ${styles.eventDateTimeHeaderRow}`}>
+              <div className={`col-md-3 ${styles.eventDateTimeHeaderCol}`}>
+                Event Date
+              </div>
+              <div className={`col-md-5 ${styles.eventDateTimeHeaderCol}`}>
+                Event Name
+              </div>
+              <div className={`col-md-4 ${styles.eventDateTimeHeaderCol}`}>
+                Artist Name
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.eventItemList}>
+            {events &&
+              events.map((eventInfo, index) => (
+                <div
+                  key={index}
+                  onClick={() => navigateEventView(eventInfo.eventId)}
+                >
+                  <EventItem eventInfo={eventInfo} />
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

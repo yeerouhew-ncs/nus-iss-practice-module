@@ -18,8 +18,8 @@ public interface EventRepository extends JpaRepository<Event, String> {
             "e.eventId, e.eventName, e.artistName, e.eventFromDt, e.eventToDt, e.subjectId, e.planId) " +
             "FROM Event e " +
             "WHERE (:eventId IS NULL OR e.eventId = :eventId) AND " +
-            "(:eventName IS NULL OR UPPER(e.eventName) = UPPER(:eventName)) AND " +
-            "(:artistName IS NULL OR UPPER(e.artistName) = UPPER(:artistName)) AND " +
+            "(:eventName IS NULL OR UPPER(e.eventName) LIKE CONCAT('%', UPPER(:eventName), '%')) AND " +
+            "(:artistName IS NULL OR UPPER(e.artistName) LIKE CONCAT('%', UPPER(:artistName), '%')) AND " +
             "(:eventFromDt IS NULL OR e.eventFromDt >= :eventFromDt) AND" +
             "(:eventToDt IS NULL OR e.eventToDt <= :eventToDt) AND " +
             "(:subjectId IS NULL OR e.subjectId = :subjectId) "

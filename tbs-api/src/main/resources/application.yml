@@ -1,15 +1,14 @@
 spring:
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/tbs_schema
-#    username: root
-#    password: password
-#    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
-    # url: jdbc:sqlserver://172.20.16.1:1433;encrypt=true;trustServerCertificate=true;databaseName=E727DB;
     username: user
     password: password
+  #datasource:
+    # driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    # url: jdbc:sqlserver://ec2-54-179-224-171.ap-southeast-1.compute.amazonaws.com:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
+    # username: sa
+    # password: Password1234!
 #  jpa:
 #    database-platform: org.hibernate.dialect.MySQL8Dialect
 #    hibernate:
