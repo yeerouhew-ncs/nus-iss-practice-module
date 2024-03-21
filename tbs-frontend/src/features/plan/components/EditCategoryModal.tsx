@@ -3,11 +3,11 @@ import { Button, Modal } from "react-bootstrap";
 import styles from "./AddCategoryModal.module.scss";
 import { Controller, useForm } from "react-hook-form";
 import { ErrorBar } from "../../../common/error-bar/ErrorBar";
-import { Category } from "../containers/PlanEdit";
+import { Category } from "../containers/PlanCreate";
 
 type EditCategoryModalProps = {
-  isModalVisible: boolean;
-  setIsModalVisible: Dispatch<SetStateAction<boolean>>;
+  isEditModalVisible: boolean;
+  setIsEditModalVisible: Dispatch<SetStateAction<boolean>>;
   categoryList: Category[] | undefined;
   setCategoryList: Dispatch<SetStateAction<Category[]>>;
   totalRows: number;
@@ -17,8 +17,8 @@ type EditCategoryModalProps = {
 };
 
 const EditCategoryModal = ({
-  isModalVisible,
-  setIsModalVisible,
+  isEditModalVisible,
+  setIsEditModalVisible,
   categoryList,
   setCategoryList,
   totalRows,
@@ -49,7 +49,7 @@ const EditCategoryModal = ({
     setErrorMsg("");
     clearErrors();
     reset();
-    setIsModalVisible(false);
+    setIsEditModalVisible(false);
   };
 
   const validateRow = (data: any) => {
@@ -102,7 +102,7 @@ const EditCategoryModal = ({
     }
 
     reset();
-    setIsModalVisible(false);
+    setIsEditModalVisible(false);
   };
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const EditCategoryModal = ({
   return (
     <div>
       <Modal
-        show={isModalVisible}
+        show={isEditModalVisible}
         onHide={closeModal}
         keyboard={false}
         backdrop="static"
@@ -242,7 +242,7 @@ const EditCategoryModal = ({
             type="button"
             onClick={handleSubmit(handleAdd)}
           >
-            Add
+            Submit
           </button>
         </Modal.Footer>
       </Modal>

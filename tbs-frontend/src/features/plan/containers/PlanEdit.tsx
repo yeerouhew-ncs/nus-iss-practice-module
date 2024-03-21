@@ -13,13 +13,7 @@ import { getPlanDetailsApi, getVenueListApi } from "../plan.api";
 import { Form } from "react-bootstrap";
 import { VenueResponse } from "../../../interfaces/venue-interface";
 import EditCategoryModal from "../components/EditCategoryModal";
-
-export type Category = {
-  sectionId?: string;
-  sectionDesc: string;
-  sectionRow: number;
-  seatPrice: number;
-};
+import { Category } from "./PlanCreate";
 
 const PlanEdit = () => {
   const params = useParams();
@@ -29,6 +23,7 @@ const PlanEdit = () => {
 
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
   const [disabledAdd, setDisabledAdd] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [venueList, setVenueList] = useState<VenueResponse[]>();
@@ -56,10 +51,12 @@ const PlanEdit = () => {
   });
 
   const navigateBack = () => {
-    navigate("/event/list", { replace: true });
+    navigate("/plan/list", { replace: true });
   };
 
   const handleEditPlan = (data: any) => {
+    console.log("plandetails: handle edit", planDetails);
+    console.log("categoryList", categoryList);
     navigate("/plan/create/preview", {
       state: {
         planDetails: {
@@ -68,8 +65,8 @@ const PlanEdit = () => {
           col: data?.col,
           venue: data?.venue,
           sectionSeats: categoryList,
-          // {...planDetails}
-          ...planDetails,
+          plan: planDetails?.planId,
+          // ...planDetails
         },
         ops: "Edit",
       },
@@ -94,17 +91,43 @@ const PlanEdit = () => {
           setValue("venue", response.seatingPlanDetails.venueId);
 
           const categoryList: Category[] = [];
-          for (let sectionSeat of response.seatingPlanDetails
-            .sectionSeatResponses) {
-            const cat: Category = {
-              sectionId: sectionSeat.sectionId,
-              sectionDesc: sectionSeat.seatSectionDescription,
-              sectionRow: sectionSeat.sectionRow,
-              seatPrice: sectionSeat.seatPrice,
-            };
-            categoryList.push(cat);
-          }
-          setCategoryList(categoryList);
+          console.log(
+            "response.seatingPlanDetails.sectionSeatResponses",
+            response.seatingPlanDetails.sectionSeatResponses
+          );
+
+          let currentRow = 0;
+          const catList: Category[] =
+            response.seatingPlanDetails.sectionSeatResponses.map(
+              (item, index) => {
+                let groupSize = response.seatingPlanDetails.sectionSeatResponses
+                  .slice(0, index + 1)
+                  .reduce((acc, curr) => {
+                    return acc + (curr.sectionRow === item.sectionRow ? 1 : 0);
+                  }, 0);
+
+                return {
+                  // ...item,
+                  sectionId: Number(item.sectionId),
+                  sectionDesc: item.seatSectionDescription,
+                  sectionRow: currentRow + groupSize,
+                  seatPrice: item.seatPrice,
+                };
+              }
+            );
+          // for (let sectionSeat of response.seatingPlanDetails
+          //   .sectionSeatResponses) {
+          //   const cat: Category = {
+          //     sectionId: Number(sectionSeat.sectionId),
+          //     sectionDesc: sectionSeat.seatSectionDescription,
+          //     // TODO: update sectionRow to be accurate
+          //     sectionRow: sectionSeat.sectionRow,
+          //     seatPrice: sectionSeat.seatPrice,
+          //   };
+          //   categoryList.push(cat);
+          // }
+          setCategoryList(catList);
+          console.log("categoryList", catList);
         }
       } catch (error) {
         // TODO: error handling
@@ -112,10 +135,6 @@ const PlanEdit = () => {
       }
     };
 
-    getPlanDetails();
-  }, []);
-
-  useEffect(() => {
     //call retrieve venue api
     const getVenues = async () => {
       try {
@@ -129,9 +148,12 @@ const PlanEdit = () => {
     };
 
     getVenues();
+
+    getPlanDetails();
   }, []);
 
   useEffect(() => {
+    console.log(formState.isValid);
     if (categoryList && categoryList?.length >= 10) {
       setDisabledAdd(true);
     } else {
@@ -140,9 +162,10 @@ const PlanEdit = () => {
   }, [categoryList]);
 
   const editCategory = (index: number) => {
+    console.log("CategoryList", categoryList);
     const cat: Category = categoryList[index];
     console.log(cat);
-    setIsModalVisible(true);
+    setIsEditModalVisible(true);
 
     setSelectedCategory(cat);
     setSelectedCategoryIndex(index);
@@ -371,9 +394,18 @@ const PlanEdit = () => {
         </div>
       </div>
 
-      <EditCategoryModal
+      <AddCategoryModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
+        categoryList={categoryList}
+        setCategoryList={setCategoryList}
+        totalRows={Number(getValues("row"))}
+        setErrorMsg={setErrorMsg}
+      />
+
+      <EditCategoryModal
+        isEditModalVisible={isEditModalVisible}
+        setIsEditModalVisible={setIsEditModalVisible}
         categoryList={categoryList}
         setCategoryList={setCategoryList}
         totalRows={Number(getValues("row"))}
