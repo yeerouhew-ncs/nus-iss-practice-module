@@ -11,6 +11,7 @@ import { getVenueListApi } from "../plan.api";
 import { VenueResponse } from "../../../interfaces/venue-interface";
 
 export type Category = {
+  sectionId?: number | null;
   sectionDesc: string;
   sectionRow: number;
   seatPrice: number;
@@ -18,7 +19,7 @@ export type Category = {
 
 const PlanCreate = () => {
   const navigate = useNavigate();
-  const [categoryList, setCategoryList] = useState<Category[]>();
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [disabledAdd, setDisabledAdd] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -288,7 +289,7 @@ const PlanCreate = () => {
             </div>
             <hr />
             <div className={`${styles.categoryResult}`}>
-              {!categoryList && (
+              {categoryList.length <= 0 && (
                 <div style={{ fontSize: "14px" }}>
                   You have not added category
                 </div>

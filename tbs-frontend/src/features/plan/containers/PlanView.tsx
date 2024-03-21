@@ -40,14 +40,33 @@ const PlanView = () => {
               sectionRow: section.sectionRow,
               seatPrice: section.seatPrice,
             }));
-          console.log(sectionSeat);
+          console.log("sectionSeat", sectionSeat);
+          // process section seat row
+
+          const newSectionSeat = sectionSeat.map((item, index, array) => {
+            let sectionRow;
+            if (index === 0) {
+              sectionRow = item.sectionRow + 1;
+            } else {
+              sectionRow = item.sectionRow - array[index - 1].sectionRow;
+            }
+            return {
+              ...item,
+              sectionRow,
+            };
+          });
+
+          console.log("newSectionSeat", newSectionSeat);
+
           const seatingPlan = {
             planName: response.seatingPlanDetails.planName,
             venueName: response.seatingPlanDetails.venueName,
             row: response.seatingPlanDetails.planRow,
             col: response.seatingPlanDetails.planCol,
-            sectionSeats: sectionSeat,
+            sectionSeats: newSectionSeat,
           };
+
+          console.log("seatingPlan ", seatingPlan);
           setPlan(seatingPlan);
         }
       } catch (error) {

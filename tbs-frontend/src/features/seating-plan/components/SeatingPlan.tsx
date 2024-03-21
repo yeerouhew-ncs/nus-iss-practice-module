@@ -32,6 +32,7 @@ const SeatingPlan = ({
   rowSpacers,
   setSeatList,
 }: SeatingPlanProps) => {
+  console.log("SEATING PLAN ROW ", row, col);
   const seatchartRef = useRef<SeatchartJS>();
 
   const transformedSeats = sectionSeats.reduce(
@@ -41,13 +42,14 @@ const SeatingPlan = ({
       const cssClass = `cat${index + 1}`;
       const price = parseInt(seatPrice);
       const seatRow = parseInt(sectionRow);
+      // console.log("seatRow", seatRow);
       const startRow =
         acc
           .flatMap(({ seatRows }: { seatRows: any }) => seatRows)
           .slice(-1)[0] + 1 || 0;
-
+      // console.log("startRow", startRow);
       const seatRows = Array.from({ length: seatRow }, (_, i) => startRow + i);
-
+      // console.log("seatRows", seatRows);
       acc.push({
         label,
         cssClass,
@@ -60,16 +62,18 @@ const SeatingPlan = ({
     []
   );
 
+  console.log("transformedSeats", transformedSeats);
+
   const options: Options = {
     map: {
       rows: row,
       columns: col,
       seatTypes: {
-        // default: {
-        //   label: "Default",
-        //   cssClass: `default`,
-        //   price: 10,
-        // },
+        default: {
+          label: "Unassigned",
+          cssClass: `default`,
+          price: 10,
+        },
         ...Object.fromEntries(
           Object.values(transformedSeats).map((seat: any, index: number) => [
             // `cat${index + 1}`,

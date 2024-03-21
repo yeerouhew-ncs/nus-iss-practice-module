@@ -9,7 +9,7 @@ type AddCategoryModalProps = {
   isModalVisible: boolean;
   setIsModalVisible: Dispatch<SetStateAction<boolean>>;
   categoryList: Category[] | undefined;
-  setCategoryList: Dispatch<SetStateAction<Category[] | undefined>>;
+  setCategoryList: Dispatch<SetStateAction<Category[]>>;
   totalRows: number;
   setErrorMsg: Dispatch<SetStateAction<string>>;
 };
@@ -78,11 +78,13 @@ const AddCategoryModal = ({
 
     if (!isAddedRowExceeds) {
       const category: Category = {
+        sectionId: null,
         sectionDesc: data?.sectionDesc,
         sectionRow: data?.sectionRow,
         seatPrice: data?.seatPrice,
       };
       setCategoryList((prev) => [...(prev || []), category]);
+      console.log("hello", category);
     } else {
       console.log("ERROR");
       setErrorMsg(

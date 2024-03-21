@@ -22,6 +22,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const user = (userInfo: UserDetails) => {
+    console.log("PROVIDER USERINFO", userInfo);
     setUserInfo(userInfo);
   };
 

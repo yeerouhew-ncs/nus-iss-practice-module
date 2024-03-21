@@ -85,9 +85,9 @@ export interface IEditPlanRequest {
 
 export interface EditSectionSeatReq extends Omit<SectionSeatReq, "seats"> {
   sectionId: string;
-  seats: EditSeatReq[];
+  seats: SeatReq[];
 }
 
-export interface EditSeatReq extends SeatReq {
-  seatId: string;
-}
+// export interface EditSeatReq extends SeatReq {
+//   seatId: string;
+// }
