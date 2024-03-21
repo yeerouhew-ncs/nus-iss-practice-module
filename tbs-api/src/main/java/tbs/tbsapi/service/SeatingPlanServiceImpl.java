@@ -112,6 +112,7 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
             return response;
         }
 
+        log.info("seatingPlanDto: {} ", seatingPlanDto);
         Integer updatedPlan = seatingPlanRepository.updatePlan(
                 seatingPlanDto.getPlanId(),
                 seatingPlanDto.getPlanName(),
@@ -121,32 +122,62 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
 
         if(updatedPlan == 1) {
             for(EditSectionSeatDto sectionSeat : seatingPlanDto.getSectionSeats()) {
-                Integer updateSectionSeat = sectionSeatRepository.updateSectionSeat(
-                        sectionSeat.getSectionId(),
-                        seatingPlanDto.getPlanId(),
-                        sectionSeat.getTotalSeats(),
-                        sectionSeat.getTotalSeats(),
-                        sectionSeat.getSeatPrice(),
-                        sectionSeat.getSectionDesc(),
-                        sectionSeat.getSectionRow(),
-                        sectionSeat.getSectionCol()
-                );
+                log.info("sectionSeat.getSectionId() " + sectionSeat.getSectionId());
+                Integer updateSectionSeat = 0;
+                SectionSeat saveSectionSeat = null;
+                Integer sectionId = sectionSeat.getSectionId();
+                // if section id does not exist
+                if(sectionSeat.getSectionId() == null) {
+                    SectionSeat preSaveSectionSeat = SectionSeat.builder()
+                            .planId(seatingPlanDto.getPlanId())
+                            .totalSeats(sectionSeat.getTotalSeats())
+                            .noSeatsLeft(sectionSeat.getTotalSeats())
+                            .seatPrice(sectionSeat.getSeatPrice())
+                            .seatSectionDescription(sectionSeat.getSectionDesc())
+                            .sectionRow(sectionSeat.getSectionRow())
+                            .sectionCol(sectionSeat.getSectionCol())
+                            .build();
+                    saveSectionSeat = sectionSeatRepository.save(preSaveSectionSeat);
+                    sectionId = saveSectionSeat.getSectionId();
+                } else {
+                    updateSectionSeat = sectionSeatRepository.updateSectionSeat(
+                            sectionSeat.getSectionId(),
+                            seatingPlanDto.getPlanId(),
+                            sectionSeat.getTotalSeats(),
+                            sectionSeat.getTotalSeats(),
+                            sectionSeat.getSeatPrice(),
+                            sectionSeat.getSectionDesc(),
+                            sectionSeat.getSectionRow(),
+                            sectionSeat.getSectionCol()
+                    );
+                }
+                log.info("sectionSeatId " + sectionSeat.getSectionId());
 
-                if(updateSectionSeat != 1) {
+                if(updateSectionSeat != 1 && saveSectionSeat == null) {
                     response.add("400");
                     response.add("SECTION SEAT NOT UPDATED");
                     return response;
                 }
 
-                for(EditSeatDto seat: sectionSeat.getSeats()) {
-                    Integer updateSeat = seatRepository.updateSeat(
-                            seat.getSeatId(),
-                            seat.getSeatName(),
-                            seat.getSeatStatus(),
-                            sectionSeat.getSectionId()
-                    );
+                log.info("sectionSeat seats: {} ", sectionSeat.getSeats());
+                // delete all the seats associated and add bac
+                if(sectionSeat.getSectionId() != null) {
+                    log.info("SECTION ID EMPTY " + sectionId);
+                    seatRepository.deleteBySectionId(sectionId);
+                    log.info("SECTION ID NOT EMPTY " + sectionId);
+                }
 
-                    if(updateSeat != 1) {
+                for(EditSeatDto seat: sectionSeat.getSeats()) {
+                    Seat preSaveSeat = Seat.builder()
+                            .seatName(seat.getSeatName())
+                            .seatStatus(SeatStatus.AVAILABLE)
+                            .sectionId(sectionId)
+                            .build();
+                    log.info("preSaveSeat {} ", preSaveSeat);
+                    Seat updateSeat = seatRepository.save(preSaveSeat);
+
+
+                    if(updateSeat == null) {
                         response.add("400");
                         response.add("SEAT NOT UPDATED");
                         return response;

@@ -17,4 +17,6 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
                        @Param("seatName") String seatName,
                        @Param("seatStatus") String seatStatus,
                        @Param("sectionId") Integer sectionId);
+
+    Integer deleteBySectionId(Integer sectionId);
 }

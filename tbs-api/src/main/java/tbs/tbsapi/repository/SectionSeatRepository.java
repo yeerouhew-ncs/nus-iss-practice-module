@@ -14,6 +14,8 @@ import java.util.List;
 public interface SectionSeatRepository extends JpaRepository<SectionSeat, String> {
     List<SectionSeat> findAllByPlanId(Integer planId);
 
+    SectionSeat findBySectionId(Integer sectionId);
+
     @Modifying
     @Query("UPDATE SectionSeat s SET s.totalSeats= :totalSeats, s.noSeatsLeft = :noSeatsLeft, s.seatPrice = :seatPrice, " +
             "s.seatSectionDescription = :seatSectionDescription, s.sectionRow = :sectionRow, s.sectionCol = :sectionCol, " +
