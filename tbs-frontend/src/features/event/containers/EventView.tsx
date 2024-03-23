@@ -6,7 +6,8 @@ import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import { EventResponse } from "../../../interfaces/event-interface";
 import moment from "moment";
 import PlanViewModal from "./PlanViewModal";
-import SeatingPlanOne from "../../seating-plan/containers/SeatingPlanOne";
+import { useAuthContext } from "../../../context/AuthContext";
+import SeatingPlan from "../../seating-plan/components/SeatingPlan";
 
 const EventView = () => {
   const param = useParams();
@@ -20,9 +21,13 @@ const EventView = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const { userInfo } = useAuthContext();
 
   const navigateBack = () => {
-    navigate("/admin/event/list", { replace: true });
+    if (userInfo?.authorities[0].authority === "ADMIN")
+      navigate("/admin/event/list", { replace: true });
+    else if (userInfo?.authorities[0].authority === "ORGANISER")
+      navigate("/organiser/event/list", { replace: true });
   };
 
   const getEventDetails = async () => {
@@ -96,10 +101,11 @@ const EventView = () => {
 
           <div className={`col-md-12 ${styles.planCard}`}>
             <div className={styles.disabledContainer}>
-              <SeatingPlanOne
-                planId={event ? event.planId : "1"}
+              {/* <SeatingPlanOne
+                planId={event ? event.planId : ""}
                 legendVisible={false}
-              />
+              /> */}
+              {/* <SeatingPlan/> */}
             </div>
           </div>
         </div>

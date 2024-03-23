@@ -59,14 +59,17 @@ const OrganiserHeader: React.FC<LoginProps> = ({ setAuth, setUser }) => {
             }}
           >
             <Link
-              to={"*organiser/event/list"}
+              to={"/organiser/event/list"}
               className={`${styles.underLine2}`}
             >
               <Button variant="text" color="default">
                 EVENT
               </Button>
             </Link>
-            <Link to={"organiser/plan/list"} className={`${styles.underLine2}`}>
+            <Link
+              to={"/organiser/plan/list"}
+              className={`${styles.underLine2}`}
+            >
               <Button variant="text" color="default">
                 SEATING PLAN
               </Button>

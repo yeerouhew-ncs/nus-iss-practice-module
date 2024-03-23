@@ -1,6 +1,5 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import SeatingPlanOne from "../../seating-plan/containers/SeatingPlanOne";
 import styles from "./EventCreate.module.scss";
 
 const PlanViewModal = ({
@@ -32,7 +31,7 @@ const PlanViewModal = ({
       </Modal.Header>
       <Modal.Body>
         <div className={styles.disabledContainer}>
-          <SeatingPlanOne planId={planId} legendVisible={false} />
+          {/* <SeatingPlanOne planId={planId} legendVisible={false} /> */}
         </div>
       </Modal.Body>
     </Modal>

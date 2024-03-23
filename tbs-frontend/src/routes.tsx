@@ -6,7 +6,6 @@ import EventCreate from "./features/event/containers/EventCreate";
 import EventView from "./features/event/containers/EventView";
 import PlanCreate from "./features/plan/containers/admin-container/PlanCreate";
 import PlanEdit from "./features/plan/containers/admin-container/PlanEdit";
-import SeatingPlanOne from "./features/seating-plan/containers/SeatingPlanOne";
 import AuthContext, { useAuthContext } from "./context/AuthContext";
 import PlanCreatePreview from "./features/plan/containers/admin-container/PlanCreatePreview";
 import Plan from "./features/plan/containers/admin-container/Plan";

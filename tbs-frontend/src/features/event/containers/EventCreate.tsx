@@ -7,7 +7,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
-import SeatingPlanOne from "../../seating-plan/containers/SeatingPlanOne";
 import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
 import { PlanList } from "../../../interfaces/seating-plan-interface";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";

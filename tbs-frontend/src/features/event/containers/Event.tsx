@@ -87,9 +87,8 @@ const Event = () => {
   const redirectCreateOnClick = () => {
     if (userInfo?.authorities[0].authority === "ADMIN")
       navigate("/admin/event/create");
-    else if (userInfo?.authorities[0].authority === "ORGANISER") {
+    else if (userInfo?.authorities[0].authority === "ORGANISER")
       navigate("/organiser/event/create");
-    }
   };
 
   const handleClearOnClick = () => {
