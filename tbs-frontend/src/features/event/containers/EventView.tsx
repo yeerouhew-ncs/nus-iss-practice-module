@@ -8,6 +8,17 @@ import moment from "moment";
 import PlanViewModal from "./PlanViewModal";
 import { useAuthContext } from "../../../context/AuthContext";
 import SeatingPlan from "../../seating-plan/components/SeatingPlan";
+import { Category } from "../../plan/containers/admin-container/PlanCreate";
+import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
+import { getPlanDetailsApi } from "../../plan/plan.api";
+
+type SeatingPlanType = {
+  row: number;
+  col: number;
+  planName: string;
+  venueName: string;
+  sectionSeats: Category[];
+};
 
 const EventView = () => {
   const param = useParams();
@@ -17,6 +28,7 @@ const EventView = () => {
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
   const [event, setEvent] = useState<EventResponse>();
+  const [plan, setPlan] = useState<SeatingPlanType>();
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
@@ -39,6 +51,7 @@ const EventView = () => {
       const response = await getEventDetailsApi(mappingRequest);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         setEvent(response.eventDetails);
+        getPlanDetails(response.eventDetails.planId);
       } else if (
         response.statusCode === "200" &&
         response.message === "NO MATCHING EVENT"
@@ -52,9 +65,66 @@ const EventView = () => {
     }
   };
 
+  const getPlanDetails = async (planId: string) => {
+    const mappedRequest: IGetPlanDetailsRequest = {
+      planId: planId,
+      venueId: undefined,
+    };
+    try {
+      const response = await getPlanDetailsApi(mappedRequest);
+      if (response.message === "SUCCESS" && response.statusCode === "200") {
+        console.log(response.seatingPlanDetails);
+        const sectionSeat =
+          response.seatingPlanDetails.sectionSeatResponses.map((section) => ({
+            sectionDesc: section.seatSectionDescription,
+            sectionRow: section.sectionRow,
+            seatPrice: section.seatPrice,
+          }));
+        console.log("sectionSeat", sectionSeat);
+        // process section seat row
+        const newSectionSeat = sectionSeat.map((item, index, array) => {
+          let sectionRow;
+          if (index === 0) {
+            sectionRow = item.sectionRow + 1;
+          } else {
+            sectionRow = item.sectionRow - array[index - 1].sectionRow;
+          }
+          return {
+            ...item,
+            sectionRow,
+          };
+        });
+
+        console.log("newSectionSeat", newSectionSeat);
+
+        const seatingPlan = {
+          planName: response.seatingPlanDetails.planName,
+          venueName: response.seatingPlanDetails.venueName,
+          row: response.seatingPlanDetails.planRow,
+          col: response.seatingPlanDetails.planCol,
+          sectionSeats: newSectionSeat,
+        };
+
+        console.log("seatingPlan ", seatingPlan);
+        setPlan(seatingPlan);
+      }
+    } catch (error) {
+      // TODO: error handling
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getEventDetails();
   }, [eventId]);
+
+  useEffect(() => {
+    // getPlanDetails(event.);
+  }, [event]);
+
+  if (!plan) {
+    return <div>Plan does not exist</div>;
+  }
 
   return (
     <div>
@@ -101,7 +171,12 @@ const EventView = () => {
 
           <div className={`col-md-12 ${styles.planCard}`}>
             <div className={styles.disabledContainer}>
-              {/* <SeatingPlan/> */}
+              <SeatingPlan
+                row={plan.row}
+                col={plan.col}
+                sectionSeats={plan.sectionSeats}
+                isLegendVisible={true}
+              />
             </div>
           </div>
         </div>
