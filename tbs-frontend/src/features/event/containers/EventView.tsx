@@ -101,10 +101,6 @@ const EventView = () => {
 
           <div className={`col-md-12 ${styles.planCard}`}>
             <div className={styles.disabledContainer}>
-              {/* <SeatingPlanOne
-                planId={event ? event.planId : ""}
-                legendVisible={false}
-              /> */}
               {/* <SeatingPlan/> */}
             </div>
           </div>

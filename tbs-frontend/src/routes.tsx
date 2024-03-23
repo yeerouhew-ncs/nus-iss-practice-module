@@ -11,15 +11,12 @@ import PlanCreatePreview from "./features/plan/containers/admin-container/PlanCr
 import Plan from "./features/plan/containers/admin-container/Plan";
 import PlanView from "./features/plan/containers/admin-container/PlanView";
 import { getUserInfo } from "./features/authentication/authentication.api";
-import Header from "./common/header/Header";
 import PrivateRoute from "./private-route";
-import PublicRoute from "./public-route";
 import PermissionDenied from "./features/permission-denied/PermissionDenied";
 import { UserDetails } from "./interfaces/authentication-interface";
 import NotFound from "./features/not-found/NotFound";
 import AdminHeader from "./common/header/AdminHeader";
 import OrganiserHeader from "./common/header/OrganiserHeader";
-import { UserRole } from "./constants/UserRole";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -111,7 +108,7 @@ const AppRoutes = () => {
               <Route path="/admin/plan/list" element={<Plan />} />
               <Route path="/admin/plan/create" element={<PlanCreate />} />
               <Route
-                path="/admin/plan/preview"
+                path="/admin/plan/create/preview"
                 element={<PlanCreatePreview />}
               />
               <Route path="/admin/plan/view/:planId" element={<PlanView />} />
@@ -146,7 +143,7 @@ const AppRoutes = () => {
             </Route>
           </Route>
 
-          <Route path="denied" element={<PermissionDenied />} />
+          <Route path="/denied" element={<PermissionDenied />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

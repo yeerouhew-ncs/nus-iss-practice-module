@@ -126,7 +126,7 @@ const SeatingPlan = ({
       setSeatList(getAllSeatInfo);
       console.log("option", options);
     }
-    const selectedSeats = seatchartRef.current?.getCart();
+    // const selectedSeats = seatchartRef.current?.getCart();
   }, []);
 
   return (

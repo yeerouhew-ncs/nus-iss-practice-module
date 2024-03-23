@@ -15,7 +15,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
 
   if (!isAuthenticated && !localStorage.getItem("token")) {
     return <Navigate to="/login" />;
-  } else if (roleRequired !== userInfo?.authorities[0].authority) {
+  } else if (userInfo && roleRequired !== userInfo?.authorities[0].authority) {
     return <Navigate to="/denied" />;
   }
 

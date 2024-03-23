@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useRef } from "react";
 import SeatchartJS, { Options } from "seatchart";
 import styles from "./Seatchart.module.scss";
+import "seatchart/dist/seatchart.min.css";
 
 interface SeatchartProps {
   options: Options;
