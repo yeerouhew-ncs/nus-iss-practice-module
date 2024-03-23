@@ -16,7 +16,7 @@ type EditCategoryModalProps = {
   selectedCategoryIndex: number;
 };
 
-const EditCategoryModal = ({
+const EditCategoryModal: React.FC<EditCategoryModalProps> = ({
   isEditModalVisible,
   setIsEditModalVisible,
   categoryList,
@@ -25,7 +25,7 @@ const EditCategoryModal = ({
   setErrorMsg,
   selectedCategory,
   selectedCategoryIndex,
-}: EditCategoryModalProps) => {
+}) => {
   const {
     control,
     formState,

@@ -20,7 +20,7 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const EventView = () => {
+const EventView: React.FC = () => {
   const param = useParams();
   const eventId = param?.eventId;
 

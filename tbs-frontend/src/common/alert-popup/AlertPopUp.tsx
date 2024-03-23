@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Alert } from "reactstrap";
 import styles from "./AlertPopUp.module.scss";
 
-const AlertPopUp = ({ type, message }: { type: string; message: string }) => {
+interface AlertPopUpProps {
+  type: string;
+  message: string;
+}
+
+const AlertPopUp: React.FC<AlertPopUpProps> = ({ type, message }) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {

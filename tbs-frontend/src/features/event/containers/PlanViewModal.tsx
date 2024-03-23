@@ -14,13 +14,7 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const PlanViewModal = ({
-  isModalVisible,
-  setIsModalVisible,
-  planId,
-  selectedPlanLayout,
-  setSelectedPlanLayout,
-}: {
+interface PlanViewModalProps {
   isModalVisible: boolean;
   setIsModalVisible: any;
   planId: string;
@@ -28,6 +22,14 @@ const PlanViewModal = ({
   setSelectedPlanLayout: React.Dispatch<
     React.SetStateAction<SeatingPlanType | undefined>
   >;
+}
+
+const PlanViewModal: React.FC<PlanViewModalProps> = ({
+  isModalVisible,
+  setIsModalVisible,
+  planId,
+  selectedPlanLayout,
+  setSelectedPlanLayout,
 }) => {
   const closeModal = () => {
     setSelectedPlanLayout(undefined);

@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 
-const NotFound = () => {
+const NotFound: React.FC = () => {
   const path = useParams();
 
   console.log(path);

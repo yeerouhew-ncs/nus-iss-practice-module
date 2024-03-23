@@ -24,7 +24,7 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const EventCreate = () => {
+const EventCreate: React.FC = () => {
   const navigate = useNavigate();
 
   const [planList, setPlanList] = useState<PlanList[]>();

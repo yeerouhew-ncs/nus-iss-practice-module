@@ -1,10 +1,12 @@
-import React, { useState } from "react";
 import styles from "./EventItem.module.scss";
 import { EventResponse } from "../../../interfaces/event-interface";
 import moment from "moment";
-import { Modal } from "react-bootstrap";
 
-const EventItem = ({ eventInfo }: { eventInfo: EventResponse }) => {
+interface EventItemProps {
+  eventInfo: EventResponse;
+}
+
+const EventItem: React.FC<EventItemProps> = ({ eventInfo }) => {
   const displayDay = (day: string): string => {
     const dayInNum = parseInt(day);
     if (dayInNum < 10) {

@@ -13,7 +13,7 @@ import {
 } from "../../../../interfaces/seating-plan-interface";
 import AlertPopUp from "../../../../common/alert-popup/AlertPopUp";
 
-const PlanCreatePreview = () => {
+const PlanCreatePreview: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const planDetails = location.state?.planDetails;

@@ -22,7 +22,7 @@ type SeatingPlanProps = {
   rowSpacers?: number[];
   setSeatList?: Dispatch<SetStateAction<SeatInfo[]>>;
 };
-const SeatingPlan = ({
+const SeatingPlan: React.FC<SeatingPlanProps> = ({
   row,
   col,
   sectionSeats,
@@ -31,7 +31,7 @@ const SeatingPlan = ({
   disabledSeats,
   rowSpacers,
   setSeatList,
-}: SeatingPlanProps) => {
+}) => {
   console.log("SEATING PLAN ROW ", row, col);
   const seatchartRef = useRef<SeatchartJS>();
 

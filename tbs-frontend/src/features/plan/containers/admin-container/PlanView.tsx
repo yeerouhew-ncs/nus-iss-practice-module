@@ -17,7 +17,7 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const PlanView = () => {
+const PlanView: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const planId = params?.planId;

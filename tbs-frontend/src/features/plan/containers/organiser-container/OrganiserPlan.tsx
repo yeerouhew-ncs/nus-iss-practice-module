@@ -4,7 +4,7 @@ import { PlanList } from "../../../../interfaces/seating-plan-interface";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Plan.module.scss";
 
-const Plan: React.FC = () => {
+const OrganiserPlan: React.FC = () => {
   const [planList, setPlanList] = useState<PlanList[]>([]);
 
   const navigate = useNavigate();
@@ -121,4 +121,4 @@ const Plan: React.FC = () => {
   );
 };
 
-export default Plan;
+export default OrganiserPlan;

@@ -1,0 +1,33 @@
+@import "../../../../styles/colors.scss";
+
+.primaryBtn {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: none !important;
+}
+
+.primaryBtn:hover {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: underline !important;
+}
+
+.btnMarginRight {
+  margin-right: 5px;
+}
+
+.planHeader {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableTitleBlue {
+  color: white !important;
+  background-color: var(--secondary-color) !important;
+}
+
+.emptyTable {
+  padding: 10px;
+}

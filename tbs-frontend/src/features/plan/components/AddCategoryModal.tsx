@@ -14,14 +14,14 @@ type AddCategoryModalProps = {
   setErrorMsg: Dispatch<SetStateAction<string>>;
 };
 
-const AddCategoryModal = ({
+const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   isModalVisible,
   setIsModalVisible,
   categoryList,
   setCategoryList,
   totalRows,
   setErrorMsg,
-}: AddCategoryModalProps) => {
+}) => {
   const {
     control,
     formState,

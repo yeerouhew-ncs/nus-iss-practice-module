@@ -3,7 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styles from "./ErrorBar.module.scss";
 
-export const ErrorBar = ({ errorMsg }: { errorMsg: string | undefined }) => {
+interface ErrorBarProps {
+  errorMsg: string | undefined;
+}
+
+export const ErrorBar: React.FC<ErrorBarProps> = ({
+  errorMsg,
+}: ErrorBarProps) => {
   return (
     <div className={styles.errorBar}>
       <FontAwesomeIcon

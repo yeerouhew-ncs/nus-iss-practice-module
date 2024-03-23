@@ -1,6 +1,6 @@
 import React from "react";
 
-const PermissionDenied = () => {
+const PermissionDenied: React.FC = () => {
   return (
     <div
       style={{ border: "1px solid red", backgroundColor: "red", color: "#fff" }}

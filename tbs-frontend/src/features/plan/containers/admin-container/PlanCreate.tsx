@@ -17,7 +17,7 @@ export type Category = {
   seatPrice: number;
 };
 
-const PlanCreate = () => {
+const PlanCreate: React.FC = () => {
   const navigate = useNavigate();
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);

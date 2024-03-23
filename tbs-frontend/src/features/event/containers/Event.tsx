@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../../common/header/Header";
 import styles from "./Event.module.scss";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getEventListApi } from "../event.api";
-import { setegid } from "process";
 import { EventResponse } from "../../../interfaces/event-interface";
 import EventItem from "../components/EventItem";
 import { Controller, FieldValues, useForm } from "react-hook-form";
@@ -16,9 +12,8 @@ import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { mapGetEventList } from "../../../mapper/event-mapper";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import { useAuthContext } from "../../../context/AuthContext";
-import { UserRole } from "../../../constants/UserRole";
 
-const Event = () => {
+const Event: React.FC = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [error, setErrors] = useState<boolean>(false);
 

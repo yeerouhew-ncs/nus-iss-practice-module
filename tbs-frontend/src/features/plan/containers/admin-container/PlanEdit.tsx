@@ -15,7 +15,7 @@ import { VenueResponse } from "../../../../interfaces/venue-interface";
 import EditCategoryModal from "../../components/EditCategoryModal";
 import { Category } from "./PlanCreate";
 
-const PlanEdit = () => {
+const PlanEdit: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
 
