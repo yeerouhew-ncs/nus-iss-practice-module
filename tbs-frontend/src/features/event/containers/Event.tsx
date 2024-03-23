@@ -16,6 +16,7 @@ import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { mapGetEventList } from "../../../mapper/event-mapper";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import { useAuthContext } from "../../../context/AuthContext";
+import { UserRole } from "../../../constants/UserRole";
 
 const Event = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
@@ -84,7 +85,11 @@ const Event = () => {
   };
 
   const redirectCreateOnClick = () => {
-    navigate("/admin/event/create");
+    if (userInfo?.authorities[0].authority === "ADMIN")
+      navigate("/admin/event/create");
+    else if (userInfo?.authorities[0].authority === "ORGANISER") {
+      navigate("/organiser/event/create");
+    }
   };
 
   const handleClearOnClick = () => {
@@ -114,7 +119,13 @@ const Event = () => {
   };
 
   const navigateEventView = (eventId: string) => {
-    navigate("/admin/event/view/" + eventId);
+    if (userInfo?.authorities[0].authority === "ADMIN") {
+      navigate("/admin/event/view/" + eventId);
+    } else if (userInfo?.authorities[0].authority === "ORGANISER") {
+      navigate("/organiser/event/view/" + eventId);
+    } else if (userInfo?.authorities[0].authority === "MOP") {
+      navigate("/user/event/view/" + eventId);
+    }
   };
 
   return (

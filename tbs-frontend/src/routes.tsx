@@ -20,6 +20,7 @@ import { UserDetails } from "./interfaces/authentication-interface";
 import NotFound from "./features/not-found/NotFound";
 import AdminHeader from "./common/header/AdminHeader";
 import OrganiserHeader from "./common/header/OrganiserHeader";
+import { UserRole } from "./constants/UserRole";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -138,6 +139,11 @@ const AppRoutes = () => {
             >
               {/* <Route path="/organiser/" element={<Event />} /> */}
               <Route path="/organiser/event/list" element={<Event />} />
+              <Route path="/organiser/event/create" element={<EventCreate />} />
+              <Route
+                path="/organiser/event/view/:eventId"
+                element={<EventView />}
+              />
             </Route>
           </Route>
 
