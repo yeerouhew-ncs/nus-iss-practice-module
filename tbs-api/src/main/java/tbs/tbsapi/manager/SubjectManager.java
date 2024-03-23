@@ -27,6 +27,8 @@ public class SubjectManager {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
+            log.info("userDetails: {} ", userDetails);
+
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", "200",
                     "message", "SUCCESS",

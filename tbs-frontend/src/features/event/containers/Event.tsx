@@ -84,7 +84,7 @@ const Event = () => {
   };
 
   const redirectCreateOnClick = () => {
-    navigate("/event/create");
+    navigate("/admin/event/create");
   };
 
   const handleClearOnClick = () => {
@@ -114,7 +114,7 @@ const Event = () => {
   };
 
   const navigateEventView = (eventId: string) => {
-    navigate("/event/view/" + eventId);
+    navigate("/admin/event/view/" + eventId);
   };
 
   return (

@@ -84,11 +84,11 @@ const EventCreate = () => {
       console.log("FAIL");
     }
 
-    navigate("/event/list");
+    navigate("/admin/event/list");
   };
 
   const navigateBack = () => {
-    navigate("/event/list", { replace: true });
+    navigate("/admin/event/list", { replace: true });
   };
 
   const showModal = () => {

@@ -2,16 +2,16 @@ import React, { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SeatchartJS, { Options, SeatInfo } from "seatchart";
 import styles from "./PlanCreatePreview.module.scss";
-import Seatchart from "../../seating-plan/components/Seatchart";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
-import { addPlanApi, editPlanApi } from "../plan.api";
+import Seatchart from "../../../seating-plan/components/Seatchart";
+import SeatingPlan from "../../../seating-plan/components/SeatingPlan";
+import { addPlanApi, editPlanApi } from "../../plan.api";
 import {
   EditSectionSeatReq,
   IAddPlanRequest,
   IEditPlanRequest,
   SectionSeatReq,
-} from "../../../interfaces/seating-plan-interface";
-import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+} from "../../../../interfaces/seating-plan-interface";
+import AlertPopUp from "../../../../common/alert-popup/AlertPopUp";
 
 const PlanCreatePreview = () => {
   const location = useLocation();
@@ -24,7 +24,7 @@ const PlanCreatePreview = () => {
   const [addPlanFailure, setAddPlanFailure] = useState<boolean>(false);
 
   const navigateBack = () => {
-    navigate("/plan/list");
+    navigate("/admin/plan/list");
   };
 
   const editPlan = async () => {
@@ -87,7 +87,7 @@ const PlanCreatePreview = () => {
       setAddPlanSuccess(true);
 
       setTimeout(() => {
-        navigate("/plan/list");
+        navigate("/admin/plan/list");
       }, 3000);
     } else {
       setAddPlanFailure(true);
@@ -146,7 +146,7 @@ const PlanCreatePreview = () => {
       setAddPlanSuccess(true);
 
       setTimeout(() => {
-        navigate("/plan/list");
+        navigate("/admin/plan/list");
       }, 3000);
     } else {
       setAddPlanFailure(true);

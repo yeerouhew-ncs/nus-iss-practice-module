@@ -1,5 +1,7 @@
 import React from "react";
 
+// TODO: REMOVE THIS
+
 const SeatingPlan = () => {
   return (
     <div>

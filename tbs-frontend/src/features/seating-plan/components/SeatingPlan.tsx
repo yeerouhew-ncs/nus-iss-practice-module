@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { Category } from "../../plan/containers/PlanCreate";
+import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import SeatchartJS, { Options, SeatInfo } from "seatchart";
 import "./SeatingPlan.scss";
 import Seatchart from "./Seatchart";
@@ -126,6 +126,7 @@ const SeatingPlan = ({
       setSeatList(getAllSeatInfo);
       console.log("option", options);
     }
+    const selectedSeats = seatchartRef.current?.getCart();
   }, []);
 
   return (

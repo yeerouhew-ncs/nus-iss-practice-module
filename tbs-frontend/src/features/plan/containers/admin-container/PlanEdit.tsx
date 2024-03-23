@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import styles from "./PlanEdit.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { ErrorBar } from "../../../common/error-bar/ErrorBar";
-import AddCategoryModal from "../components/AddCategoryModal";
-import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+import { ErrorBar } from "../../../../common/error-bar/ErrorBar";
+import AddCategoryModal from "../../components/AddCategoryModal";
+import AlertPopUp from "../../../../common/alert-popup/AlertPopUp";
 import {
   IGetPlanDetailsRequest,
   PlanDetails,
-} from "../../../interfaces/seating-plan-interface";
-import { getPlanDetailsApi, getVenueListApi } from "../plan.api";
+} from "../../../../interfaces/seating-plan-interface";
+import { getPlanDetailsApi, getVenueListApi } from "../../plan.api";
 import { Form } from "react-bootstrap";
-import { VenueResponse } from "../../../interfaces/venue-interface";
-import EditCategoryModal from "../components/EditCategoryModal";
+import { VenueResponse } from "../../../../interfaces/venue-interface";
+import EditCategoryModal from "../../components/EditCategoryModal";
 import { Category } from "./PlanCreate";
 
 const PlanEdit = () => {
@@ -51,13 +51,13 @@ const PlanEdit = () => {
   });
 
   const navigateBack = () => {
-    navigate("/plan/list", { replace: true });
+    navigate("/admin/plan/list", { replace: true });
   };
 
   const handleEditPlan = (data: any) => {
     console.log("plandetails: handle edit", planDetails);
     console.log("categoryList", categoryList);
-    navigate("/plan/create/preview", {
+    navigate("/admin/plan/create/preview", {
       state: {
         planDetails: {
           planName: data?.planName,

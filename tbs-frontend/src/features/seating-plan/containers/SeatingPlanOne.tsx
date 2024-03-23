@@ -6,6 +6,8 @@ import Seatchart from "../components/Seatchart";
 import { getSeatingPlanDetailsApi } from "../seating-plan.api";
 import { PlanDetails } from "../../../interfaces/seating-plan-interface";
 
+// TODO: REMOVE THIS
+
 interface ICategoryPlan {
   price: number;
   row: number[];

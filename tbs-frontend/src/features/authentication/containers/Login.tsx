@@ -8,7 +8,7 @@ import {
   ILoginRequest,
   IRegisterRequest,
 } from "../../../interfaces/authentication-interface";
-import { loginApi, registerApi } from "../authentication.api";
+import { getUserInfo, loginApi, registerApi } from "../authentication.api";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import {
   ErrorMessageConstants,
@@ -29,12 +29,16 @@ type LoginFormValues = {
   password: string;
 };
 
-const Login: React.FC = () => {
+interface LoginProps {
+  setAuth: (auth: boolean) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ setAuth }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
-  const { login } = useAuthContext();
+  const { userInfo } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -92,6 +96,34 @@ const Login: React.FC = () => {
     }
   };
 
+  // const retrieveUserInfo = async (token: string) => {
+  //   try {
+  //     if (!token) {
+  //       return;
+  //     }
+
+  //     const response = await getUserInfo(token);
+  //     if (response.statusCode === "200" && response.message === "SUCCESS") {
+  //       user(response.userDetails);
+  //       console.log("userapi", response.userDetails);
+  //       if (response.userDetails.authorities[0].authority === UserRole.ADMIN) {
+  //         navigate("/admin/event/list");
+  //       } else if (
+  //         response.userDetails.authorities[0].authority === UserRole.ORGANISER
+  //       ) {
+  //         navigate("/organiser/event/list");
+  //       } else {
+  //         navigate("/user/event/list");
+  //       }
+  //     } else {
+  //       setErrorMsg(ErrorMessageConstants.FAIL_TO_SIGN_IN);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     setErrorMsg(err as string);
+  //   }
+  // };
+
   const loginUser = async (data: LoginFormValues) => {
     const mappingRequest: ILoginRequest = {
       email: data.email,
@@ -103,13 +135,14 @@ const Login: React.FC = () => {
       console.log(response);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         setSuccessMsg(SuccessMessageConstants.SUCCESS_LOGIN);
-        login(response.jwtDetails.accessToken);
-        // localStorage.setItem("jwt", JSON.stringify(response.jwtDetails));
-        navigate("/event/list");
+        // await retrieveUserInfo(response.jwtDetails.accessToken);
+        localStorage.setItem("token", response.jwtDetails.accessToken);
+        setAuth(true);
       } else if (
         response.statusCode === "200" &&
         response.message === "WRONG CREDENTIALS"
       ) {
+        setAuth(false);
         setErrorMsg(ErrorMessageConstants.FAIL_TO_SIGN_IN);
       }
     } catch (err) {

@@ -3,7 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import styles from "./AddCategoryModal.module.scss";
 import { Controller, useForm } from "react-hook-form";
 import { ErrorBar } from "../../../common/error-bar/ErrorBar";
-import { Category } from "../containers/PlanCreate";
+import { Category } from "../containers/admin-container/PlanCreate";
 
 type EditCategoryModalProps = {
   isEditModalVisible: boolean;

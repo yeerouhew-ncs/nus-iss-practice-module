@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PlanView.module.scss";
-import { getPlanDetailsApi } from "../plan.api";
+import { getPlanDetailsApi } from "../../plan.api";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   IGetPlanDetailsRequest,
   PlanDetails,
-} from "../../../interfaces/seating-plan-interface";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
+} from "../../../../interfaces/seating-plan-interface";
+import SeatingPlan from "../../../seating-plan/components/SeatingPlan";
 import { Category } from "./PlanCreate";
 
 type SeatingPlanType = {
@@ -79,7 +79,7 @@ const PlanView = () => {
   }, []);
 
   const navigateBack = () => {
-    navigate("/plan/list", { replace: true });
+    navigate("/admin/plan/list", { replace: true });
   };
 
   // TODO: error handling

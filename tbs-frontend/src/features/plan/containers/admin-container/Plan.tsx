@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getPlanListApi } from "../plan.api";
-import { PlanList } from "../../../interfaces/seating-plan-interface";
+import { getPlanListApi } from "../../plan.api";
+import { PlanList } from "../../../../interfaces/seating-plan-interface";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Plan.module.scss";
 
@@ -27,11 +27,11 @@ const Plan = () => {
   }, []);
 
   const redirectCreateOnClick = () => {
-    navigate("/plan/create");
+    navigate("/admin/plan/create");
   };
 
   const redirectEditOnClick = (id: string) => {
-    navigate(`/plan/edit/${id}`);
+    navigate(`/admin/plan/edit/${id}`);
   };
 
   return (
@@ -75,7 +75,7 @@ const Plan = () => {
                         <td>{index + 1}</td>
                         <td>
                           <div>
-                            <Link to={`/plan/view/${plan.planId}`}>
+                            <Link to={`/admin/plan/view/${plan.planId}`}>
                               {plan.planName}
                             </Link>
                           </div>

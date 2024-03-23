@@ -2,10 +2,24 @@ import { Navigate, Outlet, PathRouteProps } from "react-router-dom";
 import { UserDetails } from "./interfaces/authentication-interface";
 import { useAuthContext } from "./context/AuthContext";
 
-const PrivateRoute = (props: any) => {
-  const { token, userInfo } = useAuthContext();
+interface PrivateRouteProps {
+  isAuthenticated: boolean;
+  roleRequired: "MOP" | "ADMIN" | "ORGANISER";
+}
 
-  return token ? <Outlet /> : <Navigate to="/login" />;
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
+  isAuthenticated,
+  roleRequired,
+}) => {
+  const { userInfo } = useAuthContext();
+
+  if (!isAuthenticated && !localStorage.getItem("token")) {
+    return <Navigate to="/login" />;
+  } else if (roleRequired !== userInfo?.authorities[0].authority) {
+    return <Navigate to="/denied" />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;

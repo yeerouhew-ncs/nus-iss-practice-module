@@ -2,11 +2,11 @@ import { createContext, useContext } from "react";
 import { UserDetails } from "../interfaces/authentication-interface";
 
 interface AuthContextType {
-  token: string | null;
+  // token: string | null;
   userInfo: UserDetails | undefined;
-  user: (userInfo: UserDetails) => void;
-  login: (newToken: string) => void;
-  logout: () => void;
+  // user: (userInfo: UserDetails) => void;
+  // login: (newToken: string) => void;
+  // logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

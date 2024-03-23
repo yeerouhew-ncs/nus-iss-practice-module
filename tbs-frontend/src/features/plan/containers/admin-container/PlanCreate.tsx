@@ -3,12 +3,12 @@ import styles from "./PlanCreate.module.scss";
 import { useNavigate } from "react-router-dom";
 import SeatchartJS, { Options } from "seatchart";
 import { Controller, useForm } from "react-hook-form";
-import { ErrorBar } from "../../../common/error-bar/ErrorBar";
-import AddCategoryModal from "../components/AddCategoryModal";
-import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+import { ErrorBar } from "../../../../common/error-bar/ErrorBar";
+import AddCategoryModal from "../../components/AddCategoryModal";
+import AlertPopUp from "../../../../common/alert-popup/AlertPopUp";
 import { Form } from "react-bootstrap";
-import { getVenueListApi } from "../plan.api";
-import { VenueResponse } from "../../../interfaces/venue-interface";
+import { getVenueListApi } from "../../plan.api";
+import { VenueResponse } from "../../../../interfaces/venue-interface";
 
 export type Category = {
   sectionId?: number | null;
@@ -68,11 +68,11 @@ const PlanCreate = () => {
   // };
 
   const navigateBack = () => {
-    navigate("/plan/list", { replace: true });
+    navigate("/admin/plan/list", { replace: true });
   };
 
   const handleCreatePlan = (data: any) => {
-    navigate("/plan/create/preview", {
+    navigate("/admin/plan/create/preview", {
       state: {
         planDetails: {
           planName: data?.planName,

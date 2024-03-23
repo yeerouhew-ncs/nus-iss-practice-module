@@ -1,13 +1,4 @@
-.seatingPlan {
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-.btnGroup {
-  padding: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-}
+@import "../../../../styles/colors.scss";
 
 .primaryBtn {
   color: white !important;
@@ -23,4 +14,20 @@
 
 .btnMarginRight {
   margin-right: 5px;
+}
+
+.planHeader {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableTitleBlue {
+  color: white !important;
+  background-color: var(--secondary-color) !important;
+}
+
+.emptyTable {
+  padding: 10px;
 }

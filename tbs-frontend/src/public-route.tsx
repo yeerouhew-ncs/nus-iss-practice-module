@@ -3,9 +3,9 @@ import { useAuthContext } from "./context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoute = () => {
-  const { token } = useAuthContext();
+  const { userInfo } = useAuthContext();
 
-  return token ? <Navigate to="/event/list" /> : <Outlet />;
+  return userInfo ? <Navigate to="event/list" /> : <Outlet />;
 };
 
 export default PublicRoute;
