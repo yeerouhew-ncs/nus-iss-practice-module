@@ -9,7 +9,7 @@ import {
   IGetPlanDetailsResponse,
 } from "../../interfaces/seating-plan-interface";
 
-const API_DOMAIN = "http://localhost:8080/";
+const API_DOMAIN = "http://localhost:8081/";
 const GET_VENUE_LIST_URL = API_DOMAIN + "api/venue/get-list";
 const ADD_SEATING_PLAN_URL = API_DOMAIN + "api/seating-plan/add";
 const EDIT_SEATING_PLAN_URL = API_DOMAIN + "api/seating-plan/edit";

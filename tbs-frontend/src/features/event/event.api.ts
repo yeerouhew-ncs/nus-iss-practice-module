@@ -9,7 +9,7 @@ import {
   IGetEventDetailsResponse,
 } from "../../interfaces/event-interface";
 
-const API_DOMAIN = "http://localhost:8080/";
+const API_DOMAIN = "http://localhost:8081/";
 const GET_EVENT_LIST_URL = API_DOMAIN + "api/event/get-list";
 const ADD_EVENT_URL = API_DOMAIN + "api/event/add";
 const GET_EVENT_DETAILS_URL = API_DOMAIN + "api/event/event-details";

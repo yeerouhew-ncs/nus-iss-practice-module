@@ -5,7 +5,7 @@ import {
   IGetPlanDetailsResponse,
 } from "../../interfaces/seating-plan-interface";
 
-const API_DOMAIN = "http://localhost:8080/";
+const API_DOMAIN = "http://localhost:8081/";
 const GET_PLAN_DETAILS_URL = API_DOMAIN + "api/seating-plan/plan-details";
 const GET_LIST_OF_PLANS_URL = API_DOMAIN + "api/seating-plan/plan-list";
 
