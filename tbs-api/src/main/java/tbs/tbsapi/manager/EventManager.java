@@ -66,6 +66,7 @@ public class EventManager {
         Pageable pageable = PageRequest.of(getListOfEventRequest.getPage(), 10, Sort.by("eventFromDt", "eventToDt",  "eventName").ascending());
         Page<GetEventResponse> response = eventService.getListOfEvents(pageable, getListOfEventRequest);
 
+        log.info("response: {} ", response);
         log.info("END: GET ALL EVENTS SUCCESSFUL");
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "statusCode","200",

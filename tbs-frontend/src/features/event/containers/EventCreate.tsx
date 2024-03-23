@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Header from "../../../common/header/Header";
+import { useEffect, useState } from "react";
 import styles from "./EventCreate.module.scss";
 import { useNavigate } from "react-router-dom";
 import { addEventApi } from "../event.api";
@@ -8,9 +7,22 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
-import { PlanList } from "../../../interfaces/seating-plan-interface";
+import {
+  IGetPlanDetailsRequest,
+  PlanList,
+} from "../../../interfaces/seating-plan-interface";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import PlanViewModal from "./PlanViewModal";
+import { Category } from "../../plan/containers/admin-container/PlanCreate";
+import { getPlanDetailsApi } from "../../plan/plan.api";
+
+type SeatingPlanType = {
+  row: number;
+  col: number;
+  planName: string;
+  venueName: string;
+  sectionSeats: Category[];
+};
 
 const EventCreate = () => {
   const navigate = useNavigate();
@@ -18,6 +30,9 @@ const EventCreate = () => {
   const [planList, setPlanList] = useState<PlanList[]>();
   const [error, setErrors] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [selectedPlanLayout, setSelectedPlanLayout] =
+    useState<SeatingPlanType>();
+  const [selectedPlan, setSelectedPlan] = useState<PlanList>();
 
   const getListEvent = async () => {
     try {
@@ -90,9 +105,64 @@ const EventCreate = () => {
     navigate("/admin/event/list", { replace: true });
   };
 
-  const showModal = () => {
+  const showModal = (plan: PlanList) => {
+    console.log("isModalVisible", isModalVisible);
     setIsModalVisible(true);
+    setSelectedPlan(plan);
   };
+
+  const getPlanDetails = async () => {
+    const mappedRequest: IGetPlanDetailsRequest = {
+      planId: selectedPlan?.planId,
+      venueId: undefined,
+    };
+    try {
+      const response = await getPlanDetailsApi(mappedRequest);
+      if (response.message === "SUCCESS" && response.statusCode === "200") {
+        console.log(response.seatingPlanDetails);
+        const sectionSeat =
+          response.seatingPlanDetails.sectionSeatResponses.map((section) => ({
+            sectionDesc: section.seatSectionDescription,
+            sectionRow: section.sectionRow,
+            seatPrice: section.seatPrice,
+          }));
+        console.log("sectionSeat", sectionSeat);
+        // process section seat row
+        const newSectionSeat = sectionSeat.map((item, index, array) => {
+          let sectionRow;
+          if (index === 0) {
+            sectionRow = item.sectionRow + 1;
+          } else {
+            sectionRow = item.sectionRow - array[index - 1].sectionRow;
+          }
+          return {
+            ...item,
+            sectionRow,
+          };
+        });
+
+        console.log("newSectionSeat", newSectionSeat);
+
+        const seatingPlan = {
+          planName: response.seatingPlanDetails.planName,
+          venueName: response.seatingPlanDetails.venueName,
+          row: response.seatingPlanDetails.planRow,
+          col: response.seatingPlanDetails.planCol,
+          sectionSeats: newSectionSeat,
+        };
+
+        console.log("seatingPlan ", seatingPlan);
+        setSelectedPlanLayout(seatingPlan);
+      }
+    } catch (error) {
+      // TODO: error handling
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedPlan?.planId) getPlanDetails();
+  }, [selectedPlan?.planId]);
 
   return (
     <div>
@@ -180,18 +250,27 @@ const EventCreate = () => {
                       className="form-radio"
                       name="planId"
                       id="exampleRadios1"
-                      value={index + 1}
+                      value={plan.planId}
                       defaultChecked
-                    ></input>
+                    />
                     <label className={styles.layersMenu}>
-                      <a href="" onClick={showModal}>
-                        Layout {index + 1}
-                      </a>
+                      {/* <div className={styles.layoutDesc} onClick={showModal}> */}
+                      {plan.venueName + ": " + plan.planName}
+                      {/* </div> */}
                     </label>
+                    <button
+                      type="button"
+                      className={`${styles.layoutBtn}`}
+                      onClick={() => showModal(plan)}
+                    >
+                      View Layout
+                    </button>
                     <PlanViewModal
                       isModalVisible={isModalVisible}
                       setIsModalVisible={setIsModalVisible}
                       planId={plan.planId}
+                      selectedPlanLayout={selectedPlanLayout}
+                      setSelectedPlanLayout={setSelectedPlanLayout}
                     />
                   </div>
                 ))}

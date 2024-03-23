@@ -118,10 +118,6 @@ const EventView = () => {
     getEventDetails();
   }, [eventId]);
 
-  useEffect(() => {
-    // getPlanDetails(event.);
-  }, [event]);
-
   if (!plan) {
     return <div>Plan does not exist</div>;
   }
@@ -130,11 +126,11 @@ const EventView = () => {
     <div>
       {warning && <AlertPopUp type="warning" message={errorMsg} />}
       {errors && <AlertPopUp type="danger" message={errorMsg} />}
-      <PlanViewModal
+      {/* <PlanViewModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         planId={event ? event.planId : "1"}
-      />
+      /> */}
       <div>
         <div className={` ${styles.eventViewHeader}`}>Event Details</div>
       </div>

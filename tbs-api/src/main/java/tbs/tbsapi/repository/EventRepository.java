@@ -22,6 +22,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
             "(:artistName IS NULL OR UPPER(e.artistName) LIKE CONCAT('%', UPPER(:artistName), '%')) AND " +
             "(:eventFromDt IS NULL OR e.eventFromDt >= :eventFromDt) AND" +
             "(:eventToDt IS NULL OR e.eventToDt <= :eventToDt) AND " +
+            "(:eventFromDt IS NULL OR e.eventFromDt >= CURRENT_DATE ) AND " +
             "(:subjectId IS NULL OR e.subjectId = :subjectId) "
     )
     Page<GetEventResponse> findEventList(

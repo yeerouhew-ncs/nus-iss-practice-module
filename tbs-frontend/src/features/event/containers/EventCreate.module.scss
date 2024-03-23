@@ -48,3 +48,23 @@
 .viewPlanModal {
   width: 800px !important;
 }
+
+.layoutDesc {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
+.layoutDesc:hover {
+  cursor: pointer;
+  color: grey;
+}
+
+.layoutBtn {
+  margin-left: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+  border: none;
+  background-color: transparent;
+}
