@@ -21,6 +21,8 @@ import OrganiserPlan from "./features/plan/containers/organiser-container/Organi
 import OrganiserPlanView from "./features/plan/containers/organiser-container/OrganiserPlanView";
 import OrganiserEditCategory from "./features/plan/containers/organiser-container/OrganiserEditCategory";
 import OrganiserEditCategoryPreview from "./features/plan/containers/organiser-container/OrganiserEditCategoryPreview";
+import UserHeader from "./common/header/UserHeader";
+import UserEvent from "./features/event/containers/UserEvent";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -157,6 +159,55 @@ const AppRoutes = () => {
                 path="/organiser/plan/edit-category/preview"
                 element={<OrganiserEditCategoryPreview />}
               />
+            </Route>
+          </Route>
+
+          <Route
+            element={<OrganiserHeader setAuth={setAuth} setUser={setUser} />}
+          >
+            <Route
+              element={
+                <PrivateRoute
+                  isAuthenticated={isAuthenticated}
+                  roleRequired="ORGANISER"
+                />
+              }
+            >
+              {/* <Route path="/organiser/" element={<Event />} /> */}
+              <Route path="/organiser/event/list" element={<Event />} />
+              <Route path="/organiser/event/create" element={<EventCreate />} />
+              <Route
+                path="/organiser/event/view/:eventId"
+                element={<EventView />}
+              />
+              <Route path="/organiser/plan/list" element={<OrganiserPlan />} />
+              <Route
+                path="/organiser/plan/view/:planId"
+                element={<OrganiserPlanView />}
+              />
+              <Route
+                path="/organiser/plan/edit-category/:planId"
+                element={<OrganiserEditCategory />}
+              />
+              <Route
+                path="/organiser/plan/edit-category/preview"
+                element={<OrganiserEditCategoryPreview />}
+              />
+            </Route>
+          </Route>
+
+          <Route element={<UserHeader setAuth={setAuth} setUser={setUser} />}>
+            <Route
+              element={
+                <PrivateRoute
+                  isAuthenticated={isAuthenticated}
+                  roleRequired="MOP"
+                />
+              }
+            >
+              <Route path="/user/event/list" element={<UserEvent />} />
+              <Route path="/user/event/view/:eventId" element={<EventView />} />
+              <Route path="/user/venue/list" element={<UserEvent />} />
             </Route>
           </Route>
 
