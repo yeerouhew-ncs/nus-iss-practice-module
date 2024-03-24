@@ -3,6 +3,7 @@ import { IVenueListResponse } from "../../interfaces/venue-interface";
 import {
   IAddPlanRequest,
   IAddPlanResponse,
+  IEditPlanCategoryRequest,
   IEditPlanRequest,
   IGetListOfPlanResponse,
   IGetPlanDetailsRequest,
@@ -13,6 +14,7 @@ const API_DOMAIN = "http://localhost:8081/";
 const GET_VENUE_LIST_URL = API_DOMAIN + "api/venue/get-list";
 const ADD_SEATING_PLAN_URL = API_DOMAIN + "api/seating-plan/add";
 const EDIT_SEATING_PLAN_URL = API_DOMAIN + "api/seating-plan/edit";
+const EDIT_PLAN_CATEGORY_URL = API_DOMAIN + "api/seating-plan/edit-category";
 const GET_SEATING_PLAN_LIST_URL = API_DOMAIN + "api/seating-plan/plan-list";
 const GET_SEATING_PLAN_DETAILS_URL =
   API_DOMAIN + "api/seating-plan/plan-details";
@@ -61,6 +63,16 @@ export const editPlanApi = async (
   const { data } = await axios.post<IAddPlanResponse>(
     EDIT_SEATING_PLAN_URL,
     editPlanRequest
+  );
+  return data;
+};
+
+export const editPlanCategoryApi = async (
+  editPlanCategoryRequest: IEditPlanCategoryRequest
+): Promise<IAddPlanResponse> => {
+  const { data } = await axios.post<IAddPlanResponse>(
+    EDIT_PLAN_CATEGORY_URL,
+    editPlanCategoryRequest
   );
   return data;
 };

@@ -80,8 +80,8 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
       const category: Category = {
         sectionId: null,
         sectionDesc: data?.sectionDesc,
-        sectionRow: data?.sectionRow,
-        seatPrice: data?.seatPrice,
+        sectionRow: Number(data?.sectionRow),
+        seatPrice: Number(data?.seatPrice),
       };
       setCategoryList((prev) => [...(prev || []), category]);
       console.log("hello", category);

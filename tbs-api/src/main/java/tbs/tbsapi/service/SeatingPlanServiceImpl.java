@@ -160,7 +160,7 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                 }
 
                 log.info("sectionSeat seats: {} ", sectionSeat.getSeats());
-                // delete all the seats associated and add bac
+                // delete all the seats associated and add back
                 if(sectionSeat.getSectionId() != null) {
                     log.info("SECTION ID EMPTY " + sectionId);
                     seatRepository.deleteBySectionId(sectionId);
@@ -190,6 +190,78 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
         }
         response.add("400");
         response.add("Plan not updated");
+        return response;
+    }
+
+    @Transactional
+    public List<String> editPlanCategory(EditPlanSectionSeatDto editPlanSectionSeatDto) {
+        List<String> response = new ArrayList<>();
+
+        if(seatingPlanRepository.findByPlanId(editPlanSectionSeatDto.getPlanId()) == null) {
+            response.add("200");
+            response.add("PLAN DOES NOT EXIST");
+            return response;
+        }
+
+        for(EditSectionSeatDto sectionSeat : editPlanSectionSeatDto.getSectionSeats()) {
+            Integer updateSectionSeat = 0;
+            SectionSeat saveSectionSeat = null;
+            Integer sectionId = sectionSeat.getSectionId();
+
+            if(sectionSeat.getSectionId() == null) {
+                SectionSeat preSaveSectionSeat = SectionSeat.builder()
+                        .planId(editPlanSectionSeatDto.getPlanId())
+                        .totalSeats(sectionSeat.getTotalSeats())
+                        .noSeatsLeft(sectionSeat.getTotalSeats())
+                        .seatPrice(sectionSeat.getSeatPrice())
+                        .seatSectionDescription(sectionSeat.getSectionDesc())
+                        .sectionRow(sectionSeat.getSectionRow())
+                        .sectionCol(sectionSeat.getSectionCol())
+                        .build();
+                saveSectionSeat = sectionSeatRepository.save(preSaveSectionSeat);
+                sectionId = saveSectionSeat.getSectionId();
+            } else {
+                updateSectionSeat = sectionSeatRepository.updateSectionSeat(
+                        sectionSeat.getSectionId(),
+                        editPlanSectionSeatDto.getPlanId(),
+                        sectionSeat.getTotalSeats(),
+                        sectionSeat.getTotalSeats(),
+                        sectionSeat.getSeatPrice(),
+                        sectionSeat.getSectionDesc(),
+                        sectionSeat.getSectionRow(),
+                        sectionSeat.getSectionCol()
+                );
+            }
+
+            if(updateSectionSeat != 1 && saveSectionSeat == null) {
+                response.add("400");
+                response.add("SECTION SEAT NOT UPDATED");
+                return response;
+            }
+
+            // delete all the seats associated and add back
+            if(sectionSeat.getSectionId() != null) {
+                seatRepository.deleteBySectionId(sectionId);
+            }
+
+            for(EditSeatDto seat: sectionSeat.getSeats()) {
+                Seat preSaveSeat = Seat.builder()
+                        .seatName(seat.getSeatName())
+                        .seatStatus(SeatStatus.AVAILABLE)
+                        .sectionId(sectionId)
+                        .build();
+                log.info("preSaveSeat {} ", preSaveSeat);
+                Seat updateSeat = seatRepository.save(preSaveSeat);
+
+                if(updateSeat == null) {
+                    response.add("400");
+                    response.add("SEAT NOT UPDATED");
+                    return response;
+                }
+            }
+        }
+        response.add("200");
+        response.add("SUCCESS");
         return response;
     }
 

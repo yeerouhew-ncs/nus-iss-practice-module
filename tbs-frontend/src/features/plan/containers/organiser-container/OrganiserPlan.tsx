@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getPlanListApi } from "../../plan.api";
 import { PlanList } from "../../../../interfaces/seating-plan-interface";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Plan.module.scss";
+import styles from "./OrganiserPlan.module.scss";
+import { useAuthContext } from "../../../../context/AuthContext";
 
 const OrganiserPlan: React.FC = () => {
   const [planList, setPlanList] = useState<PlanList[]>([]);
 
   const navigate = useNavigate();
+  const { userInfo } = useAuthContext();
 
   useEffect(() => {
     const getPlanList = async () => {
@@ -26,12 +28,12 @@ const OrganiserPlan: React.FC = () => {
     getPlanList();
   }, []);
 
-  const redirectCreateOnClick = () => {
-    navigate("/admin/plan/create");
-  };
+  // const redirectCreateOnClick = () => {
+  //   navigate("/organ/plan/create");
+  // };
 
   const redirectEditOnClick = (id: string) => {
-    navigate(`/admin/plan/edit/${id}`);
+    navigate(`/organiser/plan/edit-category/${id}`);
   };
 
   return (
@@ -40,16 +42,16 @@ const OrganiserPlan: React.FC = () => {
         <div>
           <h2>Seating Plans</h2>
         </div>
-        <div>
+        {/* <div>
           <button
             type="button"
             className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
             onClick={redirectCreateOnClick}
-            // hidden={userInfo?.authorities[0].authority === "MOP"}
+            hidden={userInfo?.authorities[0].authority === "ORGANISER"}
           >
             <span>Create Plan</span>
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="searchResultTable card">
@@ -75,7 +77,7 @@ const OrganiserPlan: React.FC = () => {
                         <td>{index + 1}</td>
                         <td>
                           <div>
-                            <Link to={`/admin/plan/view/${plan.planId}`}>
+                            <Link to={`/organiser/plan/view/${plan.planId}`}>
                               {plan.planName}
                             </Link>
                           </div>

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tbs.tbsapi.dto.AddSeatingPlanDto;
+import tbs.tbsapi.dto.EditPlanSectionSeatDto;
 import tbs.tbsapi.dto.EditSeatingPlanDto;
 import tbs.tbsapi.manager.SeatingPlanManager;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
@@ -28,6 +29,12 @@ public class SeatingPlanController {
     public ResponseEntity<?> editSeatingPlan(@RequestBody EditSeatingPlanDto seatingPlanDto) {
         log.info("START: EDIT SEATING PLAN");
         return seatingPlanManager.editSeatingPlan(seatingPlanDto);
+    }
+
+    @PostMapping(path = "/edit-category")
+    public ResponseEntity<?> editPlanCategory(@RequestBody EditPlanSectionSeatDto editPlanSectionSeatDto) {
+        log.info("START: EDIT SEATING PLAN SECTION SEATS");
+        return seatingPlanManager.editPlanCategory(editPlanSectionSeatDto);
     }
 
     @PostMapping(path = "/plan-details")

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.domain.SeatingPlan;
 import tbs.tbsapi.dto.AddSeatingPlanDto;
+import tbs.tbsapi.dto.EditPlanSectionSeatDto;
 import tbs.tbsapi.dto.EditSeatingPlanDto;
 import tbs.tbsapi.service.SeatingPlanService;
 import tbs.tbsapi.validation.ValidationError;
@@ -66,6 +67,21 @@ public class SeatingPlanManager {
         List<String> response = seatingPlanService.editSeatingPlan(seatingPlanDto);
         if(Objects.equals(response.get(0), "200")) {
             log.info("END: EDIT SEATING PLAN SUCCESS");
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "statusCode", response.get(0),
+                    "message", "SUCCESS"));
+        } else {
+            log.info("END: EDIT SEATING PLAN FAILED");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
+                    "statusCode", response.get(0),
+                    "message", response.get(1)));
+        }
+    }
+
+    public ResponseEntity<?> editPlanCategory(EditPlanSectionSeatDto editPlanSectionSeatDto) {
+        List<String> response = seatingPlanService.editPlanCategory(editPlanSectionSeatDto);
+        if(Objects.equals(response.get(0), "200")) {
+            log.info("END: EDIT SEATING PLAN SECTION SEATS SUCCESS");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", response.get(0),
                     "message", "SUCCESS"));

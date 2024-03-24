@@ -206,7 +206,7 @@ const PlanCreatePreview: React.FC = () => {
           type="button"
           onClick={handleCreate}
         >
-          Create
+          Confirm
         </button>
       </div>
     </div>

@@ -17,6 +17,10 @@ import { UserDetails } from "./interfaces/authentication-interface";
 import NotFound from "./features/not-found/NotFound";
 import AdminHeader from "./common/header/AdminHeader";
 import OrganiserHeader from "./common/header/OrganiserHeader";
+import OrganiserPlan from "./features/plan/containers/organiser-container/OrganiserPlan";
+import OrganiserPlanView from "./features/plan/containers/organiser-container/OrganiserPlanView";
+import OrganiserEditCategory from "./features/plan/containers/organiser-container/OrganiserEditCategory";
+import OrganiserEditCategoryPreview from "./features/plan/containers/organiser-container/OrganiserEditCategoryPreview";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -139,6 +143,19 @@ const AppRoutes = () => {
               <Route
                 path="/organiser/event/view/:eventId"
                 element={<EventView />}
+              />
+              <Route path="/organiser/plan/list" element={<OrganiserPlan />} />
+              <Route
+                path="/organiser/plan/view/:planId"
+                element={<OrganiserPlanView />}
+              />
+              <Route
+                path="/organiser/plan/edit-category/:planId"
+                element={<OrganiserEditCategory />}
+              />
+              <Route
+                path="/organiser/plan/edit-category/preview"
+                element={<OrganiserEditCategoryPreview />}
               />
             </Route>
           </Route>

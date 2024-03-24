@@ -84,8 +84,8 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({
       const category: Category = {
         sectionId: selectedCategory?.sectionId,
         sectionDesc: data?.sectionDesc,
-        sectionRow: data?.sectionRow,
-        seatPrice: data?.seatPrice,
+        sectionRow: Number(data?.sectionRow),
+        seatPrice: Number(data?.seatPrice),
       };
 
       // setCategoryList((prev) => [...(prev || []), category]);

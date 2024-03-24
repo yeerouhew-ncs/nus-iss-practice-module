@@ -88,6 +88,7 @@ export interface EditSectionSeatReq extends Omit<SectionSeatReq, "seats"> {
   seats: SeatReq[];
 }
 
-// export interface EditSeatReq extends SeatReq {
-//   seatId: string;
-// }
+export interface IEditPlanCategoryRequest {
+  planId: string;
+  sectionSeats: EditSectionSeatReq[];
+}
