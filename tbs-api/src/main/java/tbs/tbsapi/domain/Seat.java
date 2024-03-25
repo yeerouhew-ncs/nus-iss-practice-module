@@ -25,6 +25,13 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     private SeatStatus seatStatus;
 
+    @Column(name = "SEAT_ROW")
+    private Integer seatRow;
+
+    @Column(name = "SEAT_COL")
+    private Integer seatCol;
+
     @Column(name = "SECTION_ID")
     private Integer sectionId;
+
 }

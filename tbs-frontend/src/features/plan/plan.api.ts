@@ -18,6 +18,8 @@ const EDIT_PLAN_CATEGORY_URL = API_DOMAIN + "api/seating-plan/edit-category";
 const GET_SEATING_PLAN_LIST_URL = API_DOMAIN + "api/seating-plan/plan-list";
 const GET_SEATING_PLAN_DETAILS_URL =
   API_DOMAIN + "api/seating-plan/plan-details";
+const GET_PLAN_DETAILS_URL = API_DOMAIN + "api/seating-plan/plan-details";
+const GET_LIST_OF_PLANS_URL = API_DOMAIN + "api/seating-plan/plan-list";
 
 export const getVenueListApi = async (): Promise<IVenueListResponse> => {
   const { data } = await axios.post<IVenueListResponse>(GET_VENUE_LIST_URL);

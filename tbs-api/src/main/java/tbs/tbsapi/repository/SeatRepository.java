@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tbs.tbsapi.domain.Seat;
+import tbs.tbsapi.domain.SectionSeat;
 import tbs.tbsapi.domain.Venue;
+
+import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, String> {
@@ -19,4 +22,6 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
                        @Param("sectionId") Integer sectionId);
 
     Integer deleteBySectionId(Integer sectionId);
+
+    List<Seat> findAllBySectionId(Integer sectionId);
 }

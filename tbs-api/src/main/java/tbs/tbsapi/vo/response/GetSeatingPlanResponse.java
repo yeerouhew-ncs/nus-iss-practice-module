@@ -18,5 +18,5 @@ public class GetSeatingPlanResponse {
     private Integer venueId;
     private String venueName;
     private String address;
-    private List<SectionSeat> sectionSeatResponses;
+    private List<GetSectionSeatResponse> sectionSeatResponses;
 }

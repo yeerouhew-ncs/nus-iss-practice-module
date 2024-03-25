@@ -12,4 +12,6 @@ public class SeatResponse {
     private Integer seatId;
     private String seatName;
     private SeatStatus seatStatus;
+    private Integer seatRow;
+    private Integer seatCol;
 }
