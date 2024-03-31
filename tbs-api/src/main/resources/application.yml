@@ -37,7 +37,8 @@ spring:
     queue:
       name: ticketqueue
       exchange: ticketexchange
-      routingkey: routing
+      routing:
+        key: routing
 server:
   port: "8081"
 

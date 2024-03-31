@@ -13,10 +13,7 @@ import tbs.tbsapi.service.RabbitMQProducer;
 @CrossOrigin(origins = "*")
 public class QueueController {
 
-    @Autowired
-    private QueueManager queueManager;
-
-    private RabbitMQProducer rabbitMQProducer;
+    private final RabbitMQProducer rabbitMQProducer;
 
     public QueueController(RabbitMQProducer rabbitMQProducer) {
         this.rabbitMQProducer = rabbitMQProducer;
@@ -33,7 +30,7 @@ public class QueueController {
         return ResponseEntity.ok("Status: OK");
     }
     @GetMapping("/event/{eventid}")
-    public ResponseEntity<String> sendMessage(@RequestParam("event") String message){
+    public ResponseEntity<String> joinQueue(@RequestParam("eventid") String message){
         rabbitMQProducer.sendMessage(message);
         return ResponseEntity.ok("added to queue");
     }

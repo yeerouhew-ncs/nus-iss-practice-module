@@ -16,7 +16,7 @@ public class RabbitMQConfig {
 
     @Value("${spring.rabbitmq.queue.exchange}")
     private String exchange;
-    @Value("${spring.rabbitmq.queue.routingkey}")
+    @Value("${spring.rabbitmq.queue.routing.key}")
     private String routingkey;
 
     @Bean
@@ -33,9 +33,7 @@ public class RabbitMQConfig {
                 .to(exchange())
                 .with(routingkey);
     }
-//    ConnectionFactory
-//    RabbitTemplate
-//    RabbitAdmin
+
 
 
 }
