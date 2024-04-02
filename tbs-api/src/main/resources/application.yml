@@ -2,7 +2,7 @@ spring:
   datasource:
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
-    username: user
+    username: user1
     password: password
   #datasource:
   # driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -29,5 +29,16 @@ spring:
     generate-ddl: true
   application:
     name: tbs-api
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    queue:
+      name: ticketqueue
+      exchange: ticketexchange
+      routing:
+        key: routing
 server:
   port: "8081"
+
