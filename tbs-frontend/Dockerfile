@@ -8,7 +8,7 @@ ENV NODE_ENV production
 WORKDIR /app
 
 # Installing dependencies
-COPY ./package.json ./
+COPY ./package.json package-lock.json ./
 RUN npm ci
 
 # Copying all the files in our project
