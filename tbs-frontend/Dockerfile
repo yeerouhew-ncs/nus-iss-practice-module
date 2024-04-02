@@ -9,13 +9,13 @@ WORKDIR /app
 
 # Installing dependencies
 COPY ./package.json ./
-RUN yarn
+RUN npm ci
 
 # Copying all the files in our project
 COPY . .
 
 # Building our application
-RUN yarn run build
+RUN npm run build
 
 # Fetching the latest nginx image
 FROM nginx
