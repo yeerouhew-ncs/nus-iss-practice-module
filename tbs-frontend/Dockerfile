@@ -11,7 +11,7 @@ RUN npm config set registry https://registry.npmjs.org/
 
 # Installing dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copying all the files in our project
 COPY . ./
