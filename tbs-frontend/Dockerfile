@@ -11,7 +11,7 @@ RUN npm config set registry https://registry.npmjs.org/
 
 # Installing dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --timeout=300000
 
 # Copying all the files in our project
 COPY . ./
