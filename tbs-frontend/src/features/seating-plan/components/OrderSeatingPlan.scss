@@ -1,0 +1,61 @@
+@import "../../../styles/colors.scss";
+
+.default {
+  background-color: #f400d2;
+}
+
+.cat1 {
+  background-color: var(--cat-one-yellow);
+  color: black;
+}
+
+.cat2 {
+  background-color: var(--cat-two-blue);
+  color: black;
+}
+
+.cat3 {
+  color: black;
+  background-color: var(--cat-three-red);
+}
+
+.cat4 {
+  color: black;
+  background-color: var(--cat-four-green);
+}
+
+.cat5 {
+  color: black;
+  background-color: var(--cat-five-orange);
+}
+
+.cat6 {
+  color: black;
+  background-color: var(--cat-six-purple);
+}
+
+.cat7 {
+  color: black;
+  background-color: var(--cat-seven-blue);
+}
+
+.cat8 {
+  color: black;
+  background-color: var(--cat-eight-pink);
+}
+
+.cat9 {
+  color: black;
+  background-color: var(--cat-nine-green);
+}
+
+.cat10 {
+  color: black;
+  background-color: var(--cat-ten-orange);
+}
+
+.sc-right-container {
+  display: block !important;
+}
+.sc-right-container {
+}

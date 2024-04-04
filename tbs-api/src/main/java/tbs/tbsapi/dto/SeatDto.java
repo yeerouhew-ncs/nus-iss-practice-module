@@ -17,4 +17,10 @@ public class SeatDto implements Serializable {
     @JsonProperty("seatName")
     @Size(max = 100, message = "Maximum size is 100 characters")
     private String seatName;
+
+    @JsonProperty("seatRow")
+    private Integer seatRow;
+
+    @JsonProperty("seatCol")
+    private Integer seatCol;
 }

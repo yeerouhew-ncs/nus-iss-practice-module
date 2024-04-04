@@ -29,6 +29,7 @@ interface SectionSeat {
   seatSectionDescription: string;
   sectionRow: number;
   sectionCol: number;
+  seatResponses: GetSeatResponse[];
 }
 
 export interface PlanList {
@@ -67,6 +68,15 @@ export interface SectionSeatReq {
 
 export interface SeatReq {
   seatName: string;
+  seatRow: number;
+  seatCol: number;
+}
+
+export interface GetSeatResponse {
+  seatId: string;
+  seatName: string;
+  seatStatus: string;
+  sectionId: string;
 }
 
 export interface IAddPlanResponse {

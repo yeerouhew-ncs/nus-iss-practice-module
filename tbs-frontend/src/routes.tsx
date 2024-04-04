@@ -27,6 +27,8 @@ import EventEdit from "./features/event/containers/EventEdit";
 import OrganiserEventView from "./features/event/containers/OrganiserEventView";
 import PaymentStart from "./features/payment/PaymentStart";
 import PaymentSuccess from "./features/payment/PaymentSuccess";
+import UserEventView from "./features/event/containers/UserEventView";
+
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -214,7 +216,10 @@ const AppRoutes = () => {
               }
             >
               <Route path="/user/event/list" element={<UserEvent />} />
-              <Route path="/user/event/view/:eventId" element={<EventView />} />
+              <Route
+                path="/user/event/view/:eventId"
+                element={<UserEventView />}
+              />
               <Route path="/user/venue/list" element={<UserEvent />} />
               <Route path="/user/payment/start" element={<PaymentStart/>} />
               <Route path="/user/payment/success" element={<PaymentSuccess />} />

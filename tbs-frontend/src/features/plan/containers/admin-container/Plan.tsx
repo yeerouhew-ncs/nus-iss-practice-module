@@ -15,6 +15,7 @@ const Plan: React.FC = () => {
 
       try {
         if (response.message === "SUCCESS" && response.statusCode === "200") {
+          console.log("PLAN LIST", response);
           setPlanList(response.seatingPlanList);
         }
       } catch (error) {

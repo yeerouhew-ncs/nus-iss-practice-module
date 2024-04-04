@@ -33,11 +33,13 @@ const OrganiserEditCategoryPreview = () => {
 
     let sectionSeatReq: EditSectionSeatReq[] = [];
     for (let category of updatedSectionSeats) {
-      // filter out seat names
       const sectionSeats = seatList
         .filter((seat) => seat.type === category.sectionDesc)
-        .map((seat) => seat.label)
-        .map((seatName) => ({ seatName }));
+        .map((seat) => ({
+          seatName: seat.label,
+          seatRow: seat.index.row,
+          seatCol: seat.index.col,
+        }));
 
       console.log(sectionSeats);
 

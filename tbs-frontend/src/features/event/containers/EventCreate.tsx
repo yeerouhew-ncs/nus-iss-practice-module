@@ -6,7 +6,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
-import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
 import {
   IGetPlanDetailsRequest,
   PlanList,
@@ -14,7 +13,7 @@ import {
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import { getPlanDetailsApi } from "../../plan/plan.api";
+import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
 
 type SeatingPlanType = {
   row: number;
@@ -36,7 +35,7 @@ const EventCreate: React.FC = () => {
 
   const getListEvent = async () => {
     try {
-      const response = await getSeatingPlanListApi();
+      const response = await getPlanListApi();
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         setPlanList(response.seatingPlanList);
         console.log("response.seatingPlanList", response.seatingPlanList);

@@ -28,6 +28,7 @@ public class SeatingPlanController {
     @PostMapping(path = "/edit")
     public ResponseEntity<?> editSeatingPlan(@RequestBody EditSeatingPlanDto seatingPlanDto) {
         log.info("START: EDIT SEATING PLAN");
+        log.info("seatingPlanDto {} ", seatingPlanDto);
         return seatingPlanManager.editSeatingPlan(seatingPlanDto);
     }
 

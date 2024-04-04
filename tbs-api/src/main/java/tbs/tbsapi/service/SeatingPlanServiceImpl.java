@@ -15,10 +15,7 @@ import tbs.tbsapi.repository.SeatingPlanRepository;
 import tbs.tbsapi.repository.SectionSeatRepository;
 import tbs.tbsapi.repository.VenueRepository;
 import tbs.tbsapi.vo.request.GetSeatingPlanRequest;
-import tbs.tbsapi.vo.response.AddSeatingPlanResponse;
-import tbs.tbsapi.vo.response.GetSeatingPlanResponse;
-import tbs.tbsapi.vo.response.SeatResponse;
-import tbs.tbsapi.vo.response.SectionSeatResponse;
+import tbs.tbsapi.vo.response.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +71,8 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
             for(SeatDto seat: sectionSeat.getSeats()) {
                 Seat preSaveSeat = Seat.builder()
                         .seatName(seat.getSeatName())
+                        .seatRow(seat.getSeatRow())
+                        .seatCol(seat.getSeatCol())
                         .seatStatus(SeatStatus.AVAILABLE)
                         .sectionId(saveSectionSeat.getSectionId())
                         .build();
@@ -84,6 +83,8 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                 seatResponse.setSeatId(saveSeat.getSeatId());
                 seatResponse.setSeatName(saveSeat.getSeatName());
                 seatResponse.setSeatStatus(saveSeat.getSeatStatus());
+                seatResponse.setSeatRow(saveSeat.getSeatRow());
+                seatResponse.setSeatCol(saveSeat.getSeatCol());
                 seatList.add(seatResponse);
             }
 
@@ -170,6 +171,8 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                 for(EditSeatDto seat: sectionSeat.getSeats()) {
                     Seat preSaveSeat = Seat.builder()
                             .seatName(seat.getSeatName())
+                            .seatRow(seat.getSeatRow())
+                            .seatCol(seat.getSeatCol())
                             .seatStatus(SeatStatus.AVAILABLE)
                             .sectionId(sectionId)
                             .build();
@@ -281,8 +284,26 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
             seatingPlanResponse.setVenueId(venue.getVenueId());
             seatingPlanResponse.setVenueName(venue.getVenueName());
             seatingPlanResponse.setAddress(venue.getAddress());
-            seatingPlanResponse.setSectionSeatResponses(sectionSeat);
 
+            List<GetSectionSeatResponse> sectionSeatResponsesList = new ArrayList<>();
+
+            for(SectionSeat category: sectionSeat) {
+                GetSectionSeatResponse sectionSeatResponse = new GetSectionSeatResponse();
+                sectionSeatResponse.setSeatPrice(category.getSeatPrice());
+                sectionSeatResponse.setTotalSeats(category.getTotalSeats());
+                sectionSeatResponse.setSeatSectionDescription(category.getSeatSectionDescription());
+                sectionSeatResponse.setSectionCol(category.getSectionCol());
+                sectionSeatResponse.setSectionRow(category.getSectionRow());
+                sectionSeatResponse.setNoSeatsLeft(category.getNoSeatsLeft());
+                sectionSeatResponse.setSectionId(category.getSectionId());
+
+                List<Seat> seats = seatRepository.findAllBySectionId(category.getSectionId());
+                sectionSeatResponse.setSeatResponses(seats);
+
+                sectionSeatResponsesList.add(sectionSeatResponse);
+            }
+
+            seatingPlanResponse.setSectionSeatResponses(sectionSeatResponsesList);
             seatingPlanResponseList.add(seatingPlanResponse);
         }
 
@@ -302,7 +323,26 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
         seatingPlanResponse.setVenueId(venue.getVenueId());
         seatingPlanResponse.setVenueName(venue.getVenueName());
         seatingPlanResponse.setAddress(venue.getAddress());
-        seatingPlanResponse.setSectionSeatResponses(sectionSeat);
+
+        List<GetSectionSeatResponse> sectionSeatResponsesList = new ArrayList<>();
+
+        for(SectionSeat category: sectionSeat) {
+            GetSectionSeatResponse sectionSeatResponse = new GetSectionSeatResponse();
+            sectionSeatResponse.setSeatPrice(category.getSeatPrice());
+            sectionSeatResponse.setTotalSeats(category.getTotalSeats());
+            sectionSeatResponse.setSeatSectionDescription(category.getSeatSectionDescription());
+            sectionSeatResponse.setSectionCol(category.getSectionCol());
+            sectionSeatResponse.setSectionRow(category.getSectionRow());
+            sectionSeatResponse.setNoSeatsLeft(category.getNoSeatsLeft());
+            sectionSeatResponse.setSectionId(category.getSectionId());
+
+            List<Seat> seats = seatRepository.findAllBySectionId(category.getSectionId());
+            sectionSeatResponse.setSeatResponses(seats);
+
+            sectionSeatResponsesList.add(sectionSeatResponse);
+        }
+
+        seatingPlanResponse.setSectionSeatResponses(sectionSeatResponsesList);
 
         return seatingPlanResponse;
     }
