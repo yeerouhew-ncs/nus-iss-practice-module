@@ -23,6 +23,10 @@ import OrganiserEditCategory from "./features/plan/containers/organiser-containe
 import OrganiserEditCategoryPreview from "./features/plan/containers/organiser-container/OrganiserEditCategoryPreview";
 import UserHeader from "./common/header/UserHeader";
 import UserEvent from "./features/event/containers/UserEvent";
+import EventEdit from "./features/event/containers/EventEdit";
+import OrganiserEventView from "./features/event/containers/OrganiserEventView";
+import PaymentStart from "./features/payment/PaymentStart";
+import PaymentSuccess from "./features/payment/PaymentSuccess";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -144,7 +148,7 @@ const AppRoutes = () => {
               <Route path="/organiser/event/create" element={<EventCreate />} />
               <Route
                 path="/organiser/event/view/:eventId"
-                element={<EventView />}
+                element={<OrganiserEventView />}
               />
               <Route path="/organiser/plan/list" element={<OrganiserPlan />} />
               <Route
@@ -178,7 +182,11 @@ const AppRoutes = () => {
               <Route path="/organiser/event/create" element={<EventCreate />} />
               <Route
                 path="/organiser/event/view/:eventId"
-                element={<EventView />}
+                element={<OrganiserEventView />}
+              />
+              <Route
+                path="/organiser/event/edit/:eventId"
+                element={<EventEdit />}
               />
               <Route path="/organiser/plan/list" element={<OrganiserPlan />} />
               <Route
@@ -208,6 +216,8 @@ const AppRoutes = () => {
               <Route path="/user/event/list" element={<UserEvent />} />
               <Route path="/user/event/view/:eventId" element={<EventView />} />
               <Route path="/user/venue/list" element={<UserEvent />} />
+              <Route path="/user/payment/start" element={<PaymentStart/>} />
+              <Route path="/user/payment/success" element={<PaymentSuccess />} />
             </Route>
           </Route>
 
