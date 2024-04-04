@@ -125,19 +125,7 @@ const EventView: React.FC = () => {
 
   if (!plan) {
     return (
-      <div>
-        <div>
-          <button
-            type="button"
-            className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
-            onClick={redirectEditOnClick}
-            hidden={userInfo?.authorities[0].authority === "MOP"}
-          >
-            <span>Edit Event</span>
-          </button>
-        </div>
-        <div>Plan does not exist</div>
-      </div>
+      <div>Plan does not exist</div>
     );
   }
 
@@ -152,16 +140,6 @@ const EventView: React.FC = () => {
       /> */}
       <div>
         <div className={` ${styles.eventViewHeader}`}>Event Details</div>
-      </div>
-      <div>
-        <button
-          type="button"
-          className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
-          onClick={redirectEditOnClick}
-          hidden={userInfo?.authorities[0].authority === "MOP"}
-        >
-          <span>Edit Event</span>
-        </button>
       </div>
       <div className={styles.eventViewContainer}>
         <div className={`row`}>
