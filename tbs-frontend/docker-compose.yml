@@ -1,0 +1,18 @@
+# version: "3.8"
+
+# services:
+#   react-app:
+#     build:
+#       context: . # Context set to the root directory where both Dockerfiles are located
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3000:3000" # Mapping your host port 9101 to container port 9101
+version: "3"
+services:
+  tbs-frontend:
+    container_name: tbs-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
