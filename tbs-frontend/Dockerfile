@@ -1,9 +1,6 @@
 # Fetching the latest node image on apline linux
 FROM node:20-alpine as build
 
-# Declaring env
-# ENV NODE_ENV production
-
 # Setting up the work directory
 WORKDIR /app
 
