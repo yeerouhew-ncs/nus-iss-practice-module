@@ -1,5 +1,5 @@
 # Fetching the latest node image on apline linux
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 
 # Declaring env
 # ENV NODE_ENV production
@@ -13,6 +13,8 @@ RUN yarn
 
 # Copying all the files in our project
 COPY . .
+
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Building our application
 RUN yarn run build
