@@ -41,6 +41,11 @@ export interface AddEventResponse {
   message: string;
 }
 
+export interface EditEventResponse {
+  statusCode: string;
+  message: string;
+}
+
 export interface IGetEventDetailsRequest {
   eventId: string | undefined;
   subjectId: string | undefined;

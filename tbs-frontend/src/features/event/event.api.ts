@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   AddEventRequest,
   AddEventResponse,
+  EditEventResponse,
   IGetEventDetailsRequest,
   IEventListRequest,
   IEventListResponse,
@@ -12,6 +13,7 @@ import {
 const API_DOMAIN = "http://localhost:8081/";
 const GET_EVENT_LIST_URL = API_DOMAIN + "api/event/get-list";
 const ADD_EVENT_URL = API_DOMAIN + "api/event/add";
+const EDIT_EVENT_URL = API_DOMAIN + "api/event/edit";
 const GET_EVENT_DETAILS_URL = API_DOMAIN + "api/event/event-details";
 
 export const getEventListApi = async (
@@ -34,6 +36,24 @@ export const addEventApi = async (
     {
       headers: {
         "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return data;
+};
+
+export const editEventApi = async (
+  accessToken: string | null,
+  editEventRequest: string
+): Promise<EditEventResponse> => {
+  const { data } = await axios.post<EditEventResponse>(
+    EDIT_EVENT_URL,
+    editEventRequest,
+    {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json"
       },
     }
   );

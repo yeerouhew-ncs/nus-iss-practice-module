@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./EventView.module.scss";
+import styles from "./OrganiserEventView.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventDetailsApi } from "../event.api";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
@@ -11,6 +11,7 @@ import SeatingPlan from "../../seating-plan/components/SeatingPlan";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
 import { getPlanDetailsApi } from "../../plan/plan.api";
+import { isTwoWeeksLater } from "../../../utils/date-utils";
 
 type SeatingPlanType = {
   row: number;
@@ -20,7 +21,7 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const EventView: React.FC = () => {
+const OrganiserEventView: React.FC = () => {
   const param = useParams();
   const eventId = param?.eventId;
 
@@ -121,11 +122,33 @@ const EventView: React.FC = () => {
 
   useEffect(() => {
     getEventDetails();
+    console.log("TWO WEEKS LATER", isTwoWeeksLater(event?.eventFromDt));
   }, [eventId]);
 
   if (!plan) {
     return (
-      <div>Plan does not exist</div>
+      <div>
+        <div className={`${styles.eventHeader}`}>
+          <div>
+            <h2>Event Details</h2>
+          </div>
+          {isTwoWeeksLater(event?.eventFromDt) ? (
+            <div>
+              <button
+                type="button"
+                className={`btn btn-primary ${styles.primaryBtn}`}
+                onClick={redirectEditOnClick}
+                // hidden={userInfo?.authorities[0].authority === "MOP"}
+              >
+                <span>Edit Event</span>
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <div>Plan does not exist</div>
+      </div>
     );
   }
 
@@ -138,8 +161,30 @@ const EventView: React.FC = () => {
         setIsModalVisible={setIsModalVisible}
         planId={event ? event.planId : "1"}
       /> */}
+      <div className={`${styles.eventHeader}`}>
+        <div>
+          <h2>Event Details</h2>
+        </div>
+        <div>
+          <button
+            type="button"
+            className={`btn btn-primary ${styles.primaryBtn}`}
+            onClick={redirectEditOnClick}
+            // hidden={userInfo?.authorities[0].authority === "MOP"}
+          >
+            <span>Edit Event</span>
+          </button>
+        </div>
+      </div>
       <div>
-        <div className={` ${styles.eventViewHeader}`}>Event Details</div>
+        <button
+          type="button"
+          className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+          onClick={redirectEditOnClick}
+          hidden={userInfo?.authorities[0].authority === "MOP"}
+        >
+          <span>Edit Event</span>
+        </button>
       </div>
       <div className={styles.eventViewContainer}>
         <div className={`row`}>
@@ -199,4 +244,4 @@ const EventView: React.FC = () => {
   );
 };
 
-export default EventView;
+export default OrganiserEventView;
