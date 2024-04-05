@@ -8,7 +8,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { twoWeekslater } from "../../../utils/date-utils";
-import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
+// import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
 import {
   IGetPlanDetailsRequest,
   PlanList,
@@ -58,17 +58,17 @@ const EventEdit: React.FC = () => {
   const [watchEventFromDt, watchEventToDt]
     = form.watch(['eventFromDt', 'eventToDt'])
 
-  const getListEvent = async () => {
-    try {
-      const response = await getSeatingPlanListApi();
-      if (response.statusCode === "200" && response.message === "SUCCESS") {
-        setPlanList(response.seatingPlanList);
-        console.log("response.seatingPlanList", response.seatingPlanList);
-      }
-    } catch (err) {
-      setErrors(true);
-    }
-  };
+  // const getListEvent = async () => {
+  //   try {
+  //     const response = await getSeatingPlanListApi();
+  //     if (response.statusCode === "200" && response.message === "SUCCESS") {
+  //       setPlanList(response.seatingPlanList);
+  //       console.log("response.seatingPlanList", response.seatingPlanList);
+  //     }
+  //   } catch (err) {
+  //     setErrors(true);
+  //   }
+  // };
 
   const getEventDetails = async () => {
     try {
@@ -87,13 +87,12 @@ const EventEdit: React.FC = () => {
   };
 
   useEffect(() => {
-    getListEvent();
+    // getListEvent();
     getEventDetails();
     console.log("twoWeeksLater", twoWeekslater());
   }, []);
 
   const createEditEventDto = async () => {
-    alert("Event saved successfully");
  
     const formEventName = ((document.getElementById("eventName") as HTMLInputElement)?.value || event?.eventName) ?? "";
     const formArtistName = ((document.getElementById("artistName") as HTMLInputElement)?.value || event?.artistName) ?? "";
@@ -120,8 +119,10 @@ const EventEdit: React.FC = () => {
     const response = await editEventApi(localStorage.getItem("token"), jsonStr);
 
     if (response.statusCode === "200" && response.message === "SUCCESS") {
+      alert("Event saved successfully");
       console.log("SUCCESS");
     } else {
+      alert("Error saving event");
       console.log("FAIL");
     }
 
