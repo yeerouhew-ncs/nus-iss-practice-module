@@ -14,6 +14,7 @@ RUN yarn
 # Copying all the files in our project
 COPY . .
 
+# To increase nodejs memory limit to 4GB
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Building our application
