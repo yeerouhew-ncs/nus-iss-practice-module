@@ -1,5 +1,5 @@
 # Fetching the latest node image on apline linux
-FROM node:18-alpine as build
+FROM node:alpine AS builder
 
 # Declaring env
 # ENV NODE_ENV production
@@ -7,31 +7,24 @@ FROM node:18-alpine as build
 # Setting up the work directory
 WORKDIR /app
 
-# RUN npm config set registry https://registry.npmjs.org/
-
 # Installing dependencies
-COPY package*.json ./
-RUN npm ci 
-# --timeout=300000
+COPY ./package.json ./yarn.lock ./
+RUN yarn
 
 # Copying all the files in our project
 COPY . .
 
 # Building our application
-RUN npm run build
+RUN yarn run build
 
 # Fetching the latest nginx image
 FROM nginx
 
 # Copying built assets from builder
-COPY --from=build /app/build /usr/share/nginx/html
+COPY — from=builder /app/build /usr/share/nginx/html
 
 # Copying our nginx.conf
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
 
 # # Stage 1:
 # FROM node:14 as builder
