@@ -164,12 +164,13 @@ const UserEventView: React.FC = () => {
 
           <div className={`col-md-12 ${styles.planCard}`}>
             <div>
-              <OrderSeatingPlan
-                row={plan.row}
-                col={plan.col}
-                sectionSeats={plan.sectionSeats}
-                isLegendVisible={true}
-              />
+              {/*<OrderSeatingPlan*/}
+              {/*  row={plan.row}*/}
+              {/*  col={plan.col}*/}
+              {/*  sectionSeats={plan.sectionSeats}*/}
+              {/*  isLegendVisible={true}*/}
+              {/*/>*/}
+
             </div>
           </div>
         </div>

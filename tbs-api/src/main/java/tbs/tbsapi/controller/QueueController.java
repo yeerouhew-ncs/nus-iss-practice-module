@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tbs.tbsapi.manager.QueueManager;
 import tbs.tbsapi.service.RabbitMQProducer;
+import tbs.tbsapi.vo.request.QueueRequest;
+
+import java.util.UUID;
+
 @Log4j2
 @RestController
 @RequestMapping("api/queue")
@@ -29,11 +32,19 @@ public class QueueController {
 
         return ResponseEntity.ok("Status: OK");
     }
-    @GetMapping("/event/{eventid}")
-    public ResponseEntity<String> joinQueue(@RequestParam("eventid") String message){
-        rabbitMQProducer.sendMessage(message);
-        return ResponseEntity.ok("added to queue");
+    @PostMapping("/event")
+    public ResponseEntity<String> joinQueue(@RequestBody QueueRequest request){
+        request.setTicketnumber(String.valueOf(UUID.randomUUID().toString()));
+        rabbitMQProducer.sendJsonMessage(request);
+        return ResponseEntity.ok(String.format("added to queue %s",request.getEventId()));
     }
+
+    @PostMapping("/check-queue")
+    public ResponseEntity<String> checkQueue(@RequestBody QueueRequest request){
+
+        return ResponseEntity.ok("");
+    }
+
 }
 
 
