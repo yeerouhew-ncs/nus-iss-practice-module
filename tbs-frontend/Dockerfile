@@ -20,7 +20,7 @@ RUN yarn run build
 # Fetching the latest nginx image
 FROM nginx
 
-# Copying built assets from builder
+# Copying built assets from build
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copying our nginx.conf
