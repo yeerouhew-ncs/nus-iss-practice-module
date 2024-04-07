@@ -29,4 +29,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return UserDetailsImpl.build(subject);
     }
+
+    public Subject getSubjectDetails(String email) {
+        Subject subject = subjectRepository.findByEmail(email);
+
+        if(subject == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+
+        return subject;
+    }
 }

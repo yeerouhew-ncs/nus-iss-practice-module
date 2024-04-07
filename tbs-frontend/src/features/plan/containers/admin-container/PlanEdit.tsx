@@ -57,6 +57,15 @@ const PlanEdit: React.FC = () => {
   const handleEditPlan = (data: any) => {
     console.log("plandetails: handle edit", planDetails);
     console.log("categoryList", categoryList);
+    const categoryAndSeatList = categoryList.map((category) => {
+      return {
+        ...category,
+        seatResponses: planDetails?.sectionSeatResponses?.filter(
+          (section) => section.seatSectionDescription === category.sectionDesc
+        )[0]?.seatResponses,
+      };
+    });
+    console.log("categoryAndSeatList", categoryAndSeatList);
     navigate("/admin/plan/create/preview", {
       state: {
         planDetails: {
@@ -64,9 +73,9 @@ const PlanEdit: React.FC = () => {
           row: data?.row,
           col: data?.col,
           venue: data?.venue,
-          sectionSeats: categoryList,
+          sectionSeats: categoryAndSeatList,
           plan: planDetails?.planId,
-          // ...planDetails
+          // sectionSeatResponses: planDetails?.sectionSeatResponses,
         },
         ops: "Edit",
       },
@@ -89,84 +98,6 @@ const PlanEdit: React.FC = () => {
           setValue("row", response.seatingPlanDetails.planRow.toString());
           setValue("col", response.seatingPlanDetails.planCol.toString());
           setValue("venue", response.seatingPlanDetails.venueId);
-
-          const categoryList: Category[] = [];
-          console.log(
-            "response.seatingPlanDetails.sectionSeatResponses",
-            response.seatingPlanDetails.sectionSeatResponses
-          );
-
-          // TODO: FIX THIS
-          // let currentRow = 0;
-          // const catList: Category[] =
-          //   response.seatingPlanDetails.sectionSeatResponses.map(
-          //     (item, index) => {
-          //       let groupSize = response.seatingPlanDetails.sectionSeatResponses
-          //         .slice(0, index + 1)
-          //         .reduce((acc, curr) => {
-          //           return acc + (curr.sectionRow === item.sectionRow ? 1 : 0);
-          //         }, 0);
-
-          //       return {
-          //         // ...item,
-          //         sectionId: Number(item.sectionId),
-          //         sectionDesc: item.seatSectionDescription,
-          //         sectionRow: currentRow + groupSize,
-          //         seatPrice: item.seatPrice,
-          //       };
-          //     }
-          //   );
-
-          // let currentRow = 1; // Start row numbering from 2
-          // let prevSectionRow = 0; // Initialize previous sectionRow
-
-          // const catList: Category[] =
-          //   response.seatingPlanDetails.sectionSeatResponses.map(
-          //     (item, index) => {
-          //       let row;
-          //       if (index === 0) {
-          //         // First item, calculate row based on currentRow and sectionRow
-          //         row = currentRow + item.sectionRow - 1;
-          //       } else {
-          //         // Calculate the difference in sectionRow from the previous item
-          //         let sectionRowDiff = item.sectionRow - prevSectionRow;
-          //         row = currentRow + sectionRowDiff - 1;
-          //       }
-          //       currentRow = row + 1; // Update currentRow for the next iteration
-          //       prevSectionRow = item.sectionRow; // Update prevSectionRow for the next iteration
-
-          //       return {
-          //         sectionId: Number(item.sectionId),
-          //         sectionDesc: item.seatSectionDescription,
-          //         sectionRow: row,
-          //         seatPrice: item.seatPrice,
-          //       };
-          //     }
-          //   );
-
-          // const transformedList =
-          //   response.seatingPlanDetails.sectionSeatResponses.map(
-          //     (item, index) => {
-          //       let row;
-          //       if (index === 0) {
-          //         row = currentRow + 1; // Start from 2 for the first section
-          //       } else {
-          //         let sectionRowDiff =
-          //           item.sectionRow -
-          //           response.seatingPlanDetails.sectionSeatResponses[index - 1]
-          //             .sectionRow;
-          //         row = currentRow + sectionRowDiff; // Calculate the row based on the difference in sectionRow
-          //       }
-          //       currentRow = row + 1; // Update currentRow for the next iteration
-
-          //       return {
-          //         sectionId: item.sectionId,
-          //         sectionDesc: item.seatSectionDescription,
-          //         sectionRow: row,
-          //         seatPrice: item.seatPrice,
-          //       };
-          //     }
-          //   );
 
           let currentRow = 1; // Start row numbering from 2
 

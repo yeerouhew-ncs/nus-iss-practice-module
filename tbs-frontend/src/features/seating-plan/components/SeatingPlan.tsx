@@ -72,7 +72,7 @@ const SeatingPlan: React.FC<SeatingPlanProps> = ({
         default: {
           label: "Unassigned",
           cssClass: `default`,
-          price: 10,
+          price: 0,
         },
         ...Object.fromEntries(
           Object.values(transformedSeats).map((seat: any, index: number) => [

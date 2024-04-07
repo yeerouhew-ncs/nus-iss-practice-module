@@ -77,6 +77,8 @@ export interface GetSeatResponse {
   seatName: string;
   seatStatus: string;
   sectionId: string;
+  seatRow: number;
+  seatCol: number;
 }
 
 export interface IAddPlanResponse {
@@ -93,9 +95,16 @@ export interface IEditPlanRequest {
   sectionSeats: EditSectionSeatReq[];
 }
 
+export interface EditSeatReq {
+  seatId: string;
+  seatName: string;
+  seatRow: number;
+  seatCol: number;
+}
+
 export interface EditSectionSeatReq extends Omit<SectionSeatReq, "seats"> {
   sectionId: string;
-  seats: SeatReq[];
+  seats: EditSeatReq[];
 }
 
 export interface IEditPlanCategoryRequest {

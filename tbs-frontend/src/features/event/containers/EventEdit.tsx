@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./EventEdit.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm, UseFormRegister } from 'react-hook-form';
+import { useForm, UseFormRegister } from "react-hook-form";
 import { editEventApi, getEventDetailsApi } from "../event.api";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -19,6 +19,7 @@ import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { getPlanDetailsApi } from "../../plan/plan.api";
 import { List } from "reactstrap";
+import { useAuthContext } from "../../../context/AuthContext";
 
 type SeatingPlanType = {
   row: number;
@@ -31,6 +32,7 @@ type SeatingPlanType = {
 const EventEdit: React.FC = () => {
   const navigate = useNavigate();
   const param = useParams();
+  const { userInfo } = useAuthContext();
   const eventId = param?.eventId;
 
   const [event, setEvent] = useState<EventResponse>();
@@ -55,8 +57,10 @@ const EventEdit: React.FC = () => {
     reset: any;
   } = useForm();
 
-  const [watchEventFromDt, watchEventToDt]
-    = form.watch(['eventFromDt', 'eventToDt'])
+  const [watchEventFromDt, watchEventToDt] = form.watch([
+    "eventFromDt",
+    "eventToDt",
+  ]);
 
   // const getListEvent = async () => {
   //   try {
@@ -93,15 +97,28 @@ const EventEdit: React.FC = () => {
   }, []);
 
   const createEditEventDto = async () => {
- 
-    const formEventName = ((document.getElementById("eventName") as HTMLInputElement)?.value || event?.eventName) ?? "";
-    const formArtistName = ((document.getElementById("artistName") as HTMLInputElement)?.value || event?.artistName) ?? "";
-    const formEventFromDt = ((document.getElementById("eventFromDt") as HTMLInputElement)?.value ?
-    moment((document.getElementById("eventFromDt") as HTMLInputElement)?.value, "DD/MM/YYYY").format("YYYY-MM-DD HH:mm:ss") :
-    moment(event?.eventFromDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
-    const formEventToDt = ((document.getElementById("eventToDt") as HTMLInputElement)?.value ?
-    moment((document.getElementById("eventToDt") as HTMLInputElement)?.value, "DD/MM/YYYY").format("YYYY-MM-DD HH:mm:ss") :
-    moment(event?.eventToDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
+    const formEventName =
+      ((document.getElementById("eventName") as HTMLInputElement)?.value ||
+        event?.eventName) ??
+      "";
+    const formArtistName =
+      ((document.getElementById("artistName") as HTMLInputElement)?.value ||
+        event?.artistName) ??
+      "";
+    const formEventFromDt =
+      ((document.getElementById("eventFromDt") as HTMLInputElement)?.value
+        ? moment(
+            (document.getElementById("eventFromDt") as HTMLInputElement)?.value,
+            "DD/MM/YYYY"
+          ).format("YYYY-MM-DD HH:mm:ss")
+        : moment(event?.eventFromDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
+    const formEventToDt =
+      ((document.getElementById("eventToDt") as HTMLInputElement)?.value
+        ? moment(
+            (document.getElementById("eventToDt") as HTMLInputElement)?.value,
+            "DD/MM/YYYY"
+          ).format("YYYY-MM-DD HH:mm:ss")
+        : moment(event?.eventToDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
 
     var formData = new FormData();
 
@@ -126,7 +143,10 @@ const EventEdit: React.FC = () => {
       console.log("FAIL");
     }
 
-    navigate("/organiser/event/list");
+    if (userInfo?.authorities[0].authority === "ADMIN")
+      navigate("/admin/event/list");
+    else if (userInfo?.authorities[0].authority === "ORGANISER")
+      navigate("/organiser/event/list");
   };
 
   const handleSubmit = () => {
@@ -140,17 +160,20 @@ const EventEdit: React.FC = () => {
   };
 
   const handleFromDateChange = (date: any) => {
-    setFromDt(date); 
+    setFromDt(date);
     console.log("DATES", fromDt, toDt);
   };
 
   const handleToDateChange = (date: any) => {
-    setToDt(date); 
+    setToDt(date);
     console.log("DATES", fromDt, toDt);
   };
 
   const navigateBack = () => {
-    navigate("/organiser/event/list", { replace: true });
+    if (userInfo?.authorities[0].authority === "ADMIN")
+      navigate("/admin/event/list", { replace: true });
+    else if (userInfo?.authorities[0].authority === "ORGANISER")
+      navigate("/organiser/event/list", { replace: true });
   };
 
   const showModal = (plan: PlanList) => {
@@ -230,16 +253,33 @@ const EventEdit: React.FC = () => {
         <form>
           <div className="col-md-12 mb-3">
             <label className="form-label">Event Name</label>
-            <input type="text" id="eventName" className="form-control" placeholder={`${event?.eventName}`}></input>
+            <input
+              type="text"
+              id="eventName"
+              className="form-control"
+              placeholder={`${event?.eventName}`}
+            ></input>
           </div>
           <div className="col-md-12 mb-3">
             <label className="form-label">Artist Name</label>
-            <input type="text" id="artistName" className="form-control" placeholder={`${event?.artistName}`}></input>
+            <input
+              type="text"
+              id="artistName"
+              className="form-control"
+              placeholder={`${event?.artistName}`}
+            ></input>
           </div>
           <div className="row row-md">
             <div className="col-md-6 mb-3">
               <label className="form-label">Event Start Date</label>
-              <input type="text" className="form-control" value={`Current: ${moment(event?.eventFromDt).format('DD/MM/YYYY')}`} disabled></input>
+              <input
+                type="text"
+                className="form-control"
+                value={`Current: ${moment(event?.eventFromDt).format(
+                  "DD/MM/YYYY"
+                )}`}
+                disabled
+              ></input>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   format="DD/MM/YYYY"
@@ -267,7 +307,14 @@ const EventEdit: React.FC = () => {
             </div>
             <div className="col-md-6 mb-3">
               <label className="form-label">Event End Date</label>
-              <input type="text" className="form-control" value={`Current: ${moment(event?.eventToDt).format('DD/MM/YYYY')}`} disabled></input>
+              <input
+                type="text"
+                className="form-control"
+                value={`Current: ${moment(event?.eventToDt).format(
+                  "DD/MM/YYYY"
+                )}`}
+                disabled
+              ></input>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   format="DD/MM/YYYY"

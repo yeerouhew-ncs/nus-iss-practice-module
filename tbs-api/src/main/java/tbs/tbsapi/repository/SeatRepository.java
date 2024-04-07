@@ -8,20 +8,25 @@ import org.springframework.stereotype.Repository;
 import tbs.tbsapi.domain.Seat;
 import tbs.tbsapi.domain.SectionSeat;
 import tbs.tbsapi.domain.Venue;
+import tbs.tbsapi.domain.enums.SeatStatus;
 
 import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, String> {
     @Modifying
-    @Query("UPDATE Seat s SET s.seatName= :seatName, s.seatStatus = :seatStatus, s.sectionId = :sectionId " +
+    @Query("UPDATE Seat s SET s.seatName= :seatName, s.seatRow= :seatRow, s.seatCol= :seatCol, s.seatStatus = :seatStatus, s.sectionId = :sectionId " +
             "WHERE s.seatId = :seatId")
     Integer updateSeat(@Param("seatId") Integer seatId,
                        @Param("seatName") String seatName,
-                       @Param("seatStatus") String seatStatus,
+                       @Param("seatRow") Integer seatRow,
+                       @Param("seatCol") Integer seatCol,
+                       @Param("seatStatus") SeatStatus   seatStatus,
                        @Param("sectionId") Integer sectionId);
 
     Integer deleteBySectionId(Integer sectionId);
 
     List<Seat> findAllBySectionId(Integer sectionId);
+
+    List<Seat> findAll();
 }

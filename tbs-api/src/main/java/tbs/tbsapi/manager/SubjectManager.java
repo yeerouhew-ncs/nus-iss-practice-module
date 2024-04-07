@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import tbs.tbsapi.domain.Subject;
 import tbs.tbsapi.service.UserDetailsServiceImpl;
 import tbs.tbsapi.util.JwtUtils;
 
@@ -27,12 +28,15 @@ public class SubjectManager {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
+            Subject subjectDetails = userDetailsService.getSubjectDetails(email);
+
             log.info("userDetails: {} ", userDetails);
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", "200",
                     "message", "SUCCESS",
-                    "userDetails", userDetails
+                    "userDetails", userDetails,
+                    "subjectDetails", subjectDetails
             ));
         } catch(BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(

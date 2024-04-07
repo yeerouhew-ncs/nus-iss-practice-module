@@ -28,7 +28,7 @@ import OrganiserEventView from "./features/event/containers/OrganiserEventView";
 import PaymentStart from "./features/payment/PaymentStart";
 import PaymentSuccess from "./features/payment/PaymentSuccess";
 import UserEventView from "./features/event/containers/UserEventView";
-
+import OrderPreview from "./features/payment/OrderPreview";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -48,7 +48,10 @@ const AppRoutes = () => {
         // user(response.userDetails);
         console.log("userapi", response.userDetails);
         setAuth(true);
-        setUser(response.userDetails);
+        setUser({
+          ...response.userDetails,
+          fullName: response.subjectDetails.fullName,
+        });
         // if (response.userDetails.authorities[0].authority === UserRole.ADMIN) {
         //   navigate("/event/list");
         // } else if (
@@ -220,9 +223,13 @@ const AppRoutes = () => {
                 path="/user/event/view/:eventId"
                 element={<UserEventView />}
               />
+              <Route path="/user/order/preview" element={<OrderPreview />} />
               <Route path="/user/venue/list" element={<UserEvent />} />
-              <Route path="/user/payment/start" element={<PaymentStart/>} />
-              <Route path="/user/payment/success" element={<PaymentSuccess />} />
+              <Route path="/user/payment/start" element={<PaymentStart />} />
+              <Route
+                path="/user/payment/success"
+                element={<PaymentSuccess />}
+              />
             </Route>
           </Route>
 

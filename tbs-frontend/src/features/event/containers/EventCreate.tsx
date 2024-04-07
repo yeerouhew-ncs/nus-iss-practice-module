@@ -14,6 +14,7 @@ import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
+import { useAuthContext } from "../../../context/AuthContext";
 
 type SeatingPlanType = {
   row: number;
@@ -25,6 +26,7 @@ type SeatingPlanType = {
 
 const EventCreate: React.FC = () => {
   const navigate = useNavigate();
+  const { userInfo } = useAuthContext();
 
   const [planList, setPlanList] = useState<PlanList[]>();
   const [error, setErrors] = useState<boolean>(false);
@@ -97,11 +99,17 @@ const EventCreate: React.FC = () => {
       console.log("FAIL");
     }
 
-    navigate("/admin/event/list");
+    if (userInfo?.authorities[0].authority === "ADMIN")
+      navigate("/admin/event/list");
+    else if (userInfo?.authorities[0].authority === "ORGANISER")
+      navigate("/organiser/event/list");
   };
 
   const navigateBack = () => {
-    navigate("/admin/event/list", { replace: true });
+    if (userInfo?.authorities[0].authority === "ADMIN")
+      navigate("/admin/event/list", { replace: true });
+    else if (userInfo?.authorities[0].authority === "ORGANISER")
+      navigate("/organiser/event/list", { replace: true });
   };
 
   const showModal = (plan: PlanList) => {
