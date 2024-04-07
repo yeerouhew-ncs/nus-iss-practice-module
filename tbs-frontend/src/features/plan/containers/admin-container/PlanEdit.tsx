@@ -144,33 +144,48 @@ const PlanEdit: React.FC = () => {
           //     }
           //   );
 
-          let currentRow = 1; // Start row numbering from 2
-          let prevSectionRow = 0; // Initialize previous sectionRow
-          let rowOffset = 0; // Initialize row offset to adjust for cumulative rows taken by previous section rows
+          // const transformedList =
+          //   response.seatingPlanDetails.sectionSeatResponses.map(
+          //     (item, index) => {
+          //       let row;
+          //       if (index === 0) {
+          //         row = currentRow + 1; // Start from 2 for the first section
+          //       } else {
+          //         let sectionRowDiff =
+          //           item.sectionRow -
+          //           response.seatingPlanDetails.sectionSeatResponses[index - 1]
+          //             .sectionRow;
+          //         row = currentRow + sectionRowDiff; // Calculate the row based on the difference in sectionRow
+          //       }
+          //       currentRow = row + 1; // Update currentRow for the next iteration
 
-          const catList: Category[] =
+          //       return {
+          //         sectionId: item.sectionId,
+          //         sectionDesc: item.seatSectionDescription,
+          //         sectionRow: row,
+          //         seatPrice: item.seatPrice,
+          //       };
+          //     }
+          //   );
+
+          let currentRow = 1; // Start row numbering from 2
+
+          const transformedList: Category[] =
             response.seatingPlanDetails.sectionSeatResponses.map(
-              (item, index) => {
+              (item, index, array) => {
                 let row;
                 if (index === 0) {
-                  // First item, calculate row based on currentRow and sectionRow
-                  row = currentRow + item.sectionRow - 1;
+                  if (item.sectionRow === 0) {
+                    row = 1;
+                  } else {
+                    row = array[index].sectionRow + 1;
+                  }
                 } else {
-                  // Calculate the difference in sectionRow from the previous item
-                  let sectionRowDiff = item.sectionRow - prevSectionRow;
-                  row = currentRow + sectionRowDiff + rowOffset - 1;
+                  // Calculate the number of rows taken by the current section
+                  let prevSectionRow = array[index - 1].sectionRow;
+                  let numRowsTaken = item.sectionRow - prevSectionRow;
+                  row = currentRow + numRowsTaken - 1;
                 }
-                prevSectionRow = item.sectionRow; // Update prevSectionRow for the next iteration
-
-                // Calculate the cumulative rows taken by previous section rows
-                let groupSize = response.seatingPlanDetails.sectionSeatResponses
-                  .slice(0, index)
-                  .reduce((acc, curr) => {
-                    return acc + (curr.sectionRow === item.sectionRow ? 1 : 0);
-                  }, 0);
-                rowOffset += groupSize;
-
-                currentRow = row + 1; // Update currentRow for the next iteration
 
                 return {
                   sectionId: Number(item.sectionId),
@@ -181,48 +196,9 @@ const PlanEdit: React.FC = () => {
               }
             );
 
-          // let prevSectionRow = 0;
-          // let rowStartIndex = 1;
+          console.log("transformedList: ", transformedList);
 
-          // const result = response.seatingPlanDetails.sectionSeatResponses
-          //   .map((item, index) => {
-          //     const row = item.sectionRow - prevSectionRow;
-          //     prevSectionRow = item.sectionRow;
-
-          //     const newRow = Array.from({ length: row - 1 }, (_, index) => ({
-          //       sectionRow: rowStartIndex + index + 1, // Adjust the row numbering to start from 2
-          //       sectionId: Number(item.sectionId),
-          //       sectionDesc: item.seatSectionDescription,
-          //       seatPrice: item.seatPrice,
-          //     }));
-
-          //     const newItem = {
-          //       sectionId: Number(item.sectionId),
-          //       sectionDesc: item.seatSectionDescription,
-          //       sectionRow: rowStartIndex + index + 1,
-          //       seatPrice: item.seatPrice,
-          //     };
-          //     rowStartIndex += row - 1;
-
-          //     return newRow;
-          //   })
-          //   .flat();
-
-          // console.log("TRANSFORMED RESULT", result);
-
-          // for (let sectionSeat of response.seatingPlanDetails
-          //   .sectionSeatResponses) {
-          //   const cat: Category = {
-          //     sectionId: Number(sectionSeat.sectionId),
-          //     sectionDesc: sectionSeat.seatSectionDescription,
-          //     // TODO: update sectionRow to be accurate
-          //     sectionRow: sectionSeat.sectionRow,
-          //     seatPrice: sectionSeat.seatPrice,
-          //   };
-          //   categoryList.push(cat);
-          // }
-          setCategoryList(catList);
-          console.log("categoryList", catList);
+          setCategoryList(transformedList);
         }
       } catch (error) {
         // TODO: error handling
