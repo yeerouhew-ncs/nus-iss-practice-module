@@ -4,7 +4,7 @@ FROM node:20-alpine as build
 # Setting up the work directory
 WORKDIR /app
 
-# Installing dependencies
+# Copying all dependencies file and installing dependencies
 COPY ./package.json ./yarn.lock ./
 RUN yarn
 
