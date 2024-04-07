@@ -14,7 +14,8 @@ FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # Copy the packaged JAR file into the container
-COPY target/tbs-api-0.0.1-SNAPSHOT.jar /app/tbs-api-0.0.1-SNAPSHOT.jar
+COPY target/tbs-api-0.0.1-SNAPSHOT.jar app.jar
+#COPY target/tbs-api-0.0.1-SNAPSHOT.jar /app/tbs-api-0.0.1-SNAPSHOT.jar
 
 # Run the Spring Boot application
-CMD ["java", "-jar", "/app/tbs-api-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
