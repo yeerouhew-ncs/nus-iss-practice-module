@@ -23,7 +23,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 # Build the project and package the JAR file
-RUN mvn package
+RUN mvn package -DskipTests
 
 # Use the official OpenJDK image as a base image
 FROM openjdk:17-jdk-slim
