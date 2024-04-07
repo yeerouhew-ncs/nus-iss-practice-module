@@ -1,13 +1,4 @@
-#FROM openjdk:17-jdk-alpine
-#
-#VOLUME /tmp
-#ADD target/tbs-api-0.0.1-SNAPSHOT.jar app.jar
-#
-#ENTRYPOINT ["java","-jar","app.jar"]
-#
-#EXPOSE 8081
-
-# Use the official Maven image as a base image
+# Use the official Maven image as a base image 
 FROM maven:3.8.5-openjdk-17-slim AS build
 
 # Set the working directory in the container
