@@ -1,5 +1,5 @@
 # Ticket Booking System
-## tbs-api
+## tbs-api (Backend)
 1. Open using intelliJ.
 2. Right click pom.xml, select 'Add as Maven Project'.
 
@@ -18,6 +18,7 @@
 8. Go to tbs-api/src/main/resources/application.yml, make sure your username and password is correct.
 9. Maven run TbsApiApplication
 
-## tbs-frontend
+## tbs-frontend (Frontend)
 1. Run npm install
 2. Run npm start
+
