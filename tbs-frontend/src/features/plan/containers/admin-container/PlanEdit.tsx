@@ -57,6 +57,15 @@ const PlanEdit: React.FC = () => {
   const handleEditPlan = (data: any) => {
     console.log("plandetails: handle edit", planDetails);
     console.log("categoryList", categoryList);
+    const categoryAndSeatList = categoryList.map((category) => {
+      return {
+        ...category,
+        seatResponses: planDetails?.sectionSeatResponses?.filter(
+          (section) => section.seatSectionDescription === category.sectionDesc
+        )[0]?.seatResponses,
+      };
+    });
+    console.log("categoryAndSeatList", categoryAndSeatList);
     navigate("/admin/plan/create/preview", {
       state: {
         planDetails: {
@@ -64,9 +73,9 @@ const PlanEdit: React.FC = () => {
           row: data?.row,
           col: data?.col,
           venue: data?.venue,
-          sectionSeats: categoryList,
+          sectionSeats: categoryAndSeatList,
           plan: planDetails?.planId,
-          // ...planDetails
+          // sectionSeatResponses: planDetails?.sectionSeatResponses,
         },
         ops: "Edit",
       },
@@ -90,44 +99,37 @@ const PlanEdit: React.FC = () => {
           setValue("col", response.seatingPlanDetails.planCol.toString());
           setValue("venue", response.seatingPlanDetails.venueId);
 
-          const categoryList: Category[] = [];
-          console.log(
-            "response.seatingPlanDetails.sectionSeatResponses",
-            response.seatingPlanDetails.sectionSeatResponses
-          );
+          let currentRow = 1; // Start row numbering from 2
 
-          let currentRow = 0;
-          const catList: Category[] =
+          const transformedList: Category[] =
             response.seatingPlanDetails.sectionSeatResponses.map(
-              (item, index) => {
-                let groupSize = response.seatingPlanDetails.sectionSeatResponses
-                  .slice(0, index + 1)
-                  .reduce((acc, curr) => {
-                    return acc + (curr.sectionRow === item.sectionRow ? 1 : 0);
-                  }, 0);
+              (item, index, array) => {
+                let row;
+                if (index === 0) {
+                  if (item.sectionRow === 0) {
+                    row = 1;
+                  } else {
+                    row = array[index].sectionRow + 1;
+                  }
+                } else {
+                  // Calculate the number of rows taken by the current section
+                  let prevSectionRow = array[index - 1].sectionRow;
+                  let numRowsTaken = item.sectionRow - prevSectionRow;
+                  row = currentRow + numRowsTaken - 1;
+                }
 
                 return {
-                  // ...item,
                   sectionId: Number(item.sectionId),
                   sectionDesc: item.seatSectionDescription,
-                  sectionRow: currentRow + groupSize,
+                  sectionRow: row,
                   seatPrice: item.seatPrice,
                 };
               }
             );
-          // for (let sectionSeat of response.seatingPlanDetails
-          //   .sectionSeatResponses) {
-          //   const cat: Category = {
-          //     sectionId: Number(sectionSeat.sectionId),
-          //     sectionDesc: sectionSeat.seatSectionDescription,
-          //     // TODO: update sectionRow to be accurate
-          //     sectionRow: sectionSeat.sectionRow,
-          //     seatPrice: sectionSeat.seatPrice,
-          //   };
-          //   categoryList.push(cat);
-          // }
-          setCategoryList(catList);
-          console.log("categoryList", catList);
+
+          console.log("transformedList: ", transformedList);
+
+          setCategoryList(transformedList);
         }
       } catch (error) {
         // TODO: error handling

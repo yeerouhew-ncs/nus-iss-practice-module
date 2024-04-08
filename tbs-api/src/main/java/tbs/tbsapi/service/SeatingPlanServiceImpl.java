@@ -73,7 +73,7 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                         .seatName(seat.getSeatName())
                         .seatRow(seat.getSeatRow())
                         .seatCol(seat.getSeatCol())
-                        .seatStatus(SeatStatus.AVAILABLE)
+                        .seatStatus(SeatStatus.available)
                         .sectionId(saveSectionSeat.getSectionId())
                         .build();
 
@@ -164,23 +164,37 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                 // delete all the seats associated and add back
                 if(sectionSeat.getSectionId() != null) {
                     log.info("SECTION ID EMPTY " + sectionId);
-                    seatRepository.deleteBySectionId(sectionId);
+//                    seatRepository.deleteBySectionId(sectionId);
                     log.info("SECTION ID NOT EMPTY " + sectionId);
                 }
 
                 for(EditSeatDto seat: sectionSeat.getSeats()) {
-                    Seat preSaveSeat = Seat.builder()
-                            .seatName(seat.getSeatName())
-                            .seatRow(seat.getSeatRow())
-                            .seatCol(seat.getSeatCol())
-                            .seatStatus(SeatStatus.AVAILABLE)
-                            .sectionId(sectionId)
-                            .build();
-                    log.info("preSaveSeat {} ", preSaveSeat);
-                    Seat updateSeat = seatRepository.save(preSaveSeat);
+                    Seat createdSeat = null;
+                    Integer updateSeat = 0;
 
+                    if(seat.getSeatId() == null) {
+                        Seat preSaveSeat = Seat.builder()
+                                .seatName(seat.getSeatName())
+                                .seatRow(seat.getSeatRow())
+                                .seatCol(seat.getSeatCol())
+                                .seatStatus(SeatStatus.available)
+                                .sectionId(sectionId)
+                                .build();
+                        log.info("preSaveSeat {} ", preSaveSeat);
+                        createdSeat = seatRepository.save(preSaveSeat);
+                    } else {
 
-                    if(updateSeat == null) {
+                        updateSeat = seatRepository.updateSeat(
+                                seat.getSeatId(),
+                                seat.getSeatName(),
+                                seat.getSeatRow(),
+                                seat.getSeatCol(),
+                                seat.getSeatStatus(),
+                                sectionId
+                        );
+                    }
+
+                    if(createdSeat == null && updateSeat != 1) {
                         response.add("400");
                         response.add("SEAT NOT UPDATED");
                         return response;
@@ -250,7 +264,7 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
             for(EditSeatDto seat: sectionSeat.getSeats()) {
                 Seat preSaveSeat = Seat.builder()
                         .seatName(seat.getSeatName())
-                        .seatStatus(SeatStatus.AVAILABLE)
+                        .seatStatus(SeatStatus.available)
                         .sectionId(sectionId)
                         .build();
                 log.info("preSaveSeat {} ", preSaveSeat);

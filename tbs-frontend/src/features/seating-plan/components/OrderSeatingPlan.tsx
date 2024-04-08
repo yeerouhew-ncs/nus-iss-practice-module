@@ -1,8 +1,18 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import SeatchartJS, { Options, SeatInfo } from "seatchart";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import SeatchartJS, { Options, SeatInfo, SeatState } from "seatchart";
 import "./OrderSeatingPlan.scss";
 import Seatchart from "./Seatchart";
+import { GetSeatResponse } from "../../../interfaces/seating-plan-interface";
+import { OrderType } from "../../event/containers/UserEventView";
+import styles from "../../event/containers/UserEventView.module.scss";
+import { useNavigate } from "react-router-dom";
+import { EventResponse } from "../../../interfaces/event-interface";
 
 /*
 https://seatchart.js.org/classes/Seatchart.html
@@ -12,15 +22,25 @@ type DisabledSeats = {
   col: number;
 };
 
+type SectionSeatType = {
+  sectionId?: number | null;
+  sectionDesc: string;
+  sectionRow: number;
+  seatPrice: number;
+  seatResponses: GetSeatResponse[];
+};
+
 type SeatingPlanProps = {
   row: number;
   col: number;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
   isLegendVisible: boolean;
   columnSpacers?: number[];
   disabledSeats?: DisabledSeats[];
   rowSpacers?: number[];
   setSeatList?: Dispatch<SetStateAction<SeatInfo[]>>;
+  // setOrder?: Dispatch<SetStateAction<OrderType | undefined>>;
+  event: EventResponse | undefined;
 };
 const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
   row,
@@ -31,9 +51,14 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
   disabledSeats,
   rowSpacers,
   setSeatList,
+  event,
 }) => {
   console.log("SEATING PLAN ROW ", row, col);
+  console.log("SEATIN PLAN SECTION SEATS ", sectionSeats);
   const seatchartRef = useRef<SeatchartJS>();
+  const navigate = useNavigate();
+
+  const [order, setOrder] = useState<OrderType>();
 
   const transformedSeats = sectionSeats.reduce(
     (acc: any, seat: any, index: number) => {
@@ -72,7 +97,7 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
         default: {
           label: "Unassigned",
           cssClass: `default`,
-          price: 10,
+          price: 0,
         },
         ...Object.fromEntries(
           Object.values(transformedSeats).map((seat: any, index: number) => [
@@ -126,12 +151,73 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
       setSeatList(getAllSeatInfo);
       console.log("option", options);
     }
-    // const selectedSeats = seatchartRef.current?.getCart();
+    console.log("SEATIN PLAN SECTION SEATS ", sectionSeats);
+
+    // combine list of seats from each category
+    const combinedSeatResponses = sectionSeats.reduce(
+      (acc: GetSeatResponse[], section: SectionSeatType) =>
+        acc.concat(section.seatResponses),
+      []
+    );
+
+    // show seat availability on seatchart
+    for (let seat of combinedSeatResponses) {
+      const seatStatus = seat.seatStatus as SeatState;
+      seatchartRef.current?.setSeat(
+        { row: seat.seatRow, col: seat.seatCol },
+        { state: seatStatus }
+      );
+    }
   }, []);
+
+  const navigateBack = () => {
+    navigate("/user/event/list", { replace: true });
+  };
+
+  const navigateToOrder = () => {
+    const selectedSeats = seatchartRef.current?.getCart();
+    const totalPrice = seatchartRef.current?.getCartTotal();
+    console.log("selectedSeats", selectedSeats);
+    setOrder({
+      orderSeatInfo: selectedSeats,
+      orderTotalPrice: totalPrice,
+      event: event,
+    });
+
+    navigate("/user/order/preview", {
+      replace: true,
+      state: {
+        order: {
+          orderSeatInfo: selectedSeats,
+          orderTotalPrice: totalPrice,
+          event: event,
+        },
+      },
+    });
+  };
+
+  // useEffect(() => {
+  //   const selectedSeats = seatchartRef.current?.getCart();
+  //   console.log("selectedSeats");
+  // }, [seatchartRef.current]);
 
   return (
     <div>
       <Seatchart ref={seatchartRef} options={options} />
+      <div className={styles.viewBtnGroup}>
+        <div
+          className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+          onClick={navigateBack}
+        >
+          Back
+        </div>
+        <div
+          className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+          onClick={navigateToOrder}
+        >
+          Proceed
+        </div>
+      </div>
     </div>
   );
 };

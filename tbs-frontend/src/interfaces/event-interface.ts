@@ -25,6 +25,8 @@ export interface EventResponse {
   eventToDt: string;
   planId: string;
   userId: string;
+  eventType: string;
+  genre: string;
 }
 
 export interface AddEventRequest {
@@ -37,6 +39,11 @@ export interface AddEventRequest {
 }
 
 export interface AddEventResponse {
+  statusCode: string;
+  message: string;
+}
+
+export interface EditEventResponse {
   statusCode: string;
   message: string;
 }

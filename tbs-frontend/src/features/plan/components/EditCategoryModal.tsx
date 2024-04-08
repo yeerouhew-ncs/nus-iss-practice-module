@@ -183,6 +183,7 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({
                     type="text"
                     id="sectionRow"
                     name="sectionRow"
+                    disabled
                     // onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     //   rowOnChange(e, field)
                     // }

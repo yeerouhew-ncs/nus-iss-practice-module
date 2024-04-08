@@ -1,0 +1,62 @@
+@import "../../styles/colors.scss";
+
+.header {
+  color: var(--secondary-color);
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 0 15px;
+}
+
+.section {
+  margin: 10px 15px;
+  border: 1px solid var(--light-gray);
+  border-radius: 5px;
+  padding: 15px 20px;
+  background-color: #ececec;
+}
+
+.value {
+  font-weight: 600;
+}
+
+.detailsRow {
+  margin-bottom: 5px;
+}
+
+.orderTable {
+  margin: 10px 15px;
+}
+
+.orderTable td {
+  padding: 5px;
+}
+
+.footerHeader {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.viewBtnGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.primaryBtn {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: none !important;
+}
+
+.primaryBtn:hover {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: underline !important;
+}
+
+.btnMarginRight {
+  margin-right: 5px;
+}
+
+.itemHeader {
+  font-weight: 600;
+}

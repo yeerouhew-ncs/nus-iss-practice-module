@@ -38,11 +38,21 @@ export interface IUserInfoResponse {
   message: string;
   statusCode: string;
   userDetails: UserDetails;
+  subjectDetails: SubjectDetails;
+}
+
+export interface SubjectDetails {
+  subjectId: string;
+  email: string;
+  fullName: string;
+  status: string;
+  subjectRole: string;
 }
 
 export interface UserDetails {
   id: string;
   email: string;
+  fullName: string;
   authorities: [
     {
       authority: string;

@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
-import styles from "./EventCreate.module.scss";
-import { useNavigate } from "react-router-dom";
-import { addEventApi } from "../event.api";
+import styles from "./EventEdit.module.scss";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm, UseFormRegister } from "react-hook-form";
+import { editEventApi, getEventDetailsApi } from "../event.api";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
+import { twoWeekslater } from "../../../utils/date-utils";
+// import { getSeatingPlanListApi } from "../../seating-plan/seating-plan.api";
 import {
   IGetPlanDetailsRequest,
   PlanList,
 } from "../../../interfaces/seating-plan-interface";
+import { EventResponse } from "../../../interfaces/event-interface";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
+import { List } from "reactstrap";
 import { useAuthContext } from "../../../context/AuthContext";
 import { Form } from "react-bootstrap";
 
@@ -25,17 +30,40 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const EventCreate: React.FC = () => {
+const EventEdit: React.FC = () => {
   const navigate = useNavigate();
+  const param = useParams();
   const { userInfo } = useAuthContext();
+  const eventId = param?.eventId;
 
+  const [event, setEvent] = useState<EventResponse>();
   const [planList, setPlanList] = useState<PlanList[]>();
   const [error, setErrors] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState<Array<String>>();
+  const [fromDt, setFromDt] = useState<any>();
+  const [toDt, setToDt] = useState<any>();
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedPlanLayout, setSelectedPlanLayout] =
     useState<SeatingPlanType>();
   const [selectedPlan, setSelectedPlan] = useState<PlanList>();
-  const [hideGenre, setHideGenre] = useState<boolean>(true);
+  const [hideGenre, setHideGenre] = useState<boolean>();
+  const [selectedPlanId, setSelectedPlanId] = useState("");
+
+  // react-hook-form
+  const form: {
+    register: UseFormRegister<any>;
+    // handleSubmit: (arg0: (data: any) => void) => React.FormEventHandler<HTMLFormElement>;
+    getValues: any;
+    setValue: any;
+    watch: any;
+    reset: any;
+  } = useForm();
+
+  const [watchEventFromDt, watchEventToDt] = form.watch([
+    "eventFromDt",
+    "eventToDt",
+  ]);
 
   const getPlanList = async () => {
     try {
@@ -49,63 +77,103 @@ const EventCreate: React.FC = () => {
     }
   };
 
+  const getEventDetails = async () => {
+    try {
+      const mappingRequest = {
+        eventId: eventId,
+        subjectId: undefined,
+      };
+      const response = await getEventDetailsApi(mappingRequest);
+      if (response.statusCode === "200" && response.message === "SUCCESS") {
+        setEvent(response.eventDetails);
+        if (response.eventDetails.eventType === "CONCERT") {
+          setHideGenre(false);
+        } else {
+          setHideGenre(true);
+        }
+        setSelectedPlanId(response.eventDetails.planId);
+        console.log("response.eventDeatils", response.eventDetails);
+      }
+    } catch (err) {
+      setErrors(true);
+    }
+  };
+
   useEffect(() => {
     getPlanList();
+    getEventDetails();
+    console.log("twoWeeksLater", twoWeekslater());
   }, []);
 
-  const createAddEventDto = async () => {
-    alert("Event saved successfully");
+  const createEditEventDto = async () => {
+    const formEventName =
+      ((document.getElementById("eventName") as HTMLInputElement)?.value ||
+        event?.eventName) ??
+      "";
+    const formArtistName =
+      ((document.getElementById("artistName") as HTMLInputElement)?.value ||
+        event?.artistName) ??
+      "";
+    const formEventFromDt =
+      ((document.getElementById("eventFromDt") as HTMLInputElement)?.value
+        ? moment(
+            (document.getElementById("eventFromDt") as HTMLInputElement)?.value,
+            "DD/MM/YYYY"
+          ).format("YYYY-MM-DD HH:mm:ss")
+        : moment(event?.eventFromDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
+    const formEventToDt =
+      ((document.getElementById("eventToDt") as HTMLInputElement)?.value
+        ? moment(
+            (document.getElementById("eventToDt") as HTMLInputElement)?.value,
+            "DD/MM/YYYY"
+          ).format("YYYY-MM-DD HH:mm:ss")
+        : moment(event?.eventToDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
+
+    const planId = (
+      document.querySelector('input[name="planId"]:checked') as HTMLInputElement
+    ).value
+      ? (
+          document.querySelector(
+            'input[name="planId"]:checked'
+          ) as HTMLInputElement
+        ).value
+      : event?.planId ?? "";
+
+    const eventType =
+      ((document.getElementById("eventType") as HTMLSelectElement)?.value ||
+        event?.eventType) ??
+      "";
+    let genre =
+      ((document.getElementById("genre") as HTMLSelectElement)?.value ||
+        event?.genre) ??
+      "";
+
+    if (eventType === "SPORTS") {
+      genre = "";
+    }
+
     var formData = new FormData();
 
-    formData.append(
-      "eventName",
-      (document.getElementById("eventName") as HTMLInputElement).value
-    );
-    formData.append(
-      "artistName",
-      (document.getElementById("artistName") as HTMLInputElement).value
-    );
-    formData.append(
-      "eventFromDt",
-      moment(
-        (document.getElementById("eventFromDt") as HTMLInputElement).value,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD HH:mm:ss")
-    );
-    formData.append(
-      "eventToDt",
-      moment(
-        (document.getElementById("eventToDt") as HTMLInputElement).value,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD HH:mm:ss")
-    );
-    formData.append(
-      "planId",
-      (
-        document.querySelector(
-          'input[name="planId"]:checked'
-        ) as HTMLInputElement
-      ).value
-    );
-    formData.append(
-      "eventType",
-      (document.getElementById("eventType") as HTMLSelectElement).value
-    );
-    formData.append(
-      "genre",
-      (document.getElementById("genre") as HTMLInputElement).value
-    );
-    // NEED TO IMPLEMENT SUBJECT ID BELOW
-    formData.append("subjectId", "null");
+    formData.append("eventName", formEventName);
+    formData.append("artistName", formArtistName);
+    formData.append("eventFromDt", formEventFromDt);
+    formData.append("eventToDt", formEventToDt);
+    formData.append("eventId", event?.eventId ?? "");
+    formData.append("planId", planId);
+    formData.append("eventType", eventType);
+    formData.append("genre", genre);
 
     var jsonStr = JSON.stringify(Object.fromEntries(formData));
     console.log("JSON STRING", jsonStr);
+    console.log(localStorage.getItem("token"));
 
-    const response = await addEventApi(jsonStr);
+    const response = await editEventApi(localStorage.getItem("token"), jsonStr);
 
     if (response.statusCode === "200" && response.message === "SUCCESS") {
+      alert("Event saved successfully");
       console.log("SUCCESS");
     } else {
+      alert("Error saving event");
       console.log("FAIL");
     }
 
@@ -113,6 +181,26 @@ const EventCreate: React.FC = () => {
       navigate("/admin/event/list");
     else if (userInfo?.authorities[0].authority === "ORGANISER")
       navigate("/organiser/event/list");
+  };
+
+  const handleSubmit = () => {
+    // clear old errors
+    setFormErrors(new Array<String>());
+
+    // check that dates are correct
+    // if (moment((document.getElementById("eventFromDt") as HTMLInputElement)?.value, "DD/MM/YYYY") < )
+
+    createEditEventDto();
+  };
+
+  const handleFromDateChange = (date: any) => {
+    setFromDt(date);
+    console.log("DATES", fromDt, toDt);
+  };
+
+  const handleToDateChange = (date: any) => {
+    setToDt(date);
+    console.log("DATES", fromDt, toDt);
   };
 
   const navigateBack = () => {
@@ -189,6 +277,11 @@ const EventCreate: React.FC = () => {
     }
   };
 
+  const handlePlanIdChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handlePlanIdChange", ev.target.value);
+    setSelectedPlanId(ev.target.value);
+  };
+
   return (
     <div>
       {error && (
@@ -199,7 +292,7 @@ const EventCreate: React.FC = () => {
       )}
       <div className={`row ${styles.eventHeader}`}>
         <div className="col-md-12">
-          <h2>Create An Event</h2>
+          <h2>Edit Event</h2>
         </div>
       </div>
 
@@ -207,18 +300,39 @@ const EventCreate: React.FC = () => {
         <form>
           <div className="col-md-12 mb-3">
             <label className="form-label">Event Name</label>
-            <input type="text" id="eventName" className="form-control"></input>
+            <input
+              type="text"
+              id="eventName"
+              className="form-control"
+              placeholder={`${event?.eventName}`}
+            ></input>
           </div>
           <div className="col-md-12 mb-3">
             <label className="form-label">Artist Name</label>
-            <input type="text" id="artistName" className="form-control"></input>
+            <input
+              type="text"
+              id="artistName"
+              className="form-control"
+              placeholder={`${event?.artistName}`}
+            ></input>
           </div>
           <div className="row row-md">
             <div className="col-md-6 mb-3">
               <label className="form-label">Event Start Date</label>
+              <input
+                type="text"
+                className="form-control"
+                value={`Current: ${moment(event?.eventFromDt).format(
+                  "DD/MM/YYYY"
+                )}`}
+                disabled
+              ></input>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   format="DD/MM/YYYY"
+                  minDate={twoWeekslater()}
+                  maxDate={toDt}
+                  onChange={handleFromDateChange}
                   sx={{
                     width: "100%",
                     "& .MuiInputBase-input": {
@@ -240,9 +354,19 @@ const EventCreate: React.FC = () => {
             </div>
             <div className="col-md-6 mb-3">
               <label className="form-label">Event End Date</label>
+              <input
+                type="text"
+                className="form-control"
+                value={`Current: ${moment(event?.eventToDt).format(
+                  "DD/MM/YYYY"
+                )}`}
+                disabled
+              ></input>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   format="DD/MM/YYYY"
+                  minDate={fromDt}
+                  onChange={handleToDateChange}
                   sx={{
                     width: "100%",
                     "& .MuiInputBase-input": {
@@ -272,7 +396,8 @@ const EventCreate: React.FC = () => {
                 onChange={eventTypeChangeEvent}
               >
                 <option hidden value="">
-                  Select
+                  {/* Select */}
+                  {event?.eventType === "CONCERT" ? "Concert" : "Sports Event"}
                 </option>
                 <option value="CONCERT">Concert</option>
                 <option value="SPORTS">Sports Event</option>
@@ -280,7 +405,12 @@ const EventCreate: React.FC = () => {
             </div>
             <div className="col-md-6" hidden={hideGenre}>
               <label className="form-label">Genre</label>
-              <input type="text" id="genre" className="form-control"></input>
+              <input
+                type="text"
+                id="genre"
+                className="form-control"
+                placeholder={event?.genre}
+              ></input>
             </div>
           </div>
           <div className="col-md-12 mb-3">
@@ -289,14 +419,18 @@ const EventCreate: React.FC = () => {
               {planList &&
                 planList.length > 0 &&
                 planList.map((plan, index) => (
-                  <div className={`col-md-6 ${styles.planCard}`}>
+                  <div
+                    key={plan.planId}
+                    className={`col-md-6 ${styles.planCard}`}
+                  >
                     <input
                       type="radio"
                       className="form-radio"
                       name="planId"
-                      id="exampleRadios1"
+                      id="planId"
+                      checked={selectedPlanId === plan.planId.toString()}
+                      onChange={(ev) => handlePlanIdChange(ev)}
                       value={plan.planId}
-                      defaultChecked
                     />
                     <label className={styles.layersMenu}>
                       {/* <div className={styles.layoutDesc} onClick={showModal}> */}
@@ -332,7 +466,7 @@ const EventCreate: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={createAddEventDto}
+                onClick={handleSubmit}
                 className={`btn btn-primary ${styles.primaryBtn}`}
               >
                 Submit
@@ -345,4 +479,4 @@ const EventCreate: React.FC = () => {
   );
 };
 
-export default EventCreate;
+export default EventEdit;

@@ -36,6 +36,7 @@ const OrganiserEditCategoryPreview = () => {
       const sectionSeats = seatList
         .filter((seat) => seat.type === category.sectionDesc)
         .map((seat) => ({
+          seatId: "",
           seatName: seat.label,
           seatRow: seat.index.row,
           seatCol: seat.index.col,

@@ -51,13 +51,21 @@ const PlanCreatePreview: React.FC = () => {
       // filter out seat names
       const sectionSeats = seatList
         .filter((seat) => seat.type === category.sectionDesc)
-        .map((seat) => ({
-          seatName: seat.label,
-          seatRow: seat.index.row,
-          seatCol: seat.index.col,
-        }));
+        .map((seat) => {
+          console.log("updatedSectionseats", updatedSectionSeats);
+          return {
+            seatId: updatedSectionSeats
+              ?.filter((section: any) => section?.sectionDesc === seat.type)[0]
+              ?.seatResponses?.filter((s: any) => s?.seatName === seat.label)[0]
+              ?.seatId,
+            seatName: seat.label,
+            seatRow: seat.index.row,
+            seatCol: seat.index.col,
+            seatStatus: seat.state,
+          };
+        });
 
-      console.log(sectionSeats);
+      console.log("sectionSeats", sectionSeats);
 
       const cat = {
         sectionId: category.sectionId,
@@ -147,17 +155,17 @@ const PlanCreatePreview: React.FC = () => {
       sectionSeats: sectionSeatReq,
     };
 
-    // const response = await addPlanApi(mappedRequest);
+    const response = await addPlanApi(mappedRequest);
 
-    // if (response.message === "SUCCESS" && response.statusCode === "200") {
-    //   setAddPlanSuccess(true);
+    if (response.message === "SUCCESS" && response.statusCode === "200") {
+      setAddPlanSuccess(true);
 
-    //   setTimeout(() => {
-    //     navigate("/admin/plan/list");
-    //   }, 3000);
-    // } else {
-    //   setAddPlanFailure(true);
-    // }
+      setTimeout(() => {
+        navigate("/admin/plan/list");
+      }, 3000);
+    } else {
+      setAddPlanFailure(true);
+    }
   };
 
   const handleCreate = async () => {

@@ -8,16 +8,35 @@ import moment from "moment";
 import { useAuthContext } from "../../../context/AuthContext";
 import SeatingPlan from "../../seating-plan/components/SeatingPlan";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
+import {
+  GetSeatResponse,
+  IGetPlanDetailsRequest,
+} from "../../../interfaces/seating-plan-interface";
 import { getPlanDetailsApi } from "../../plan/plan.api";
 import OrderSeatingPlan from "../../seating-plan/components/OrderSeatingPlan";
+import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
+import { SeatInfo } from "seatchart";
 
 type SeatingPlanType = {
   row: number;
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
+};
+
+type SectionSeatType = {
+  sectionId?: number | null;
+  sectionDesc: string;
+  sectionRow: number;
+  seatPrice: number;
+  seatResponses: GetSeatResponse[];
+};
+
+export type OrderType = {
+  orderSeatInfo: SeatInfo[] | undefined;
+  orderTotalPrice: number | undefined;
+  event: EventResponse | undefined;
 };
 
 const UserEventView: React.FC = () => {
@@ -29,6 +48,7 @@ const UserEventView: React.FC = () => {
   const [warning, setWarning] = useState<boolean>(false);
   const [event, setEvent] = useState<EventResponse>();
   const [plan, setPlan] = useState<SeatingPlanType>();
+  // const [order, setOrder] = useState<OrderType>();
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
@@ -79,6 +99,7 @@ const UserEventView: React.FC = () => {
             sectionDesc: section.seatSectionDescription,
             sectionRow: section.sectionRow,
             seatPrice: section.seatPrice,
+            seatResponses: section.seatResponses,
           }));
         console.log("sectionSeat", sectionSeat);
         // process section seat row
@@ -131,6 +152,8 @@ const UserEventView: React.FC = () => {
         setIsModalVisible={setIsModalVisible}
         planId={event ? event.planId : "1"}
       /> */}
+      <Breadcrumb activeStep={0} />
+      <br />
       <div>
         <div className={` ${styles.eventViewHeader}`}>Event Details</div>
       </div>
@@ -172,6 +195,8 @@ const UserEventView: React.FC = () => {
                 col={plan.col}
                 sectionSeats={plan.sectionSeats}
                 isLegendVisible={true}
+                // setOrder={setOrder}
+                event={event}
               />
               <button
                   type="button"
@@ -185,14 +210,20 @@ const UserEventView: React.FC = () => {
 
         <br />
         <br />
-        <div className={styles.viewBtnGroup}>
+        {/* <div className={styles.viewBtnGroup}>
           <div
             className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
             onClick={navigateBack}
           >
             Back
           </div>
-        </div>
+          <div
+            className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+            onClick={navigateToOrder}
+          >
+            Proceed to Payment
+          </div>
+        </div> */}
       </div>
     </div>
   );

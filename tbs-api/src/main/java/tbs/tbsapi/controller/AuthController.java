@@ -35,7 +35,6 @@ public class AuthController {
         return authManager.authenticateUser(loginRequest);
     }
 
-
     @PostMapping(path = "/register")
     public ResponseEntity<?> register(@RequestBody @Valid AddSubjectDto addSubjectDto) {
         log.info("START: REGISTER USER");
