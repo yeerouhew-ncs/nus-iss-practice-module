@@ -28,8 +28,6 @@ import OrganiserEventView from "./features/event/containers/OrganiserEventView";
 import PaymentStart from "./features/payment/PaymentStart";
 import PaymentSuccess from "./features/payment/PaymentSuccess";
 import UserEventView from "./features/event/containers/UserEventView";
-import QueueView from "./features/queue/containers/QueueView";
-
 import OrderPreview from "./features/payment/OrderPreview";
 
 const AppRoutes = () => {
@@ -227,7 +225,6 @@ const AppRoutes = () => {
               />
               <Route path="/user/order/preview" element={<OrderPreview />} />
               <Route path="/user/venue/list" element={<UserEvent />} />
-              <Route path="/user/event/queue/:eventId" element={<QueueView />} />
               <Route path="/user/payment/start" element={<PaymentStart />} />
               <Route
                 path="/user/payment/success"
