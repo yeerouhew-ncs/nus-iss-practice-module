@@ -25,6 +25,8 @@ export interface EventResponse {
   eventToDt: string;
   planId: string;
   userId: string;
+  eventType: string;
+  genre: string;
 }
 
 export interface AddEventRequest {

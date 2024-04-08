@@ -3,11 +3,14 @@ import { getPlanListApi } from "../../plan.api";
 import { PlanList } from "../../../../interfaces/seating-plan-interface";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Plan.module.scss";
+import { userInfo } from "os";
+import { useAuthContext } from "../../../../context/AuthContext";
 
 const Plan: React.FC = () => {
   const [planList, setPlanList] = useState<PlanList[]>([]);
 
   const navigate = useNavigate();
+  const { userInfo } = useAuthContext();
 
   useEffect(() => {
     const getPlanList = async () => {
