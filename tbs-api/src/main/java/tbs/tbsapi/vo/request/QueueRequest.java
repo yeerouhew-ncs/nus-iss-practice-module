@@ -7,14 +7,23 @@ import lombok.*;
 @NoArgsConstructor
 public class QueueRequest {
     @Setter
-    private Integer eventId;
+    private int eventId;
     @Setter
-    private Integer subjectId;
+    private int subjectId;
     @Setter
-    private Integer ticketnumber;
+    private String ticketnumber;
 
     public QueueRequest(Integer eventId,Integer subjectId){
         this.eventId = eventId;
         this.subjectId = subjectId;
+    }
+
+    @Override
+    public String toString() {
+        return "QueueRequest{" +
+                "eventId=" + eventId +
+                ", subjectId=" + subjectId +
+                ", ticketnumber=" + ticketnumber +
+                '}';
     }
 }

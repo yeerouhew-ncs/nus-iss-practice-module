@@ -55,6 +55,13 @@ const UserEventView: React.FC = () => {
   const navigate = useNavigate();
   const { userInfo } = useAuthContext();
 
+  const navigateBack = () => {
+    navigate("/user/event/list", { replace: true });
+  };
+  const navigateQueue = () => {
+    navigate("/user/event/queue/"+eventId, { replace: true });
+  };
+
   const getEventDetails = async () => {
     const mappingRequest = {
       eventId: eventId,
@@ -191,6 +198,12 @@ const UserEventView: React.FC = () => {
                 // setOrder={setOrder}
                 event={event}
               />
+              <button
+                  type="button"
+                  className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+                  onClick={navigateQueue}
+              ><span>Enter Queue</span>
+              </button>
             </div>
           </div>
         </div>
