@@ -24,6 +24,7 @@ import OrganiserEditCategoryPreview from "./features/plan/containers/organiser-c
 import UserHeader from "./common/header/UserHeader";
 import UserEvent from "./features/event/containers/UserEvent";
 import UserEventView from "./features/event/containers/UserEventView";
+import QueueView from "./features/queue/containers/QueueView";
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
@@ -212,6 +213,7 @@ const AppRoutes = () => {
                 element={<UserEventView />}
               />
               <Route path="/user/venue/list" element={<UserEvent />} />
+              <Route path="/user/event/queue/:eventId" element={<QueueView />} />
             </Route>
           </Route>
 

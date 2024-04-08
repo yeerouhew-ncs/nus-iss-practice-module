@@ -38,6 +38,9 @@ const UserEventView: React.FC = () => {
   const navigateBack = () => {
     navigate("/user/event/list", { replace: true });
   };
+  const navigateQueue = () => {
+    navigate("/user/event/queue/"+eventId, { replace: true });
+  };
 
   const getEventDetails = async () => {
     const mappingRequest = {
@@ -164,13 +167,18 @@ const UserEventView: React.FC = () => {
 
           <div className={`col-md-12 ${styles.planCard}`}>
             <div>
-              {/*<OrderSeatingPlan*/}
-              {/*  row={plan.row}*/}
-              {/*  col={plan.col}*/}
-              {/*  sectionSeats={plan.sectionSeats}*/}
-              {/*  isLegendVisible={true}*/}
-              {/*/>*/}
-
+              <OrderSeatingPlan
+                row={plan.row}
+                col={plan.col}
+                sectionSeats={plan.sectionSeats}
+                isLegendVisible={true}
+              />
+              <button
+                  type="button"
+                  className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+                  onClick={navigateQueue}
+              ><span>Enter Queue</span>
+              </button>
             </div>
           </div>
         </div>
