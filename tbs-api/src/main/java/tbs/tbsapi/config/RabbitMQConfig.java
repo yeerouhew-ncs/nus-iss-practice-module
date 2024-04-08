@@ -1,55 +1,43 @@
 package tbs.tbsapi.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+//import tbs.tbsapi.listener.QueueRequestListener;
+
 @Configuration
 public class RabbitMQConfig {
 
     @Value("${spring.rabbitmq.queue.name}")
-    private String queue;
+    private String queueName;
 
     @Value("${spring.rabbitmq.queue.exchange}")
     private String exchange;
     @Value("${spring.rabbitmq.queue.routing.key}")
     private String routingkey;
 
-//    @Value("${spring.rabbitmq.addresses}")
-//    private String uri;
-//
-//    @Value("${spring.rabbitmq.virtual-host}")
-//    private String rabbitmqVirtualHost;
-//
-//    @Value("${spring.rabbitmq.username}")
-//    private String rabbitmqUsername;
-//
-//    @Value("${spring.rabbitmq.password}")
-//    private String rabbitmqPassword;
-//
-//    @Bean
-//    public CachingConnectionFactory rabbitConnectionFactory() throws Exception
-//    {
-//
-//        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-//        connectionFactory.getRabbitConnectionFactory().setUri(uri);
-//        connectionFactory.setUsername(rabbitmqUsername);
-//        connectionFactory.setPassword(rabbitmqPassword);
-//        connectionFactory.setVirtualHost(rabbitmqVirtualHost);
-//        connectionFactory.setConnectionTimeout(600);
-//        return connectionFactory;
-//    }
-
-
+    @Bean
+    public SimpleRabbitListenerContainerFactory myRabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        factory.setMessageConverter(converter());
+        factory.setMaxConcurrentConsumers(5);
+        return factory;
+    }
 
     @Bean
     public Queue queue(){
-        return new Queue(queue);
+        return new Queue(queueName);
     }
     @Bean
     public TopicExchange exchange(){
@@ -71,6 +59,7 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(converter());
         return rabbitTemplate;
     }
+
 
 
 }

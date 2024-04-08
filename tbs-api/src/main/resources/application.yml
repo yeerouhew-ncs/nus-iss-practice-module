@@ -2,7 +2,7 @@ spring:
   datasource:
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
-    username: user
+    username: user1
     password: password
   #datasource:
   # driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -30,12 +30,18 @@ spring:
     generate-ddl: true
   application:
     name: tbs-api
+#  connect to aws rabbitmq
+#  rabbitmq:
+#    addresses: amqps://b-05a7bd65-7897-40d6-839a-2901f99cf5e2.mq.ap-southeast-1.amazonaws.com:5671
+#    host: amqps://b-05a7bd65-7897-40d6-839a-2901f99cf5e2.mq.ap-southeast-1.amazonaws.com
+#    port: 5671
+#    username: admin
+#    password: test@RabbitMQ
   rabbitmq:
-    addresses: amqps://b-05a7bd65-7897-40d6-839a-2901f99cf5e2.mq.ap-southeast-1.amazonaws.com:5671
-    host: amqps://b-05a7bd65-7897-40d6-839a-2901f99cf5e2.mq.ap-southeast-1.amazonaws.com
-    port: 5671
-    username: admin
-    password: test@RabbitMQ
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
     queue:
       name: ticketqueue
