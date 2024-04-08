@@ -30,16 +30,24 @@ spring:
     generate-ddl: true
   application:
     name: tbs-api
+#  connect to aws rabbitmq
+#  rabbitmq:
+#    addresses: amqps://b-05a7bd65-7897-40d6-839a-2901f99cf5e2.mq.ap-southeast-1.amazonaws.com:5671
+#    host: amqps://b-05a7bd65-7897-40d6-839a-2901f99cf5e2.mq.ap-southeast-1.amazonaws.com
+#    port: 5671
+#    username: admin
+#    password: test@RabbitMQ
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
+
     queue:
       name: ticketqueue
       exchange: ticketexchange
       routing:
-        key: routing
+        key: routingkey
 server:
   port: "8081"
 
