@@ -91,6 +91,10 @@ const OrganiserPlan: React.FC = () => {
                               type="button"
                               className={`btn btn-sm ${styles.primaryBtn} ${styles.btnMarginRight}`}
                               onClick={() => redirectEditOnClick(plan.planId)}
+                              hidden={
+                                userInfo?.authorities[0].authority ===
+                                "ORGANISER"
+                              }
                             >
                               Edit
                             </button>

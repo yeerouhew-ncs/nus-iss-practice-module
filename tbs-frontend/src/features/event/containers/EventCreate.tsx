@@ -15,6 +15,7 @@ import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
 import { useAuthContext } from "../../../context/AuthContext";
+import { Form } from "react-bootstrap";
 
 type SeatingPlanType = {
   row: number;
@@ -34,8 +35,9 @@ const EventCreate: React.FC = () => {
   const [selectedPlanLayout, setSelectedPlanLayout] =
     useState<SeatingPlanType>();
   const [selectedPlan, setSelectedPlan] = useState<PlanList>();
+  const [hideGenre, setHideGenre] = useState<boolean>(true);
 
-  const getListEvent = async () => {
+  const getPlanList = async () => {
     try {
       const response = await getPlanListApi();
       if (response.statusCode === "200" && response.message === "SUCCESS") {
@@ -48,7 +50,7 @@ const EventCreate: React.FC = () => {
   };
 
   useEffect(() => {
-    getListEvent();
+    getPlanList();
   }, []);
 
   const createAddEventDto = async () => {
@@ -84,6 +86,14 @@ const EventCreate: React.FC = () => {
           'input[name="planId"]:checked'
         ) as HTMLInputElement
       ).value
+    );
+    formData.append(
+      "eventType",
+      (document.getElementById("eventType") as HTMLSelectElement).value
+    );
+    formData.append(
+      "genre",
+      (document.getElementById("genre") as HTMLInputElement).value
     );
     // NEED TO IMPLEMENT SUBJECT ID BELOW
     formData.append("subjectId", "null");
@@ -171,6 +181,14 @@ const EventCreate: React.FC = () => {
     if (selectedPlan?.planId) getPlanDetails();
   }, [selectedPlan?.planId]);
 
+  const eventTypeChangeEvent = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    if (ev.target.value === "CONCERT") {
+      setHideGenre(false);
+    } else {
+      setHideGenre(true);
+    }
+  };
+
   return (
     <div>
       {error && (
@@ -243,6 +261,26 @@ const EventCreate: React.FC = () => {
                   }}
                 />
               </LocalizationProvider>
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col-md-6">
+              <label className="form-label">Event Type</label>
+              <Form.Select
+                id="eventType"
+                className="rounded-0"
+                onChange={eventTypeChangeEvent}
+              >
+                <option hidden value="">
+                  Select
+                </option>
+                <option value="CONCERT">Concert</option>
+                <option value="SPORTS">Sports Event</option>
+              </Form.Select>
+            </div>
+            <div className="col-md-6" hidden={hideGenre}>
+              <label className="form-label">Genre</label>
+              <input type="text" id="genre" className="form-control"></input>
             </div>
           </div>
           <div className="col-md-12 mb-3">

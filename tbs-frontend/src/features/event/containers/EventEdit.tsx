@@ -17,9 +17,10 @@ import { EventResponse } from "../../../interfaces/event-interface";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import { getPlanDetailsApi } from "../../plan/plan.api";
+import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
 import { List } from "reactstrap";
 import { useAuthContext } from "../../../context/AuthContext";
+import { Form } from "react-bootstrap";
 
 type SeatingPlanType = {
   row: number;
@@ -46,6 +47,8 @@ const EventEdit: React.FC = () => {
   const [selectedPlanLayout, setSelectedPlanLayout] =
     useState<SeatingPlanType>();
   const [selectedPlan, setSelectedPlan] = useState<PlanList>();
+  const [hideGenre, setHideGenre] = useState<boolean>();
+  const [selectedPlanId, setSelectedPlanId] = useState("");
 
   // react-hook-form
   const form: {
@@ -62,17 +65,17 @@ const EventEdit: React.FC = () => {
     "eventToDt",
   ]);
 
-  // const getListEvent = async () => {
-  //   try {
-  //     const response = await getSeatingPlanListApi();
-  //     if (response.statusCode === "200" && response.message === "SUCCESS") {
-  //       setPlanList(response.seatingPlanList);
-  //       console.log("response.seatingPlanList", response.seatingPlanList);
-  //     }
-  //   } catch (err) {
-  //     setErrors(true);
-  //   }
-  // };
+  const getPlanList = async () => {
+    try {
+      const response = await getPlanListApi();
+      if (response.statusCode === "200" && response.message === "SUCCESS") {
+        setPlanList(response.seatingPlanList);
+        console.log("response.seatingPlanList", response.seatingPlanList);
+      }
+    } catch (err) {
+      setErrors(true);
+    }
+  };
 
   const getEventDetails = async () => {
     try {
@@ -83,6 +86,12 @@ const EventEdit: React.FC = () => {
       const response = await getEventDetailsApi(mappingRequest);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         setEvent(response.eventDetails);
+        if (response.eventDetails.eventType === "CONCERT") {
+          setHideGenre(false);
+        } else {
+          setHideGenre(true);
+        }
+        setSelectedPlanId(response.eventDetails.planId);
         console.log("response.eventDeatils", response.eventDetails);
       }
     } catch (err) {
@@ -91,7 +100,7 @@ const EventEdit: React.FC = () => {
   };
 
   useEffect(() => {
-    // getListEvent();
+    getPlanList();
     getEventDetails();
     console.log("twoWeeksLater", twoWeekslater());
   }, []);
@@ -120,6 +129,29 @@ const EventEdit: React.FC = () => {
           ).format("YYYY-MM-DD HH:mm:ss")
         : moment(event?.eventToDt).format("YYYY-MM-DD HH:mm:ss")) ?? "";
 
+    const planId = (
+      document.querySelector('input[name="planId"]:checked') as HTMLInputElement
+    ).value
+      ? (
+          document.querySelector(
+            'input[name="planId"]:checked'
+          ) as HTMLInputElement
+        ).value
+      : event?.planId ?? "";
+
+    const eventType =
+      ((document.getElementById("eventType") as HTMLSelectElement)?.value ||
+        event?.eventType) ??
+      "";
+    let genre =
+      ((document.getElementById("genre") as HTMLSelectElement)?.value ||
+        event?.genre) ??
+      "";
+
+    if (eventType === "SPORTS") {
+      genre = "";
+    }
+
     var formData = new FormData();
 
     formData.append("eventName", formEventName);
@@ -127,7 +159,9 @@ const EventEdit: React.FC = () => {
     formData.append("eventFromDt", formEventFromDt);
     formData.append("eventToDt", formEventToDt);
     formData.append("eventId", event?.eventId ?? "");
-    formData.append("planId", event?.planId ?? "");
+    formData.append("planId", planId);
+    formData.append("eventType", eventType);
+    formData.append("genre", genre);
 
     var jsonStr = JSON.stringify(Object.fromEntries(formData));
     console.log("JSON STRING", jsonStr);
@@ -235,6 +269,19 @@ const EventEdit: React.FC = () => {
     if (selectedPlan?.planId) getPlanDetails();
   }, [selectedPlan?.planId]);
 
+  const eventTypeChangeEvent = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    if (ev.target.value === "CONCERT") {
+      setHideGenre(false);
+    } else {
+      setHideGenre(true);
+    }
+  };
+
+  const handlePlanIdChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handlePlanIdChange", ev.target.value);
+    setSelectedPlanId(ev.target.value);
+  };
+
   return (
     <div>
       {error && (
@@ -340,20 +387,50 @@ const EventEdit: React.FC = () => {
               </LocalizationProvider>
             </div>
           </div>
+          <div className="row mb-3">
+            <div className="col-md-6">
+              <label className="form-label">Event Type</label>
+              <Form.Select
+                id="eventType"
+                className="rounded-0"
+                onChange={eventTypeChangeEvent}
+              >
+                <option hidden value="">
+                  {/* Select */}
+                  {event?.eventType === "CONCERT" ? "Concert" : "Sports Event"}
+                </option>
+                <option value="CONCERT">Concert</option>
+                <option value="SPORTS">Sports Event</option>
+              </Form.Select>
+            </div>
+            <div className="col-md-6" hidden={hideGenre}>
+              <label className="form-label">Genre</label>
+              <input
+                type="text"
+                id="genre"
+                className="form-control"
+                placeholder={event?.genre}
+              ></input>
+            </div>
+          </div>
           <div className="col-md-12 mb-3">
             <label className="form-label">Seating Layout</label>
             <div className="row">
               {planList &&
                 planList.length > 0 &&
                 planList.map((plan, index) => (
-                  <div className={`col-md-6 ${styles.planCard}`}>
+                  <div
+                    key={plan.planId}
+                    className={`col-md-6 ${styles.planCard}`}
+                  >
                     <input
                       type="radio"
                       className="form-radio"
                       name="planId"
-                      id="exampleRadios1"
+                      id="planId"
+                      checked={selectedPlanId === plan.planId.toString()}
+                      onChange={(ev) => handlePlanIdChange(ev)}
                       value={plan.planId}
-                      defaultChecked
                     />
                     <label className={styles.layersMenu}>
                       {/* <div className={styles.layoutDesc} onClick={showModal}> */}
