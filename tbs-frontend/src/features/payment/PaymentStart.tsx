@@ -13,6 +13,7 @@ const PaymentStart: React.FC = () => {
     const onSuccess = (payment:any) => {
         // Congratulation, it came here means everything's fine!
         console.log("The payment was succeeded!", payment);
+        redirectToPaypal();
         // this.props.clearCart();
         // this.props.history.push('/');
         // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
