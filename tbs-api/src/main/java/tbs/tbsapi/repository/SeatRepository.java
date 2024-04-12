@@ -24,6 +24,10 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
                        @Param("seatStatus") SeatStatus   seatStatus,
                        @Param("sectionId") Integer sectionId);
 
+    @Query("UPDATE Seat s SET s.seatStatus='reserved'" +
+            "WHERE s.seatName in :seatNames and s.sectionId in :sectionIds")
+    Integer updateSeatsReserved(@Param("seatNames") List<String> seatNames, @Param("sectionIds") List<Integer> sectionIds);
+
     Integer deleteBySectionId(Integer sectionId);
 
     List<Seat> findAllBySectionId(Integer sectionId);
