@@ -121,7 +121,6 @@ public class EventServiceImpl implements EventService {
     }
 
     public GetEventResponse getEventDetails(GetEventRequest getEventRequest) {
-        // TODO: change GetEventResponse return type
         Event event = eventRepository.findByEventId(getEventRequest.getEventId());
 
         GetEventResponse eventResponse = new GetEventResponse();
@@ -135,8 +134,14 @@ public class EventServiceImpl implements EventService {
         eventResponse.setEventType(event.getEventType());
         eventResponse.setGenre(event.getGenre());
 
-        // TODO: get plan details
-        // TODO: get subject details
+        // retrieve seat reservation (id, order_id, seat_id, section_id)
+
+
+        // retrieve plan section seats (id, no_seats_left, plan_id, seat_price, section_desc, section_col,
+        // section_row, total_seats)
+        // retrieve seat table (id, seat_col, seat_name, seat_row, seat_status, section_id)
+        // loop through seat reservation and compare the seat and seat reservation
+        // if it matches, set status to reserved
 
         return eventResponse;
     }
