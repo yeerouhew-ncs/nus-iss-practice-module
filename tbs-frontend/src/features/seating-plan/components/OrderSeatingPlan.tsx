@@ -62,6 +62,7 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
   const navigate = useNavigate();
 
   const [order, setOrder] = useState<OrderType>();
+  const [isFullReservation, setIsFullReservation] = useState<boolean>(false);
 
   const transformedSeats = sectionSeats.reduce(
     (acc: any, seat: any, index: number) => {
@@ -75,9 +76,7 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
         acc
           .flatMap(({ seatRows }: { seatRows: any }) => seatRows)
           .slice(-1)[0] + 1 || 0;
-      // console.log("startRow", startRow);
       const seatRows = Array.from({ length: seatRow }, (_, i) => startRow + i);
-      // console.log("seatRows", seatRows);
       acc.push({
         label,
         cssClass,
@@ -89,8 +88,6 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
     },
     []
   );
-
-  console.log("transformedSeats", transformedSeats);
 
   const options: Options = {
     map: {
@@ -171,6 +168,14 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
         { state: seatStatus }
       );
     }
+
+    // check thru all seats, if seat availability is reserved, should disable btn
+    const isReserved = combinedSeatResponses.every(
+      (seat) => seat.seatStatus === "reserved"
+    );
+    if (isReserved) {
+      setIsFullReservation(true);
+    }
   }, []);
 
   const navigateBack = () => {
@@ -208,18 +213,19 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
     <div>
       <Seatchart ref={seatchartRef} options={options} />
       <div className={styles.viewBtnGroup}>
-        <div
+        <button
           className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
           onClick={navigateBack}
         >
           Back
-        </div>
-        <div
+        </button>
+        <button
           className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
           onClick={navigateToOrder}
+          disabled={isFullReservation}
         >
           Proceed
-        </div>
+        </button>
       </div>
     </div>
   );

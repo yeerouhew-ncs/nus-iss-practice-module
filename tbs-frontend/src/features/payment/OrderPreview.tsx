@@ -13,7 +13,7 @@ const OrderPreview = () => {
   const order: OrderType = location.state?.order;
 
   const navigateBack = () => {
-    navigate("/user/event/view" + order.event?.eventId);
+    navigate("/user/event/view/" + order.event?.eventId);
   };
 
   const navigateToPayment = () => {
