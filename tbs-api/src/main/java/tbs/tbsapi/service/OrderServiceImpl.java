@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.domain.Event;
 import tbs.tbsapi.domain.Order;
+import tbs.tbsapi.domain.SeatReservation;
+import tbs.tbsapi.domain.SeatSection;
 import tbs.tbsapi.dto.AddOrderDto;
 import tbs.tbsapi.factory.OrderFactory;
-import tbs.tbsapi.repository.EventRepository;
-import tbs.tbsapi.repository.OrderRepository;
-import tbs.tbsapi.repository.SeatRepository;
-import tbs.tbsapi.repository.SectionSeatRepository;
+import tbs.tbsapi.factory.SeatReservationFactory;
+import tbs.tbsapi.repository.*;
 import tbs.tbsapi.vo.response.AddOrderResponse;
 
 import java.util.List;
@@ -33,6 +33,12 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private SeatRepository seatRepository;
 
+    @Autowired
+    private SeatReservationRepository seatReservationRepository;
+
+    @Autowired
+    private SeatReservationFactory seatReservationFactory;
+
     public AddOrderResponse addOrder(AddOrderDto addOrderDto) {
         Order newOrder = orderFactory.addOrder(addOrderDto);
         log.info("ORDER {} ", newOrder);
@@ -44,9 +50,16 @@ public class OrderServiceImpl implements OrderService{
         List<Integer> sectionIdList = sectionSeatRepository.findSectionIdsByPlanId(event.getPlanId());
 
         //UPDATE SEAT_STATUS TO 'reserved'
+        List<SeatSection> seatSectionIdList = seatRepository.findBySeatNameSectionId(addOrderDto.getSeatNames(), sectionIdList);
         seatRepository.updateSeatsReserved(addOrderDto.getSeatNames(), sectionIdList);
 
         Order saveOrder = orderRepository.save(newOrder);
+
+        //ADD TO SEAT_RESERVATION TABLE
+        for (SeatSection seatSectionId : seatSectionIdList) {
+            SeatReservation newReservation = seatReservationFactory.addSeatReservation(saveOrder.getOrderId(), seatSectionId);
+            seatReservationRepository.save(newReservation);
+        }
 
         AddOrderResponse orderResponse = new AddOrderResponse();
         orderResponse.setStatusCode("200");
