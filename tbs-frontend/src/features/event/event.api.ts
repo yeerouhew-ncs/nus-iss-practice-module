@@ -53,7 +53,7 @@ export const editEventApi = async (
     {
       headers: {
         Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     }
   );

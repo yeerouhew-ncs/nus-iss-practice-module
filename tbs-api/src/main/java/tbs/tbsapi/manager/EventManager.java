@@ -17,6 +17,7 @@ import tbs.tbsapi.validation.ValidationError;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
+import tbs.tbsapi.vo.response.EventDetailsResponse;
 import tbs.tbsapi.vo.response.GetEventResponse;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class EventManager {
     }
 
     public ResponseEntity<?> getEventDetails(GetEventRequest getEventRequest) {
-        GetEventResponse eventResponse = eventService.getEventDetails(getEventRequest);
+        EventDetailsResponse eventResponse = eventService.getEventDetails(getEventRequest);
         log.info("END: GET EVENT DETAILS SUCCESS");
 
         if(eventResponse.getEventId() != null) {

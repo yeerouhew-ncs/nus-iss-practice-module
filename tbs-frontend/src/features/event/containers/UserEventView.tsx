@@ -3,7 +3,10 @@ import styles from "./UserEventView.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventDetailsApi } from "../event.api";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
-import { EventResponse } from "../../../interfaces/event-interface";
+import {
+  EventDetailsResponse,
+  EventResponse,
+} from "../../../interfaces/event-interface";
 import moment from "moment";
 import { useAuthContext } from "../../../context/AuthContext";
 import SeatingPlan from "../../seating-plan/components/SeatingPlan";
@@ -36,7 +39,7 @@ type SectionSeatType = {
 export type OrderType = {
   orderSeatInfo: SeatInfo[] | undefined;
   orderTotalPrice: number | undefined;
-  event: EventResponse | undefined;
+  event: EventDetailsResponse | undefined;
 };
 
 const UserEventView: React.FC = () => {
@@ -46,7 +49,7 @@ const UserEventView: React.FC = () => {
   const [errors, setErrors] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
-  const [event, setEvent] = useState<EventResponse>();
+  const [event, setEvent] = useState<EventDetailsResponse>();
   const [plan, setPlan] = useState<SeatingPlanType>();
   // const [order, setOrder] = useState<OrderType>();
 
@@ -65,8 +68,46 @@ const UserEventView: React.FC = () => {
     try {
       const response = await getEventDetailsApi(mappingRequest);
       if (response.statusCode === "200" && response.message === "SUCCESS") {
+        console.log("response.eventDetails", response.eventDetails);
         setEvent(response.eventDetails);
-        getPlanDetails(response.eventDetails.planId);
+        // getPlanDetails(response.eventDetails.planId);
+
+        const sectionSeat =
+          response.eventDetails.seatingPlanResponse.sectionSeatResponses.map(
+            (section) => ({
+              sectionDesc: section.seatSectionDescription,
+              sectionRow: section.sectionRow,
+              seatPrice: section.seatPrice,
+              seatResponses: section.seatResponses,
+            })
+          );
+        console.log("sectionSeat", sectionSeat);
+        // process section seat row
+        const newSectionSeat = sectionSeat.map((item, index, array) => {
+          let sectionRow;
+          if (index === 0) {
+            sectionRow = item.sectionRow + 1;
+          } else {
+            sectionRow = item.sectionRow - array[index - 1].sectionRow;
+          }
+          return {
+            ...item,
+            sectionRow,
+          };
+        });
+
+        console.log("newSectionSeat", newSectionSeat);
+
+        const seatingPlan = {
+          planName: response.eventDetails.seatingPlanResponse.planName,
+          venueName: response.eventDetails.seatingPlanResponse.venueName,
+          row: response.eventDetails.seatingPlanResponse.planRow,
+          col: response.eventDetails.seatingPlanResponse.planCol,
+          sectionSeats: newSectionSeat,
+        };
+
+        console.log("seatingPlan ", seatingPlan);
+        setPlan(seatingPlan);
       } else if (
         response.statusCode === "200" &&
         response.message === "NO MATCHING EVENT"
