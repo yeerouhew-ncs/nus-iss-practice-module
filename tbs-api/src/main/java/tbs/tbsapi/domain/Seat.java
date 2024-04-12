@@ -33,5 +33,4 @@ public class Seat {
 
     @Column(name = "SECTION_ID")
     private Integer sectionId;
-
 }

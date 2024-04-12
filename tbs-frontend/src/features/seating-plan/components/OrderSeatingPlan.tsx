@@ -12,7 +12,10 @@ import { GetSeatResponse } from "../../../interfaces/seating-plan-interface";
 import { OrderType } from "../../event/containers/UserEventView";
 import styles from "../../event/containers/UserEventView.module.scss";
 import { useNavigate } from "react-router-dom";
-import { EventResponse } from "../../../interfaces/event-interface";
+import {
+  EventDetailsResponse,
+  EventResponse,
+} from "../../../interfaces/event-interface";
 
 /*
 https://seatchart.js.org/classes/Seatchart.html
@@ -40,7 +43,7 @@ type SeatingPlanProps = {
   rowSpacers?: number[];
   setSeatList?: Dispatch<SetStateAction<SeatInfo[]>>;
   // setOrder?: Dispatch<SetStateAction<OrderType | undefined>>;
-  event: EventResponse | undefined;
+  event: EventDetailsResponse | undefined;
 };
 const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
   row,

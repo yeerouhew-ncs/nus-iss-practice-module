@@ -3,7 +3,10 @@ import styles from "./OrganiserEventView.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventDetailsApi } from "../event.api";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
-import { EventResponse } from "../../../interfaces/event-interface";
+import {
+  EventDetailsResponse,
+  EventResponse,
+} from "../../../interfaces/event-interface";
 import moment from "moment";
 import PlanViewModal from "./PlanViewModal";
 import { useAuthContext } from "../../../context/AuthContext";
@@ -28,7 +31,7 @@ const OrganiserEventView: React.FC = () => {
   const [errors, setErrors] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
-  const [event, setEvent] = useState<EventResponse>();
+  const [event, setEvent] = useState<EventDetailsResponse>();
   const [plan, setPlan] = useState<SeatingPlanType>();
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -45,7 +48,7 @@ const OrganiserEventView: React.FC = () => {
 
   const redirectEditOnClick = () => {
     if (userInfo?.authorities[0].authority === "ORGANISER")
-      navigate("/organiser/event/edit/"+eventId);
+      navigate("/organiser/event/edit/" + eventId);
   };
 
   const getEventDetails = async () => {
