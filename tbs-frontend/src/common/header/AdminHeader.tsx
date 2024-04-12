@@ -68,11 +68,11 @@ const AdminHeader: React.FC<LoginProps> = ({ setAuth, setUser }) => {
                 SEATING PLAN
               </Button>
             </Link>
-            <Link to={"/admin/plan/list"} className={`${styles.underLine2}`}>
+            {/* <Link to={"/admin/plan/list"} className={`${styles.underLine2}`}>
               <Button variant="text" color="default">
                 USER
               </Button>
-            </Link>
+            </Link> */}
 
             <Dropdown>
               <Dropdown.Toggle

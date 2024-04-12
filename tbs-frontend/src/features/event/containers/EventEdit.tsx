@@ -13,7 +13,10 @@ import {
   IGetPlanDetailsRequest,
   PlanList,
 } from "../../../interfaces/seating-plan-interface";
-import { EventResponse } from "../../../interfaces/event-interface";
+import {
+  EventDetailsResponse,
+  EventResponse,
+} from "../../../interfaces/event-interface";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import PlanViewModal from "./PlanViewModal";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
@@ -36,7 +39,7 @@ const EventEdit: React.FC = () => {
   const { userInfo } = useAuthContext();
   const eventId = param?.eventId;
 
-  const [event, setEvent] = useState<EventResponse>();
+  const [event, setEvent] = useState<EventDetailsResponse>();
   const [planList, setPlanList] = useState<PlanList[]>();
   const [error, setErrors] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<Array<String>>();

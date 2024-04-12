@@ -21,7 +21,7 @@ public class SeatReservation {
     private Integer orderId;
 
     @Column(name = "SEAT_ID")
-    private String seatId;
+    private Integer seatId;
 
     @Column(name = "SECTION_ID")
     private Integer sectionId;

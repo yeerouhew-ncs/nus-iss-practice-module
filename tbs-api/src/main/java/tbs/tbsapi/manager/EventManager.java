@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tbs.tbsapi.domain.enums.EventType;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.service.EventService;
@@ -16,6 +17,7 @@ import tbs.tbsapi.validation.ValidationError;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
+import tbs.tbsapi.vo.response.EventDetailsResponse;
 import tbs.tbsapi.vo.response.GetEventResponse;
 
 import java.util.List;
@@ -39,7 +41,14 @@ public class EventManager {
                     "validationError", validationErrorList
             ));
         }
-        AddEventResponse addEventResponse = eventService.addEvent(addEventDto);
+
+        AddEventResponse addEventResponse = new AddEventResponse();
+        if(addEventDto.getEventType().equals(EventType.CONCERT)) {
+            addEventResponse = eventService.addConcert(addEventDto);
+        } else if (addEventDto.getEventType().equals(EventType.SPORTS)) {
+            addEventResponse = eventService.addSportsEvent(addEventDto);
+        }
+
         if(Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
             log.info("END: ADD EVENT SUCCESS");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
@@ -76,7 +85,7 @@ public class EventManager {
     }
 
     public ResponseEntity<?> getEventDetails(GetEventRequest getEventRequest) {
-        GetEventResponse eventResponse = eventService.getEventDetails(getEventRequest);
+        EventDetailsResponse eventResponse = eventService.getEventDetails(getEventRequest);
         log.info("END: GET EVENT DETAILS SUCCESS");
 
         if(eventResponse.getEventId() != null) {
