@@ -6,20 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import tbs.tbsapi.domain.Event;
+import tbs.tbsapi.domain.*;
+import tbs.tbsapi.domain.enums.SeatStatus;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.factory.ConcertFactory;
 import tbs.tbsapi.factory.SportsEventFactory;
-import tbs.tbsapi.repository.EventRepository;
+import tbs.tbsapi.repository.*;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
-import tbs.tbsapi.vo.response.AddEventResponse;
-import tbs.tbsapi.vo.response.GetEventResponse;
+import tbs.tbsapi.vo.response.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -27,6 +28,24 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
+
+    @Autowired
+    private SectionSeatRepository sectionSeatRepository;
+
+    @Autowired
+    private SeatingPlanRepository seatingPlanRepository;
+
+    @Autowired
+    private VenueRepository venueRepository;
+
+    @Autowired
+    private SeatReservationRepository seatReservationRepository;
 
     @Autowired
     private ConcertFactory concertFactory;
@@ -120,10 +139,10 @@ public class EventServiceImpl implements EventService {
         );
     }
 
-    public GetEventResponse getEventDetails(GetEventRequest getEventRequest) {
+    public EventDetailsResponse getEventDetails(GetEventRequest getEventRequest) {
         Event event = eventRepository.findByEventId(getEventRequest.getEventId());
 
-        GetEventResponse eventResponse = new GetEventResponse();
+        EventDetailsResponse eventResponse = new EventDetailsResponse();
         eventResponse.setEventName(event.getEventName());
         eventResponse.setEventId(event.getEventId());
         eventResponse.setEventFromDt(event.getEventFromDt());
@@ -135,14 +154,56 @@ public class EventServiceImpl implements EventService {
         eventResponse.setGenre(event.getGenre());
 
         // retrieve seat reservation (id, order_id, seat_id, section_id)
-
+        SeatingPlan plan = seatingPlanRepository.findByPlanId(eventResponse.getPlanId());
+        Venue venue = venueRepository.findByVenueId(plan.getVenueId());
 
         // retrieve plan section seats (id, no_seats_left, plan_id, seat_price, section_desc, section_col,
         // section_row, total_seats)
+        GetSeatingPlanResponse seatingPlanResponse = new GetSeatingPlanResponse();
+        seatingPlanResponse.setPlanId(plan.getPlanId());
+        seatingPlanResponse.setPlanName(plan.getPlanName());
+        seatingPlanResponse.setPlanRow(plan.getPlanRow());
+        seatingPlanResponse.setPlanCol(plan.getPlanCol());
+        seatingPlanResponse.setVenueId(plan.getVenueId());
+        seatingPlanResponse.setVenueName(venue.getVenueName());
+        seatingPlanResponse.setAddress(venue.getAddress());
+
+        List<SectionSeat> sectionSeats = sectionSeatRepository.findAllByPlanId(plan.getPlanId());
+        List<GetSectionSeatResponse> sectionSeatResponses = new ArrayList<>();
         // retrieve seat table (id, seat_col, seat_name, seat_row, seat_status, section_id)
         // loop through seat reservation and compare the seat and seat reservation
         // if it matches, set status to reserved
+        for(SectionSeat sectionSeat: sectionSeats) {
+            GetSectionSeatResponse sectionSeatResponse = new GetSectionSeatResponse();
+            sectionSeatResponse.setSectionId(sectionSeat.getSectionId());
+            sectionSeatResponse.setTotalSeats(sectionSeat.getTotalSeats());
+            sectionSeatResponse.setNoSeatsLeft(sectionSeat.getNoSeatsLeft());
+            sectionSeatResponse.setSeatPrice(sectionSeat.getSeatPrice());
+            sectionSeatResponse.setSeatSectionDescription(sectionSeat.getSeatSectionDescription());
+            sectionSeatResponse.setSectionRow(sectionSeat.getSectionRow());
+            sectionSeatResponse.setSectionCol(sectionSeat.getSectionCol());
 
+            List<SeatReservation> reservedSeats = seatReservationRepository.findSeatReservationByEventId(getEventRequest.getEventId(), sectionSeat.getSectionId());
+            List<Integer> reservedSeatIds = reservedSeats.stream().map(SeatReservation::getSeatId).collect(Collectors.toList());
+            log.info("SEAT RESERVATIONS: {} ", reservedSeats);
+
+            List<Seat> seats = seatRepository.findAllBySectionId(sectionSeat.getSectionId());
+            List<Seat> updatedSeats = new ArrayList<>();
+            for(Seat seat: seats) {
+                if(reservedSeatIds.contains(seat.getSeatId())) {
+                    seat.setSeatStatus(SeatStatus.reserved);
+                } else {
+                    seat.setSeatStatus(SeatStatus.available);
+                }
+                updatedSeats.add(seat);
+            }
+
+            sectionSeatResponse.setSeatResponses(updatedSeats);
+            sectionSeatResponses.add(sectionSeatResponse);
+        }
+
+        seatingPlanResponse.setSectionSeatResponses(sectionSeatResponses);
+        eventResponse.setSeatingPlanResponse(seatingPlanResponse);
         return eventResponse;
     }
 
