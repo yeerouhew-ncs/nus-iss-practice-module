@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tbs.tbsapi.domain.enums.EventType;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.service.EventService;
@@ -39,7 +40,14 @@ public class EventManager {
                     "validationError", validationErrorList
             ));
         }
-        AddEventResponse addEventResponse = eventService.addEvent(addEventDto);
+
+        AddEventResponse addEventResponse = new AddEventResponse();
+        if(addEventDto.getEventType().equals(EventType.CONCERT)) {
+            addEventResponse = eventService.addConcert(addEventDto);
+        } else if (addEventDto.getEventType().equals(EventType.SPORTS)) {
+            addEventResponse = eventService.addSportsEvent(addEventDto);
+        }
+
         if(Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
             log.info("END: ADD EVENT SUCCESS");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(

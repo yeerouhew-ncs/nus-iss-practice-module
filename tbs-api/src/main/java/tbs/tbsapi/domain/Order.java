@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "ORDER")
+@Table(name = "TICKET_ORDER")
 public class Order {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

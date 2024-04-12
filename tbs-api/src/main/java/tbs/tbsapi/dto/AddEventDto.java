@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tbs.tbsapi.domain.CreatedUpdatedColumn;
+import tbs.tbsapi.domain.enums.EventType;
 import tbs.tbsapi.validation.ValidationError;
 
 import java.io.Serializable;
@@ -46,6 +47,12 @@ public class AddEventDto extends CreatedUpdatedColumn implements Serializable {
 
     @JsonProperty("subjectId")
     private Integer subjectId;
+
+    @JsonProperty("eventType")
+    private EventType eventType;
+
+    @JsonProperty("genre")
+    private String genre;
 
     public List<ValidationError> validate() {
         List<ValidationError> validationErrors = new ArrayList<>();

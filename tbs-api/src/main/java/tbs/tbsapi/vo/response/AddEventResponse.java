@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tbs.tbsapi.domain.enums.EventType;
 
 import java.time.LocalDateTime;
 
@@ -28,4 +29,8 @@ public class AddEventResponse {
     private Integer planId;
 
     private Integer subjectId;
+
+    private EventType eventType;
+
+    private String genre;
 }

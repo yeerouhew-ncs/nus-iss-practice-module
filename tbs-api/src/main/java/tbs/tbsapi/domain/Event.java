@@ -2,6 +2,7 @@ package tbs.tbsapi.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import tbs.tbsapi.domain.enums.EventType;
 
 import java.time.LocalDateTime;
 
@@ -36,4 +37,11 @@ public class Event {
 
     @Column(name = "SUBJECT_ID")
     private Integer subjectId;
+
+    @Column(name = "EVENT_TYPE")
+    @Enumerated(EnumType.STRING)
+    private EventType eventType;
+
+    @Column(name = "GENRE")
+    private String genre;
 }
