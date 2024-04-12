@@ -1,10 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {client} from "./payment.api";
 import React from 'react';
 import { PayPalButton } from "react-paypal-button-v2";
+import {OrderType} from "../event/containers/UserEventView";
 
 const PaymentStart: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const order: OrderType = location.state?.order;
 
     const redirectToPaypal = () => {
         navigate("/user/payment/success");
@@ -30,7 +34,6 @@ const PaymentStart: React.FC = () => {
         // => sometimes it may take about 0.5 second for everything to get set, or for the button to appear
     }
     let currency = 'SGD';
-    let total = '10.00';
 
     return (
         <div>
@@ -40,7 +43,7 @@ const PaymentStart: React.FC = () => {
                 {/*    <img src={require('../../images/paypal.png')} className={`img-fluid`} />*/}
                 {/*</button>*/}
                 <PayPalButton
-                    amount={total}
+                    amount={order.orderTotalPrice}
                     currency={currency}
                     options={client}
                     shippingPreference="NO_SHIPPING"

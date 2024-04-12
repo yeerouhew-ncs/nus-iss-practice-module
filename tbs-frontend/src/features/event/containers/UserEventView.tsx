@@ -179,20 +179,20 @@ const UserEventView: React.FC = () => {
         </div>
 
         <div className={`row`}>
-          <div className={`col-md-12 ${styles.eventViewHeader}`}>
-            Seating Plan
-          </div>
+          {/*<div className={`col-md-12 ${styles.eventViewHeader}`}>*/}
+          {/*  Seating Plan*/}
+          {/*</div>*/}
 
           <div className={`col-md-12 ${styles.planCard}`}>
             <div>
-              <OrderSeatingPlan
-                row={plan.row}
-                col={plan.col}
-                sectionSeats={plan.sectionSeats}
-                isLegendVisible={true}
-                // setOrder={setOrder}
-                event={event}
-              />
+              {/*<OrderSeatingPlan*/}
+              {/*  row={plan.row}*/}
+              {/*  col={plan.col}*/}
+              {/*  sectionSeats={plan.sectionSeats}*/}
+              {/*  isLegendVisible={true}*/}
+              {/*  // setOrder={setOrder}*/}
+              {/*  event={event}*/}
+              {/*/>*/}
               <button
                   type="button"
                   className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}

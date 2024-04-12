@@ -94,11 +94,11 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
       rows: row,
       columns: col,
       seatTypes: {
-        default: {
-          label: "Unassigned",
-          cssClass: `default`,
-          price: 0,
-        },
+        // default: {
+        //   label: "Unassigned",
+        //   cssClass: `default`,
+        //   price: 0,
+        // },
         ...Object.fromEntries(
           Object.values(transformedSeats).map((seat: any, index: number) => [
             // `cat${index + 1}`,
@@ -196,14 +196,12 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
     });
   };
 
-  // useEffect(() => {
-  //   const selectedSeats = seatchartRef.current?.getCart();
-  //   console.log("selectedSeats");
-  // }, [seatchartRef.current]);
-
   return (
     <div>
       <Seatchart ref={seatchartRef} options={options} />
+      <div>
+
+      </div>
       <div className={styles.viewBtnGroup}>
         <div
           className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}

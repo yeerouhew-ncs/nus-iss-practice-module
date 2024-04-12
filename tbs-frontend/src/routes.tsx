@@ -30,6 +30,7 @@ import PaymentSuccess from "./features/payment/PaymentSuccess";
 import UserEventView from "./features/event/containers/UserEventView";
 import OrderPreview from "./features/payment/OrderPreview";
 import QueueView from "./features/queue/containers/QueueView";
+import UserPurchaseView from "./features/seating-plan/UserPurchaseView";
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -226,6 +227,7 @@ const AppRoutes = () => {
               <Route path="/user/order/preview" element={<OrderPreview />} />
               <Route path="/user/venue/list" element={<UserEvent />} />
               <Route path="/user/event/queue/:eventId" element={<QueueView />} />
+              <Route path="/user/order/purchase/:eventId" element={<UserPurchaseView />} />
               <Route path="/user/payment/start" element={<PaymentStart />} />
               <Route
                 path="/user/payment/success"

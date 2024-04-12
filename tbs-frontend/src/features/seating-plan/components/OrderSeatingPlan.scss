@@ -59,3 +59,106 @@
 }
 .sc-right-container {
 }
+// add
+/* Cart css */
+
+.sc-cart {
+  width: 300px;
+  margin-bottom: 50px;
+}
+
+.sc-cart-table-container {
+  height: 250px;
+  margin-bottom: 15px;
+  overflow: auto;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+.sc-cart-table {
+  width: 100%;
+}
+
+.sc-cart-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.sc-cart-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 2px;
+}
+
+.sc-cart-btn {
+  border-radius: 4px;
+  transition: background-color 0.15s ease-in-out;
+  user-select: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  height: 35px;
+}
+
+.sc-cart-btn-icon {
+  height: 3px;
+  width: 12px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.sc-cart-btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e53c4a;
+  height: 22px;
+  width: 22px;
+}
+
+.sc-cart-btn-delete:hover {
+  background-color: #db3240;
+}
+
+.sc-cart-btn-delete:active {
+  background-color: #cc2331;
+}
+
+.sc-cart td .sc-cart-btn-delete {
+  margin: auto;
+}
+
+.sc-cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 10px 10px;
+}
+
+.sc-cart-footer {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-cart-total {
+  flex: 1;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 10px 15px;
+  padding: 0;
+  text-align: right;
+}
+
+.sc-cart-btn-submit {
+  width: 100%;
+  background-color: #e53c4a;
+  color: white;
+}
+
+.sc-cart-btn-submit:hover {
+  background-color: #db3240;
+}
+
+.sc-cart-btn-submit:active {
+  background-color: #cc2331;
+}

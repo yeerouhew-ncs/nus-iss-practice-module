@@ -20,7 +20,7 @@ const OrderPreview = () => {
     // NAVIGATE TO PAYMENT,
     // you can get order on payment page by putting this => const order: OrderType = location.state?.order
     // order consists of orderSeatInfo, orderTotalPrice and event details
-    navigate("", {
+    navigate("/user/payment/start", {
       replace: true,
       state: {
         order,

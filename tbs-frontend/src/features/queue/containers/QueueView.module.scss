@@ -1,0 +1,77 @@
+@import "../../../styles/colors.scss";
+
+  .eventViewHeader {
+  background-color: var(--secondary-color);
+  color: var(--pure-white);
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 10px 15px;
+  //   margin-bottom: 20px;
+}
+
+.eventViewContainer {
+  border: 1px solid var(--primary-color);
+  //   border-radius: 10px;
+  padding: 15px 40px;
+
+  .eventViewLabel {
+    color: var(--light-gray);
+    font-size: 18px;
+    align-self: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .eventViewValue {
+    color: var(--dark-gray);
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .eventViewCol {
+    margin-bottom: 20px;
+  }
+
+  .planCard {
+    border-radius: 4px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .planThumbnail {
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    padding: 5px;
+    max-width: 100%;
+    max-height: 300px;
+  }
+
+  .viewBtnGroup {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .primaryBtn {
+    color: white !important;
+    background-color: var(--primary-color) !important;
+    text-decoration-line: none !important;
+  }
+
+  .primaryBtn:hover {
+    color: white !important;
+    background-color: var(--primary-color) !important;
+    text-decoration-line: underline !important;
+  }
+
+  .btnMarginRight {
+    margin-right: 5px;
+  }
+  .imgfluid{
+    max-width: 50%;
+    max-height: 10px;
+  }
+
+  //   .disabledContainer {
+  //     pointer-events: none;
+  //     opacity: 0.8;
+  //   }
+}

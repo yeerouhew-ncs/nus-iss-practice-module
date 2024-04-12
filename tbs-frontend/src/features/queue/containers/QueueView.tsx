@@ -7,6 +7,8 @@ import {useAuthContext} from "../../../context/AuthContext";
 import {IQueueRequest, IQueueRequest2, IQueueResponse, IQueueResponse2} from "../../../interfaces/queue-interface";
 import {CHECK_QUEUE_URL, joinQueue} from "../queue.api";
 import axios from "axios";
+import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
+import styles from "./QueueView.module.scss";
 
 type SeatingPlanType = {
     row: number;
@@ -71,7 +73,7 @@ const QueueView:  React.FC = () => {
         if (expectedStatus == currentStatus) {
             console.log('Status changed:', currentStatus);
             // TODO : change navigate to purchase page
-            navigate("/")
+            navigate("/user/order/purchase/"+queueRequest?.eventId);
 
         }
         return data;
@@ -92,7 +94,13 @@ const QueueView:  React.FC = () => {
 
     return (
         <div>
-            In Queue
+            {warning && <AlertPopUp type="warning" message={errorMsg} />}
+            {errors && <AlertPopUp type="danger" message={errorMsg} />}
+            <br />
+            <div>
+                <div className={` ${styles.eventViewHeader}`}>You are now in Queue </div>
+            </div>
+            <img src={require('../../../images/loading.gif')} className={` ${styles.imgfluid}`} />
 
         </div>
     )
