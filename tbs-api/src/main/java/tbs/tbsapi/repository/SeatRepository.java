@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tbs.tbsapi.domain.Seat;
+import tbs.tbsapi.domain.SeatSection;
 import tbs.tbsapi.domain.SectionSeat;
 import tbs.tbsapi.domain.Venue;
 import tbs.tbsapi.domain.enums.SeatStatus;
@@ -24,7 +25,16 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
                        @Param("seatStatus") SeatStatus   seatStatus,
                        @Param("sectionId") Integer sectionId);
 
+    @Modifying
+    @Query("UPDATE Seat s SET s.seatStatus='reserved'" +
+            "WHERE s.seatName in :seatNames and s.sectionId in :sectionIds")
+    Integer updateSeatsReserved(@Param("seatNames") List<String> seatNames, @Param("sectionIds") List<Integer> sectionIds);
+
     Integer deleteBySectionId(Integer sectionId);
+
+    @Query("SELECT s.seatId, s.sectionId from Seat s " +
+            "WHERE s.seatName in :seatNames and s.sectionId in :sectionIds")
+    List<SeatSection> findBySeatNameSectionId(@Param("seatNames") List<String> seatNames, @Param("sectionIds") List<Integer> sectionIds);
 
     List<Seat> findAllBySectionId(Integer sectionId);
 

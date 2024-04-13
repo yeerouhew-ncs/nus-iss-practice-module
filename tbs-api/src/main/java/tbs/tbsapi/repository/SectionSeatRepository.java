@@ -14,6 +14,9 @@ import java.util.List;
 public interface SectionSeatRepository extends JpaRepository<SectionSeat, String> {
     List<SectionSeat> findAllByPlanId(Integer planId);
 
+    @Query("SELECT s.sectionId FROM SectionSeat s WHERE s.planId= :planId")
+    List<Integer> findSectionIdsByPlanId(@Param("planId") Integer planId);
+
     SectionSeat findBySectionId(Integer sectionId);
 
     @Modifying
