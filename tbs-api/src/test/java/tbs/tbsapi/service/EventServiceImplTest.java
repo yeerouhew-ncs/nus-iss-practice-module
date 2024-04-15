@@ -6,10 +6,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import tbs.tbsapi.domain.Event;
-import tbs.tbsapi.domain.SeatingPlan;
-import tbs.tbsapi.domain.Venue;
+import tbs.tbsapi.domain.*;
 import tbs.tbsapi.domain.enums.EventType;
+import tbs.tbsapi.domain.enums.SeatStatus;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.factory.ConcertFactory;
@@ -20,6 +19,7 @@ import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
 import tbs.tbsapi.vo.response.EventDetailsResponse;
 import tbs.tbsapi.vo.response.GetEventResponse;
+import tbs.tbsapi.vo.response.GetSectionSeatResponse;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -148,14 +148,42 @@ class EventServiceImplTest {
         venue.setVenueName("Test Venue");
         venue.setAddress("Test Address");
 
+        // Mock sectionSeatRepository behavior
+        SectionSeat sectionSeat = new SectionSeat();
+        sectionSeat.setSectionId(1);
+        sectionSeat.setTotalSeats(100);
+        sectionSeat.setNoSeatsLeft(50);
+        sectionSeat.setSeatPrice(10.0);
+        sectionSeat.setSeatSectionDescription("Test Section");
+        sectionSeat.setSectionRow(10);
+        sectionSeat.setSectionCol(10);
+
+        List<SectionSeat> sectionSeats = Collections.singletonList(sectionSeat);
+        when(sectionSeatRepository.findAllByPlanId(seatingPlan.getPlanId())).thenReturn(sectionSeats);
+
+        // Mock seatRepository behavior
+        Seat seat = new Seat();
+        seat.setSeatId(1);
+        seat.setSeatStatus(SeatStatus.available);
+
+        List<Seat> seats = Collections.singletonList(seat);
+        when(seatRepository.findAllBySectionId(sectionSeat.getSectionId())).thenReturn(seats);
+
+        // Mock seatReservationRepository behavior
+        SeatReservation seatReservation = new SeatReservation();
+        seatReservation.setSeatId(1);
+
+        List<SeatReservation> reservedSeats = Collections.singletonList(seatReservation);
+        when(seatReservationRepository.findSeatReservationByEventId(anyInt(), anyInt())).thenReturn(reservedSeats);
 
         when(eventRepository.findByEventId(request.getEventId())).thenReturn(event);
         when(seatingPlanRepository.findByPlanId(event.getPlanId())).thenReturn(seatingPlan);
         when(venueRepository.findByVenueId(seatingPlan.getVenueId())).thenReturn(venue);
-        when(sectionSeatRepository.findAllByPlanId(seatingPlan.getPlanId())).thenReturn(Collections.emptyList());
 
+        // Call the method under test
         EventDetailsResponse response = eventService.getEventDetails(request);
 
+        // Assertions
         assertEquals(event.getEventId(), response.getEventId());
         assertEquals(event.getEventName(), response.getEventName());
         assertEquals(event.getArtistName(), response.getArtistName());
@@ -163,6 +191,21 @@ class EventServiceImplTest {
         assertEquals(venue.getVenueId(), response.getSeatingPlanResponse().getVenueId());
         assertEquals(venue.getVenueName(), response.getSeatingPlanResponse().getVenueName());
         assertEquals(venue.getAddress(), response.getSeatingPlanResponse().getAddress());
+
+        // Additional assertions for section seat responses
+        List<GetSectionSeatResponse> sectionSeatResponses = response.getSeatingPlanResponse().getSectionSeatResponses();
+        assertEquals(1, sectionSeatResponses.size()); // Assuming one section seat response in this case
+
+        GetSectionSeatResponse sectionSeatResponse = sectionSeatResponses.get(0);
+        assertEquals(sectionSeat.getSectionId(), sectionSeatResponse.getSectionId());
+        assertEquals(sectionSeat.getTotalSeats(), sectionSeatResponse.getTotalSeats());
+        assertEquals(sectionSeat.getNoSeatsLeft(), sectionSeatResponse.getNoSeatsLeft());
+        assertEquals(sectionSeat.getSeatPrice(), sectionSeatResponse.getSeatPrice());
+        assertEquals(sectionSeat.getSeatSectionDescription(), sectionSeatResponse.getSeatSectionDescription());
+        assertEquals(sectionSeat.getSectionRow(), sectionSeatResponse.getSectionRow());
+        assertEquals(sectionSeat.getSectionCol(), sectionSeatResponse.getSectionCol());
+        // Assuming seat status is correctly set based on reservation
+        assertEquals(SeatStatus.reserved, sectionSeatResponse.getSeatResponses().get(0).getSeatStatus());
     }
 
     @Test
