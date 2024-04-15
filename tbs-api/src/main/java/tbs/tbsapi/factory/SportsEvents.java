@@ -4,10 +4,8 @@ import org.springframework.stereotype.Component;
 import tbs.tbsapi.domain.Event;
 import tbs.tbsapi.dto.AddEventDto;
 
-import java.util.Objects;
-
 @Component
-public class SportsEventFactory implements EventFactory {
+public class SportsEvents implements Events {
     @Override
     public Event addEvent(AddEventDto addEventDto) {
         return Event.builder()
