@@ -13,7 +13,7 @@ import tbs.tbsapi.manager.OrderManager;
 @CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
-    private OrderManager orderManager;
+    OrderManager orderManager;
 
     @PostMapping(path = "/add")
     public ResponseEntity<?> addOrder(@RequestBody AddOrderDto addOrderDto) throws Exception{

@@ -32,7 +32,7 @@ public class QueueController {
     private final RabbitMQProducer rabbitMQProducer;
 
     @Autowired
-    private QueueManager queueManager;
+    QueueManager queueManager;
 
     public QueueController(RabbitMQProducer rabbitMQProducer) {
         this.rabbitMQProducer = rabbitMQProducer;
@@ -49,6 +49,7 @@ public class QueueController {
         request.setTicketnumber(String.valueOf(UUID.randomUUID().toString()));
         request.setTimestamp(LocalDateTime.now());
         log.info(String.format("request join queue -> %s",request));
+//        QueueManager queueManager = new QueueManager();
         QueueResponse response = queueManager.addtoQueue(request);
         log.info(String.format("sent json -> %s",response));
         boolean isSuccess =rabbitMQProducer.sendJsonMessage(request);

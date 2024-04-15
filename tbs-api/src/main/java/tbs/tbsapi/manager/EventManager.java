@@ -28,7 +28,7 @@ import java.util.Objects;
 @Service
 public class EventManager {
     @Autowired
-    private EventService eventService;
+    EventService eventService;
 
     public ResponseEntity<?> addEvent(AddEventDto addEventDto) {
         List<ValidationError> validationErrorList = addEventDto.validate();
