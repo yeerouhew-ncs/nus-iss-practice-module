@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./EventCreate.module.scss";
 import { useNavigate } from "react-router-dom";
 import { addEventApi } from "../event.api";
+import { twoWeekslater } from "../../../utils/date-utils";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -35,7 +36,10 @@ const EventCreate: React.FC = () => {
   const [selectedPlanLayout, setSelectedPlanLayout] =
     useState<SeatingPlanType>();
   const [selectedPlan, setSelectedPlan] = useState<PlanList>();
+  const [formErrors, setFormErrors] = useState<Array<String>>();
   const [hideGenre, setHideGenre] = useState<boolean>(true);
+  const [fromDt, setFromDt] = useState<any>();
+  const [toDt, setToDt] = useState<any>();
 
   const getPlanList = async () => {
     try {
@@ -53,8 +57,21 @@ const EventCreate: React.FC = () => {
     getPlanList();
   }, []);
 
+  const checkEmptyValues = () => {
+    if (
+      (document.getElementById("eventName") as HTMLInputElement).value.trim().length==0 ||
+      (document.getElementById("artistName") as HTMLInputElement).value.trim().length==0 ||
+      (document.getElementById("eventFromDt") as HTMLInputElement).value.trim().length==0 ||
+      (document.getElementById("eventToDt") as HTMLInputElement).value.trim().length==0 ||
+      (document.getElementById("eventType") as HTMLSelectElement).value.trim().length==0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   const createAddEventDto = async () => {
-    alert("Event saved successfully");
     var formData = new FormData();
 
     formData.append(
@@ -101,18 +118,46 @@ const EventCreate: React.FC = () => {
     var jsonStr = JSON.stringify(Object.fromEntries(formData));
     console.log("JSON STRING", jsonStr);
 
-    const response = await addEventApi(jsonStr);
+    try {
+      const response = await addEventApi(jsonStr);
 
-    if (response.statusCode === "200" && response.message === "SUCCESS") {
-      console.log("SUCCESS");
-    } else {
+      if (response.statusCode === "200" && response.message === "SUCCESS") {
+        console.log("SUCCESS");
+        alert("Event saved successfully");
+        
+        if (userInfo?.authorities[0].authority === "ADMIN")
+          navigate("/admin/event/list");
+        else if (userInfo?.authorities[0].authority === "ORGANISER")
+          navigate("/organiser/event/list");
+      }
+    } catch {
       console.log("FAIL");
+      alert("Error when saving event");
     }
+  };
 
-    if (userInfo?.authorities[0].authority === "ADMIN")
-      navigate("/admin/event/list");
-    else if (userInfo?.authorities[0].authority === "ORGANISER")
-      navigate("/organiser/event/list");
+  const handleSubmit = () => {
+    console.log("IN HANDLESUBMIT")
+    
+    let emptyValues: boolean = checkEmptyValues();
+
+    console.log("EMPTY VALUES", emptyValues);
+
+    if (emptyValues) {
+      alert("Required fields must not be empty.");
+    } else {
+      createAddEventDto();
+    }
+  };
+
+  const handleFromDateChange = (date: any) => {
+    setFromDt(date);
+    console.log("DATES", fromDt, toDt);
+  };
+
+  const handleToDateChange = (date: any) => {
+    setToDt(date);
+    console.log("DATES", fromDt, toDt);
   };
 
   const navigateBack = () => {
@@ -219,6 +264,9 @@ const EventCreate: React.FC = () => {
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   format="DD/MM/YYYY"
+                  minDate={twoWeekslater()}
+                  maxDate={toDt}
+                  onChange={handleFromDateChange}
                   sx={{
                     width: "100%",
                     "& .MuiInputBase-input": {
@@ -243,6 +291,8 @@ const EventCreate: React.FC = () => {
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   format="DD/MM/YYYY"
+                  minDate={fromDt}
+                  onChange={handleToDateChange}
                   sx={{
                     width: "100%",
                     "& .MuiInputBase-input": {
@@ -332,7 +382,7 @@ const EventCreate: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={createAddEventDto}
+                onClick={handleSubmit}
                 className={`btn btn-primary ${styles.primaryBtn}`}
               >
                 Submit

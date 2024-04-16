@@ -95,7 +95,8 @@ const EventEdit: React.FC = () => {
           setHideGenre(true);
         }
         setSelectedPlanId(response.eventDetails.planId);
-        console.log("response.eventDeatils", response.eventDetails);
+        console.log("response.eventDetails", response.eventDetails);
+        console.log("response.eventDetails.planId", response.eventDetails.planId);
       }
     } catch (err) {
       setErrors(true);
@@ -190,9 +191,6 @@ const EventEdit: React.FC = () => {
     // clear old errors
     setFormErrors(new Array<String>());
 
-    // check that dates are correct
-    // if (moment((document.getElementById("eventFromDt") as HTMLInputElement)?.value, "DD/MM/YYYY") < )
-
     createEditEventDto();
   };
 
@@ -278,11 +276,6 @@ const EventEdit: React.FC = () => {
     } else {
       setHideGenre(true);
     }
-  };
-
-  const handlePlanIdChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handlePlanIdChange", ev.target.value);
-    setSelectedPlanId(ev.target.value);
   };
 
   return (
@@ -431,9 +424,9 @@ const EventEdit: React.FC = () => {
                       className="form-radio"
                       name="planId"
                       id="planId"
-                      checked={selectedPlanId === plan.planId.toString()}
-                      onChange={(ev) => handlePlanIdChange(ev)}
+                      checked={selectedPlanId.toString()  === plan.planId.toString()}
                       value={plan.planId}
+                      disabled
                     />
                     <label className={styles.layersMenu}>
                       {/* <div className={styles.layoutDesc} onClick={showModal}> */}
