@@ -3,6 +3,7 @@ package tbs.tbsapi.service;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tbs.tbsapi.domain.Event;
 import tbs.tbsapi.domain.Order;
 import tbs.tbsapi.domain.SeatReservation;
@@ -39,6 +40,7 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private SeatReservationFactory seatReservationFactory;
 
+    @Transactional
     public AddOrderResponse addOrder(AddOrderDto addOrderDto) {
         Order newOrder = orderFactory.addOrder(addOrderDto);
         log.info("ORDER {} ", newOrder);
