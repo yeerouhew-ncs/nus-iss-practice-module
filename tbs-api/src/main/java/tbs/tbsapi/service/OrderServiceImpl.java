@@ -49,10 +49,18 @@ public class OrderServiceImpl implements OrderService{
         Event event = eventRepository.findByEventId(addOrderDto.getEventId());
 
         //GET SECTION_ID_LIST
+        log.info("EVENT: {}", event);
+        log.info("PLAN ID: {}", event.getPlanId());
+
         List<Integer> sectionIdList = sectionSeatRepository.findSectionIdsByPlanId(event.getPlanId());
 
         //UPDATE SEAT_STATUS TO 'reserved'
         List<SeatSection> seatSectionIdList = seatRepository.findBySeatNameSectionId(addOrderDto.getSeatNames(), sectionIdList);
+        log.info("SECTION ID LIST: {}", sectionIdList);
+        log.info("SEAT SECTION ID LIST: {}", seatSectionIdList);
+        for (SeatSection ss: seatSectionIdList) {
+            log.info("Section: {}, Seat: {}", ss.getSectionId(), ss.getSeatId());
+        }
         seatRepository.updateSeatsReserved(addOrderDto.getSeatNames(), sectionIdList);
 
         Order saveOrder = orderRepository.save(newOrder);
