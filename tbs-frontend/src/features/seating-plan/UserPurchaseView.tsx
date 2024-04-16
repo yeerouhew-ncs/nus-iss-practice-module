@@ -1,6 +1,6 @@
 import {GetSeatResponse, IGetPlanDetailsRequest} from "../../interfaces/seating-plan-interface";
 import {SeatInfo} from "seatchart";
-import {EventResponse} from "../../interfaces/event-interface";
+import {EventDetailsResponse, EventResponse} from "../../interfaces/event-interface";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAuthContext} from "../../context/AuthContext";
@@ -40,7 +40,7 @@ const UserPurchaseView: React.FC = () => {
     const [errors, setErrors] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>("");
     const [warning, setWarning] = useState<boolean>(false);
-    const [event, setEvent] = useState<EventResponse>();
+    const [event, setEvent] = useState<EventDetailsResponse>();
     const [plan, setPlan] = useState<SeatingPlanType>();
     // const [order, setOrder] = useState<OrderType>();
 
@@ -58,6 +58,8 @@ const UserPurchaseView: React.FC = () => {
         try {
             const response = await getEventDetailsApi(mappingRequest);
             if (response.statusCode === "200" && response.message === "SUCCESS") {
+                console.log("Purchase view ",response.eventDetails)
+
                 setEvent(response.eventDetails);
                 getPlanDetails(response.eventDetails.planId);
             } else if (

@@ -17,3 +17,4 @@ export interface IQueueRequest2 {
     subjectId: string | undefined;
     ticketnumber: string | undefined;
 }
+
