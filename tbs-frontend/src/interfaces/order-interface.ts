@@ -3,10 +3,10 @@ import {SeatInfo} from "seatchart";
 export interface IOrderRequest{
     eventId:string|undefined;
     subjectId:string|undefined;
-    seatNames: SeatInfo[] | undefined;
-    orderDateTime: string;
+    seatNames: string[] | undefined;
+    orderDt: string;
     orderStatus: string;
-    totalPrice: number|undefined;
+    totalPrice: Number|undefined;
 }
 export interface IOrderResponse {
     statusCode: string;

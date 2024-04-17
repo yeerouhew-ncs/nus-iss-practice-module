@@ -14,7 +14,11 @@ import tbs.tbsapi.manager.OrderManager;
 public class OrderController {
     @Autowired
     private OrderManager orderManager;
+    @GetMapping(value="/health")
+    public ResponseEntity<String> health() {
 
+        return ResponseEntity.ok("Status: OK");
+    }
     @PostMapping(path = "/add")
     public ResponseEntity<?> addOrder(@RequestBody AddOrderDto addOrderDto) throws Exception{
         log.info("START: ADD ORDER");

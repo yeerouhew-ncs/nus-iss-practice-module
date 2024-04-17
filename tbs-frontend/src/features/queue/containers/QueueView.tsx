@@ -9,6 +9,7 @@ import {CHECK_QUEUE_URL, joinQueue} from "../queue.api";
 import axios from "axios";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
 import styles from "./QueueView.module.scss";
+import ProgressBar from "../components/ProgressBar";
 
 type SeatingPlanType = {
     row: number;
@@ -100,8 +101,9 @@ const QueueView:  React.FC = () => {
             <div>
                 <div className={` ${styles.eventViewHeader}`}>You are now in Queue </div>
             </div>
-            <img src={require('../../../images/loading.gif')} className={` ${styles.imgfluid}`} />
-
+            <br/>
+            <ProgressBar />
+            <br/>
         </div>
     )
 
