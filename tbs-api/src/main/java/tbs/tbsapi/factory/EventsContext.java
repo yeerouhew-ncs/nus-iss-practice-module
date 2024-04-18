@@ -9,7 +9,7 @@ import java.util.EnumMap;
 
 @Log4j2
 @Component
-public class EventsFactory {
+public class EventsContext {
     @Autowired
     public Concert concert;
 
@@ -18,7 +18,7 @@ public class EventsFactory {
 
     private EnumMap<EventType, Events> eventsMap;
 
-    public EventsFactory() {
+    public EventsContext() {
         this.eventsMap = new EnumMap<>(EventType.class);
         this.eventsMap.put(EventType.CONCERT, new Concert());
         this.eventsMap.put(EventType.SPORTS, new SportsEvents());

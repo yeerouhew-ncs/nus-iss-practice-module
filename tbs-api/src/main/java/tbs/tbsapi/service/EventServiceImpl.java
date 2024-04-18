@@ -10,10 +10,8 @@ import tbs.tbsapi.domain.*;
 import tbs.tbsapi.domain.enums.SeatStatus;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
-import tbs.tbsapi.factory.Concert;
 import tbs.tbsapi.factory.Events;
-import tbs.tbsapi.factory.EventsFactory;
-import tbs.tbsapi.factory.SportsEvents;
+import tbs.tbsapi.factory.EventsContext;
 import tbs.tbsapi.repository.*;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
@@ -56,7 +54,7 @@ public class EventServiceImpl implements EventService {
 //    private SportsEvents sportsEvent;
 
     @Autowired
-    private EventsFactory eventsFactory;
+    private EventsContext eventsFactory;
 
     public AddEventResponse addEvent(AddEventDto addEventDto) {
         Events events = eventsFactory.getEvent(addEventDto.getEventType());
