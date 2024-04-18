@@ -54,10 +54,10 @@ public class EventServiceImpl implements EventService {
 //    private SportsEvents sportsEvent;
 
     @Autowired
-    private EventsContext eventsFactory;
+    private EventsContext eventsContext;
 
     public AddEventResponse addEvent(AddEventDto addEventDto) {
-        Events events = eventsFactory.getEvent(addEventDto.getEventType());
+        Events events = eventsContext.getEvent(addEventDto.getEventType());
         Event preSaveEvent = events.addEvent(addEventDto);
         log.info("CONCERT EVENT {} ", preSaveEvent);
 

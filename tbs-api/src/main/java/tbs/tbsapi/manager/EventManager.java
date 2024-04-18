@@ -42,8 +42,7 @@ public class EventManager {
             ));
         }
 
-        AddEventResponse addEventResponse = new AddEventResponse();
-        addEventResponse = eventService.addEvent(addEventDto);
+        AddEventResponse addEventResponse = eventService.addEvent(addEventDto);
 
         if (Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
             log.info("END: ADD EVENT SUCCESS");
