@@ -13,9 +13,9 @@ import tbs.tbsapi.vo.response.GetEventResponse;
 import java.util.List;
 
 public interface EventService {
-    public AddEventResponse addConcert(AddEventDto addEventDto);
-    public AddEventResponse addSportsEvent(AddEventDto addEventDto);
     public AddEventResponse addEvent(AddEventDto addEventDto);
+//    public AddEventResponse addSportsEvent(AddEventDto addEventDto);
+//    public AddEventResponse addEvent(AddEventDto addEventDto);
     public Page<GetEventResponse> getListOfEvents(Pageable pageable, GetListOfEventRequest getListOfEventRequest);
     public EventDetailsResponse getEventDetails(GetEventRequest getEventRequest);
     public List<String> editEvent(EditEventDto editEventDto);

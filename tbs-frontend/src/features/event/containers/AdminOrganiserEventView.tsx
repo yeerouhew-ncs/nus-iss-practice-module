@@ -1,5 +1,6 @@
+// 
 import React, { useEffect, useState } from "react";
-import styles from "./OrganiserEventView.module.scss";
+import styles from "./AdminOrganiserEventView.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventDetailsApi } from "../event.api";
 import AlertPopUp from "../../../common/alert-popup/AlertPopUp";
@@ -24,7 +25,7 @@ type SeatingPlanType = {
   sectionSeats: Category[];
 };
 
-const OrganiserEventView: React.FC = () => {
+const AdminOrganiserEventView: React.FC = () => {
   const param = useParams();
   const eventId = param?.eventId;
 
@@ -47,8 +48,11 @@ const OrganiserEventView: React.FC = () => {
   };
 
   const redirectEditOnClick = () => {
-    if (userInfo?.authorities[0].authority === "ORGANISER")
+    if (userInfo?.authorities[0].authority === "ORGANISER"){
       navigate("/organiser/event/edit/" + eventId);
+    } else if (userInfo?.authorities[0].authority === "ADMIN"){
+      navigate("/admin/event/edit/" + eventId);
+    }
   };
 
   const getEventDetails = async () => {
@@ -125,34 +129,10 @@ const OrganiserEventView: React.FC = () => {
 
   useEffect(() => {
     getEventDetails();
-    console.log("TWO WEEKS LATER", isTwoWeeksLater(event?.eventFromDt));
   }, [eventId]);
 
   if (!plan) {
-    return (
-      <div>
-        <div className={`${styles.eventHeader}`}>
-          <div>
-            <h2>Event Details</h2>
-          </div>
-          {isTwoWeeksLater(event?.eventFromDt) ? (
-            <div>
-              <button
-                type="button"
-                className={`btn btn-primary ${styles.primaryBtn}`}
-                onClick={redirectEditOnClick}
-                // hidden={userInfo?.authorities[0].authority === "MOP"}
-              >
-                <span>Edit Event</span>
-              </button>
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
-        <div>Plan does not exist</div>
-      </div>
-    );
+    return <div>Plan does not exist</div>;
   }
 
   return (
@@ -164,54 +144,47 @@ const OrganiserEventView: React.FC = () => {
         setIsModalVisible={setIsModalVisible}
         planId={event ? event.planId : "1"}
       /> */}
-      <div className={`${styles.eventHeader}`}>
-        <div>
-          <h2>Event Details</h2>
-        </div>
-        <div>
-          <button
-            type="button"
-            className={`btn btn-primary ${styles.primaryBtn}`}
-            onClick={redirectEditOnClick}
-            // hidden={userInfo?.authorities[0].authority === "MOP"}
-          >
-            <span>Edit Event</span>
-          </button>
-        </div>
-      </div>
       <div>
-        <button
-          type="button"
-          className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
-          onClick={redirectEditOnClick}
-          hidden={userInfo?.authorities[0].authority === "MOP"}
-        >
-          <span>Edit Event</span>
-        </button>
+        <div className={` ${styles.eventViewHeader}`}>Event Details</div>
       </div>
       <div className={styles.eventViewContainer}>
         <div className={`row`}>
-          <div className={`col-md-12 ${styles.eventViewCol}`}>
+          <div className={`col-md-6 ${styles.eventViewCol}`}>
             <div className={`${styles.eventViewLabel}`}>Event Name</div>
             <div className={`${styles.eventViewValue}`}>{event?.eventName}</div>
           </div>
-          <div className={`col-md-12 ${styles.eventViewCol}`}>
+          <div className={`col-md-6 ${styles.eventViewCol}`}>
             <div className={`${styles.eventViewLabel}`}>Artist Name</div>
             <div className={`${styles.eventViewValue}`}>
               {event?.artistName}
             </div>
           </div>
-          <div className={`col-md-12 ${styles.eventViewCol}`}>
+          <div className={`col-md-6 ${styles.eventViewCol}`}>
             <div className={`${styles.eventViewLabel}`}>Event Start Date</div>
             <div className={`${styles.eventViewValue}`}>
               {moment(event?.eventFromDt).format("DD-MMM-YYYY")}
             </div>
           </div>
-          <div className={`col-md-12 ${styles.eventViewCol}`}>
+          <div className={`col-md-6 ${styles.eventViewCol}`}>
             <div className={`${styles.eventViewLabel}`}>Event End Date</div>
             <div className={`${styles.eventViewValue}`}>
               {moment(event?.eventToDt).format("DD-MMM-YYYY")}
             </div>
+          </div>
+          <div className={`col-md-6 ${styles.eventViewCol}`}>
+            <div className={`${styles.eventViewLabel}`}>Event Type</div>
+            <div className={`${styles.eventViewValue}`}>{event?.eventType}</div>
+          </div>
+          <div
+            className={`col-md-6 ${styles.eventViewCol}`}
+            hidden={
+              event?.genre === null ||
+              event?.genre === undefined ||
+              event.genre === ""
+            }
+          >
+            <div className={`${styles.eventViewLabel}`}>Genre</div>
+            <div className={`${styles.eventViewValue}`}>{event?.genre}</div>
           </div>
         </div>
 
@@ -234,17 +207,26 @@ const OrganiserEventView: React.FC = () => {
 
         <br />
         <br />
-        <div className={styles.viewBtnGroup}>
-          <div
-            className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
-            onClick={navigateBack}
-          >
-            Back
+        <div className={`${styles.viewBtnGroup} d-flex align-items-center`}>
+            <div
+              className={`btn ${styles.primaryBtn} btn-sm`}
+              onClick={navigateBack}
+            >
+              Back
+            </div>
+            <div>
+              <button
+                type="button"
+                className={`btn btn-sm ${styles.primaryBtn}`}
+                onClick={redirectEditOnClick}
+              >
+                <span>Edit Event</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };
 
-export default OrganiserEventView;
+export default AdminOrganiserEventView;

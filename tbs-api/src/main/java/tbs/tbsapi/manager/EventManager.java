@@ -33,7 +33,7 @@ public class EventManager {
     public ResponseEntity<?> addEvent(AddEventDto addEventDto) {
         List<ValidationError> validationErrorList = addEventDto.validate();
 
-        if(!validationErrorList.isEmpty()) {
+        if (!validationErrorList.isEmpty()) {
             log.info("END: ADD EVENT VALIDATION FAILED " + validationErrorList);
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
                     "statusCode", "422",
@@ -42,14 +42,9 @@ public class EventManager {
             ));
         }
 
-        AddEventResponse addEventResponse = new AddEventResponse();
-        if(addEventDto.getEventType().equals(EventType.CONCERT)) {
-            addEventResponse = eventService.addConcert(addEventDto);
-        } else if (addEventDto.getEventType().equals(EventType.SPORTS)) {
-            addEventResponse = eventService.addSportsEvent(addEventDto);
-        }
+        AddEventResponse addEventResponse = eventService.addEvent(addEventDto);
 
-        if(Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
+        if (Objects.equals(addEventResponse.getStatusCode(), "200") && Objects.equals(addEventResponse.getMessage(), "SUCCESS")) {
             log.info("END: ADD EVENT SUCCESS");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", addEventResponse.getStatusCode(),
@@ -63,7 +58,7 @@ public class EventManager {
     public ResponseEntity<?> getListOfEvents(GetListOfEventRequest getListOfEventRequest) {
         List<ValidationError> validationErrorList = getListOfEventRequest.validate();
 
-        if(!validationErrorList.isEmpty()) {
+        if (!validationErrorList.isEmpty()) {
             log.info("END: GET ALL EVENTS VALIDATION FAILED " + validationErrorList);
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
                     "statusCode", "422",
@@ -72,13 +67,13 @@ public class EventManager {
             ));
         }
 
-        Pageable pageable = PageRequest.of(getListOfEventRequest.getPage(), 10, Sort.by("eventFromDt", "eventToDt",  "eventName").ascending());
+        Pageable pageable = PageRequest.of(getListOfEventRequest.getPage(), 10, Sort.by("eventFromDt", "eventToDt", "eventName").ascending());
         Page<GetEventResponse> response = eventService.getListOfEvents(pageable, getListOfEventRequest);
 
         log.info("response: {} ", response);
         log.info("END: GET ALL EVENTS SUCCESSFUL");
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-                "statusCode","200",
+                "statusCode", "200",
                 "message", "SUCCESS",
                 "eventList", response
         ));
@@ -88,7 +83,7 @@ public class EventManager {
         EventDetailsResponse eventResponse = eventService.getEventDetails(getEventRequest);
         log.info("END: GET EVENT DETAILS SUCCESS");
 
-        if(eventResponse.getEventId() != null) {
+        if (eventResponse.getEventId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", "200",
                     "message", "SUCCESS",
@@ -105,7 +100,7 @@ public class EventManager {
     public ResponseEntity<?> editEvent(EditEventDto editEventDto) {
         List<ValidationError> validationErrorList = editEventDto.validate();
 
-        if(!validationErrorList.isEmpty()) {
+        if (!validationErrorList.isEmpty()) {
             log.info("END: EDIT EVENT VALIDATION FAILED " + validationErrorList);
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
                     "statusCode", "422",
@@ -115,7 +110,7 @@ public class EventManager {
         }
 
         List<String> response = eventService.editEvent(editEventDto);
-        if(Objects.equals(response.get(0), "200")) {
+        if (Objects.equals(response.get(0), "200")) {
             log.info("END: EDIT EVENT SUCCESS");
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "statusCode", response.get(0),

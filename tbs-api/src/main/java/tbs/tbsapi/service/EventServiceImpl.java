@@ -10,8 +10,8 @@ import tbs.tbsapi.domain.*;
 import tbs.tbsapi.domain.enums.SeatStatus;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
-import tbs.tbsapi.factory.ConcertFactory;
-import tbs.tbsapi.factory.SportsEventFactory;
+import tbs.tbsapi.factory.Events;
+import tbs.tbsapi.factory.EventsContext;
 import tbs.tbsapi.repository.*;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
@@ -47,14 +47,18 @@ public class EventServiceImpl implements EventService {
     @Autowired
     private SeatReservationRepository seatReservationRepository;
 
-    @Autowired
-    private ConcertFactory concertFactory;
+//    @Autowired
+//    private Concert concert;
+//
+//    @Autowired
+//    private SportsEvents sportsEvent;
 
     @Autowired
-    private SportsEventFactory sportsEventFactory;
+    private EventsContext eventsContext;
 
-    public AddEventResponse addConcert(AddEventDto addEventDto) {
-        Event preSaveEvent = concertFactory.addEvent(addEventDto);
+    public AddEventResponse addEvent(AddEventDto addEventDto) {
+        Events events = eventsContext.getEvent(addEventDto.getEventType());
+        Event preSaveEvent = events.addEvent(addEventDto);
         log.info("CONCERT EVENT {} ", preSaveEvent);
 
         Event saveEvent = eventRepository.save(preSaveEvent);
@@ -74,55 +78,55 @@ public class EventServiceImpl implements EventService {
         return eventResponse;
     }
 
-    public AddEventResponse addSportsEvent(AddEventDto addEventDto) {
-        Event preSaveEvent = sportsEventFactory.addEvent(addEventDto);
-        log.info("SPORTS EVENT {} ", preSaveEvent);
-
-        Event saveEvent = eventRepository.save(preSaveEvent);
-
-        AddEventResponse eventResponse = new AddEventResponse();
-        eventResponse.setStatusCode("200");
-        eventResponse.setMessage("SUCCESS");
-        eventResponse.setEventId(saveEvent.getEventId());
-        eventResponse.setEventName(saveEvent.getEventName());
-        eventResponse.setEventFromDt(saveEvent.getEventFromDt());
-        eventResponse.setEventToDt(saveEvent.getEventToDt());
-        eventResponse.setSubjectId(saveEvent.getSubjectId());
-        eventResponse.setPlanId(saveEvent.getPlanId());
-        eventResponse.setArtistName(saveEvent.getArtistName());
-        eventResponse.setEventType(saveEvent.getEventType());
-
-        return eventResponse;
-    }
+//    public AddEventResponse addSportsEvent(AddEventDto addEventDto) {
+//        Event preSaveEvent = sportsEvent.addEvent(addEventDto);
+//        log.info("SPORTS EVENT {} ", preSaveEvent);
+//
+//        Event saveEvent = eventRepository.save(preSaveEvent);
+//
+//        AddEventResponse eventResponse = new AddEventResponse();
+//        eventResponse.setStatusCode("200");
+//        eventResponse.setMessage("SUCCESS");
+//        eventResponse.setEventId(saveEvent.getEventId());
+//        eventResponse.setEventName(saveEvent.getEventName());
+//        eventResponse.setEventFromDt(saveEvent.getEventFromDt());
+//        eventResponse.setEventToDt(saveEvent.getEventToDt());
+//        eventResponse.setSubjectId(saveEvent.getSubjectId());
+//        eventResponse.setPlanId(saveEvent.getPlanId());
+//        eventResponse.setArtistName(saveEvent.getArtistName());
+//        eventResponse.setEventType(saveEvent.getEventType());
+//
+//        return eventResponse;
+//    }
 
     // TODO: remove
-    public AddEventResponse addEvent(AddEventDto addEventDto) {
-        Event preSaveEvent = Event.builder()
-                .eventName(addEventDto.getEventName())
-                .eventToDt(addEventDto.getEventToDt())
-                .eventFromDt(addEventDto.getEventFromDt())
-                .subjectId(addEventDto.getSubjectId())
-                .planId(addEventDto.getPlanId())
-                .artistName(addEventDto.getArtistName())
-                .eventType(addEventDto.getEventType())
-                .build();
-
-        Event saveEvent = eventRepository.save(preSaveEvent);
-
-        AddEventResponse eventResponse = new AddEventResponse();
-        eventResponse.setStatusCode("200");
-        eventResponse.setMessage("SUCCESS");
-        eventResponse.setEventId(saveEvent.getEventId());
-        eventResponse.setEventName(saveEvent.getEventName());
-        eventResponse.setEventFromDt(saveEvent.getEventFromDt());
-        eventResponse.setEventToDt(saveEvent.getEventToDt());
-        eventResponse.setSubjectId(saveEvent.getSubjectId());
-        eventResponse.setPlanId(saveEvent.getPlanId());
-        eventResponse.setArtistName(saveEvent.getArtistName());
-        eventResponse.setEventType(saveEvent.getEventType());
-
-        return eventResponse;
-    }
+//    public AddEventResponse addEvent(AddEventDto addEventDto) {
+//        Event preSaveEvent = Event.builder()
+//                .eventName(addEventDto.getEventName())
+//                .eventToDt(addEventDto.getEventToDt())
+//                .eventFromDt(addEventDto.getEventFromDt())
+//                .subjectId(addEventDto.getSubjectId())
+//                .planId(addEventDto.getPlanId())
+//                .artistName(addEventDto.getArtistName())
+//                .eventType(addEventDto.getEventType())
+//                .build();
+//
+//        Event saveEvent = eventRepository.save(preSaveEvent);
+//
+//        AddEventResponse eventResponse = new AddEventResponse();
+//        eventResponse.setStatusCode("200");
+//        eventResponse.setMessage("SUCCESS");
+//        eventResponse.setEventId(saveEvent.getEventId());
+//        eventResponse.setEventName(saveEvent.getEventName());
+//        eventResponse.setEventFromDt(saveEvent.getEventFromDt());
+//        eventResponse.setEventToDt(saveEvent.getEventToDt());
+//        eventResponse.setSubjectId(saveEvent.getSubjectId());
+//        eventResponse.setPlanId(saveEvent.getPlanId());
+//        eventResponse.setArtistName(saveEvent.getArtistName());
+//        eventResponse.setEventType(saveEvent.getEventType());
+//
+//        return eventResponse;
+//    }
 
     public Page<GetEventResponse> getListOfEvents(Pageable pageable, GetListOfEventRequest getListOfEventRequest) {
         if(Objects.equals(getListOfEventRequest.getEventName(), "")) getListOfEventRequest.setEventName(null);

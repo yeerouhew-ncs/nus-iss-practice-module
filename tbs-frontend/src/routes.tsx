@@ -24,13 +24,13 @@ import OrganiserEditCategoryPreview from "./features/plan/containers/organiser-c
 import UserHeader from "./common/header/UserHeader";
 import UserEvent from "./features/event/containers/UserEvent";
 import EventEdit from "./features/event/containers/EventEdit";
-import OrganiserEventView from "./features/event/containers/OrganiserEventView";
 import PaymentStart from "./features/payment/PaymentStart";
 import PaymentSuccess from "./features/payment/PaymentSuccess";
 import UserEventView from "./features/event/containers/UserEventView";
 import OrderPreview from "./features/payment/OrderPreview";
 import QueueView from "./features/queue/containers/QueueView";
 import UserPurchaseView from "./features/seating-plan/UserPurchaseView";
+import AdminOrganiserEventView from "./features/event/containers/AdminOrganiserEventView";
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -133,7 +133,11 @@ const AppRoutes = () => {
             <Route element={<PrivateRoute roleRequired="MOP" />}> */}
               <Route
                 path="/admin/event/view/:eventId"
-                element={<EventView />}
+                element={<AdminOrganiserEventView />}
+              />
+              <Route
+                path="/admin/event/edit/:eventId"
+                element={<EventEdit />}
               />
             </Route>
           </Route>
@@ -154,7 +158,7 @@ const AppRoutes = () => {
               <Route path="/organiser/event/create" element={<EventCreate />} />
               <Route
                 path="/organiser/event/view/:eventId"
-                element={<OrganiserEventView />}
+                element={<AdminOrganiserEventView />}
               />
               <Route path="/organiser/plan/list" element={<OrganiserPlan />} />
               <Route
@@ -188,7 +192,7 @@ const AppRoutes = () => {
               <Route path="/organiser/event/create" element={<EventCreate />} />
               <Route
                 path="/organiser/event/view/:eventId"
-                element={<OrganiserEventView />}
+                element={<AdminOrganiserEventView />}
               />
               <Route
                 path="/organiser/event/edit/:eventId"

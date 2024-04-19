@@ -2,7 +2,8 @@ spring:
   datasource:
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
-    username: user1
+    # PLEASE DO NOT CHANGE THE USERNAME AND PASSWORD
+    username: user
     password: password
   #datasource:
   # driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver

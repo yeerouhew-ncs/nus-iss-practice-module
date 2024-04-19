@@ -32,7 +32,7 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
 
     Integer deleteBySectionId(Integer sectionId);
 
-    @Query("SELECT s.seatId, s.sectionId from Seat s " +
+    @Query("SELECT s.seatId AS seatId, s.sectionId AS sectionId from Seat s " +
             "WHERE s.seatName in :seatNames and s.sectionId in :sectionIds")
     List<SeatSection> findBySeatNameSectionId(@Param("seatNames") List<String> seatNames, @Param("sectionIds") List<Integer> sectionIds);
 

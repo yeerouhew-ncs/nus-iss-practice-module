@@ -7,7 +7,7 @@ import tbs.tbsapi.dto.AddEventDto;
 import java.util.Objects;
 
 @Component
-public class ConcertFactory implements EventFactory {
+public class Concert implements Events {
     @Override
     public Event addEvent(AddEventDto addEventDto) {
         String genre;
