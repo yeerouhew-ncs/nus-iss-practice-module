@@ -5,8 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import tbs.tbsapi.domain.Event;
-import tbs.tbsapi.domain.enums.EventType;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
 import tbs.tbsapi.dto.EditPlanSectionSeatDto;
@@ -19,9 +17,7 @@ import tbs.tbsapi.vo.request.GetListOfEventRequest;
 import tbs.tbsapi.vo.response.AddEventResponse;
 import tbs.tbsapi.vo.response.EventDetailsResponse;
 import tbs.tbsapi.vo.response.GetEventResponse;
-import tbs.tbsapi.vo.response.GetSeatingPlanResponse;
 
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,84 +51,120 @@ public class EventManagerTest {
     }
 
     @Test
-    public void testAddConcertEvent_Success() {
+    public void testAddEvent_Success() {
         AddEventDto dto = new AddEventDto();
-        dto.setEventType(EventType.CONCERT);
-        EventService service = mock(EventService.class);
         AddEventResponse r = new AddEventResponse();
         r.setStatusCode("200");
         r.setMessage("SUCCESS");
-        r.setEventType(EventType.CONCERT);
-        when(service.addConcert(dto)).thenReturn(r);
+        EventService service = mock(EventService.class);
+        when(service.addEvent(dto)).thenReturn(r);
 
         EventManager manager = new EventManager();
         manager.eventService = service;
 
         ResponseEntity<?> response = manager.addEvent(dto);
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("200", ((Map<?, ?>) response.getBody()).get("statusCode"));
         assertEquals("SUCCESS", ((Map<?, ?>) response.getBody()).get("message"));
     }
 
     @Test
-    public void testAddConcertEvent_Failure() {
+    public void testAddEvent_Fail() {
         AddEventDto dto = new AddEventDto();
-        dto.setEventType(EventType.CONCERT);
-        EventService service = mock(EventService.class);
         AddEventResponse r = new AddEventResponse();
-        r.setEventType(EventType.CONCERT);
-        r.setStatusCode("200");
-        when(service.addConcert(dto)).thenReturn(r);
+        r.setStatusCode("409");
+        r.setMessage("FAILURE");
+        EventService service = mock(EventService.class);
+        when(service.addEvent(dto)).thenReturn(r);
+
         EventManager manager = new EventManager();
         manager.eventService = service;
 
         ResponseEntity<?> response = manager.addEvent(dto);
-
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals("409", ((Map<?, ?>) response.getBody()).get("statusCode"));
         assertEquals("FAILURE", ((Map<?, ?>) response.getBody()).get("message"));
     }
 
-    @Test
-    public void testAddSportsEvent_Success() {
-        AddEventDto dto = new AddEventDto();
-        dto.setEventType(EventType.SPORTS);
-        EventService service = mock(EventService.class);
-        AddEventResponse r = new AddEventResponse();
-        r.setStatusCode("200");
-        r.setMessage("SUCCESS");
-        r.setEventType(EventType.SPORTS);
-        when(service.addSportsEvent(dto)).thenReturn(r);
-
-        EventManager manager = new EventManager();
-        manager.eventService = service;
-
-        ResponseEntity<?> response = manager.addEvent(dto);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("200", ((Map<?, ?>) response.getBody()).get("statusCode"));
-        assertEquals("SUCCESS", ((Map<?, ?>) response.getBody()).get("message"));
-    }
-
-    @Test
-    public void testAddSportsEvent_Failure() {
-        AddEventDto dto = new AddEventDto();
-        dto.setEventType(EventType.SPORTS);
-        EventService service = mock(EventService.class);
-        AddEventResponse r = new AddEventResponse();
-        r.setEventType(EventType.SPORTS);
-        r.setStatusCode("200");
-        when(service.addSportsEvent(dto)).thenReturn(r);
-        EventManager manager = new EventManager();
-        manager.eventService = service;
-
-        ResponseEntity<?> response = manager.addEvent(dto);
-
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals("409", ((Map<?, ?>) response.getBody()).get("statusCode"));
-        assertEquals("FAILURE", ((Map<?, ?>) response.getBody()).get("message"));
-    }
+//    @Test
+//    public void testAddConcertEvent_Success() {
+//        AddEventDto dto = new AddEventDto();
+//        dto.setEventType(EventType.CONCERT);
+//        EventService service = mock(EventService.class);
+//        AddEventResponse r = new AddEventResponse();
+//        r.setStatusCode("200");
+//        r.setMessage("SUCCESS");
+//        r.setEventType(EventType.CONCERT);
+//        when(service.addConcert(dto)).thenReturn(r);
+//
+//        EventManager manager = new EventManager();
+//        manager.eventService = service;
+//
+//        ResponseEntity<?> response = manager.addEvent(dto);
+//
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        assertEquals("200", ((Map<?, ?>) response.getBody()).get("statusCode"));
+//        assertEquals("SUCCESS", ((Map<?, ?>) response.getBody()).get("message"));
+//    }
+//
+//    @Test
+//    public void testAddConcertEvent_Failure() {
+//        AddEventDto dto = new AddEventDto();
+//        dto.setEventType(EventType.CONCERT);
+//        EventService service = mock(EventService.class);
+//        AddEventResponse r = new AddEventResponse();
+//        r.setEventType(EventType.CONCERT);
+//        r.setStatusCode("200");
+//        when(service.addConcert(dto)).thenReturn(r);
+//        EventManager manager = new EventManager();
+//        manager.eventService = service;
+//
+//        ResponseEntity<?> response = manager.addEvent(dto);
+//
+//        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+//        assertEquals("409", ((Map<?, ?>) response.getBody()).get("statusCode"));
+//        assertEquals("FAILURE", ((Map<?, ?>) response.getBody()).get("message"));
+//    }
+//
+//    @Test
+//    public void testAddSportsEvent_Success() {
+//        AddEventDto dto = new AddEventDto();
+//        dto.setEventType(EventType.SPORTS);
+//        EventService service = mock(EventService.class);
+//        AddEventResponse r = new AddEventResponse();
+//        r.setStatusCode("200");
+//        r.setMessage("SUCCESS");
+//        r.setEventType(EventType.SPORTS);
+//        when(service.addSportsEvent(dto)).thenReturn(r);
+//
+//        EventManager manager = new EventManager();
+//        manager.eventService = service;
+//
+//        ResponseEntity<?> response = manager.addEvent(dto);
+//
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        assertEquals("200", ((Map<?, ?>) response.getBody()).get("statusCode"));
+//        assertEquals("SUCCESS", ((Map<?, ?>) response.getBody()).get("message"));
+//    }
+//
+//    @Test
+//    public void testAddSportsEvent_Failure() {
+//        AddEventDto dto = new AddEventDto();
+//        dto.setEventType(EventType.SPORTS);
+//        EventService service = mock(EventService.class);
+//        AddEventResponse r = new AddEventResponse();
+//        r.setEventType(EventType.SPORTS);
+//        r.setStatusCode("200");
+//        when(service.addSportsEvent(dto)).thenReturn(r);
+//        EventManager manager = new EventManager();
+//        manager.eventService = service;
+//
+//        ResponseEntity<?> response = manager.addEvent(dto);
+//
+//        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+//        assertEquals("409", ((Map<?, ?>) response.getBody()).get("statusCode"));
+//        assertEquals("FAILURE", ((Map<?, ?>) response.getBody()).get("message"));
+//    }
 
     @Test
     public void testGetListOfEvents_ValidationFail() {
@@ -192,6 +224,7 @@ public class EventManagerTest {
         assertEquals("SUCCESS", ((Map<?, ?>) response.getBody()).get("message"));
         assertEquals(expectedResponse, ((Map<?, ?>) response.getBody()).get("eventDetails"));
     }
+
     private EventDetailsResponse getMockEventDetailsResponse() {
         EventDetailsResponse response = new EventDetailsResponse();
 

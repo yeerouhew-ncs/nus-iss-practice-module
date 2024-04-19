@@ -30,7 +30,6 @@ public class AuthServiceImplTest {
 
     @Test
     public void testRegisterUser() {
-        // Given
         AddSubjectDto addSubjectDto = new AddSubjectDto();
         addSubjectDto.setEmail("test@example.com");
         addSubjectDto.setFullName("Test User");
@@ -48,10 +47,8 @@ public class AuthServiceImplTest {
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
         when(subjectRepository.save(any(Subject.class))).thenReturn(subject);
 
-        // When
         RegisterUserResponse response = authService.registerUser(addSubjectDto);
 
-        // Then
         assertEquals("test@example.com", response.getEmail());
         assertEquals(SubjectStatus.ACTIVE, response.getStatus());
         assertEquals("Test User", response.getFullName());
@@ -61,7 +58,7 @@ public class AuthServiceImplTest {
 
     @Test
     public void testGetUserByEmail() {
-        // Given
+
         String email = "test@example.com";
         Subject subject = Subject.builder()
                 .email(email)
@@ -73,10 +70,8 @@ public class AuthServiceImplTest {
 
         when(subjectRepository.findByEmail(email)).thenReturn(subject);
 
-        // When
         RegisterUserResponse response = authService.getUserByEmail(email);
 
-        // Then
         assertEquals("test@example.com", response.getEmail());
         assertEquals(SubjectStatus.ACTIVE, response.getStatus());
         assertEquals("Test User", response.getFullName());

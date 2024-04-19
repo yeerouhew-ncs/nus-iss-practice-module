@@ -53,24 +53,19 @@ class OrderServiceImplTest {
         AddOrderDto addOrderDto = new AddOrderDto();
         addOrderDto.setEventId(1);
         addOrderDto.setSeatNames(List.of("A1", "A2"));
-        // Mock necessary dependencies for order creation
         when(orderFactory.addOrder(addOrderDto)).thenReturn(mock(Order.class));
         when(eventRepository.findByEventId(addOrderDto.getEventId())).thenReturn(mock(Event.class));
         when(sectionSeatRepository.findSectionIdsByPlanId(anyInt())).thenReturn(List.of(1, 2));
         when(seatRepository.findBySeatNameSectionId(anyList(), anyList())).thenReturn(List.of(mock(SeatSection.class), mock(SeatSection.class)));
-        // Mock save method in order repository
+
         when(orderRepository.save(any())).thenReturn(mock(Order.class));
-        // Mock save method in seat reservation repository
         when(seatReservationFactory.addSeatReservation(anyInt(), any())).thenReturn(mock(SeatReservation.class));
 
         // Act
         AddOrderResponse response = orderService.addOrder(addOrderDto);
 
-        // Assert
         assertEquals("200", response.getStatusCode());
         assertEquals("SUCCESS", response.getMessage());
-        // Add more assertions as needed
     }
 
-    // Add more test cases as needed
 }

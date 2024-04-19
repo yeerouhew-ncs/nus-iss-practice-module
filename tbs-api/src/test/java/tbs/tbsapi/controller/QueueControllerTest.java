@@ -7,21 +7,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import tbs.tbsapi.controller.QueueController;
 import tbs.tbsapi.domain.Queue;
+import tbs.tbsapi.domain.enums.ResultEnum;
 import tbs.tbsapi.manager.QueueManager;
 import tbs.tbsapi.service.QueueService;
 import tbs.tbsapi.service.RabbitMQProducer;
 import tbs.tbsapi.vo.request.QueueRequest;
 import tbs.tbsapi.vo.response.QueueResponse;
-import tbs.tbsapi.domain.enums.ResultEnum;
 
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,6 +38,12 @@ class QueueControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @Test
+    public void testHealthEndpoint() {
+        ResponseEntity<String> response = queueController.health();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Status: OK", response.getBody());
+    }
     @Test
     void testJoinQueue_Success() {
         QueueRequest request = new QueueRequest();

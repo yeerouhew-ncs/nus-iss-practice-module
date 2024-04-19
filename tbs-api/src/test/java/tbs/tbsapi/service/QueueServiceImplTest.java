@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tbs.tbsapi.domain.Queue;
-import tbs.tbsapi.domain.enums.QueueStatus;
 import tbs.tbsapi.domain.enums.ResultEnum;
 import tbs.tbsapi.repository.QueueRepository;
 import tbs.tbsapi.vo.request.QueueRequest;
@@ -28,7 +27,6 @@ class QueueServiceImplTest {
 
     @Test
     void addtoQueue_Success() {
-        // Arrange
         QueueRequest queueRequest = new QueueRequest();
         queueRequest.setEventId(1);
         queueRequest.setSubjectId(1);
@@ -37,10 +35,8 @@ class QueueServiceImplTest {
 
         when(queueRepository.save(any())).thenReturn(mock(Queue.class));
 
-        // Act
         QueueResponse response = queueService.addtoQueue(queueRequest);
 
-        // Assert
         assertEquals("12345", response.getTicketnumber());
         assertEquals(ResultEnum.SUCCESS, response.getMessage());
         verify(queueRepository, times(1)).save(any());
@@ -48,16 +44,13 @@ class QueueServiceImplTest {
 
     @Test
     void updateQueueStatus_DontExist() {
-        // Arrange
         Queue inputQueue = new Queue();
         inputQueue.setQueueId(1);
 
         when(queueRepository.findByQueueId(inputQueue.getQueueId())).thenReturn(null);
 
-        // Act
         QueueResponse response = queueService.updateQueueStatus(inputQueue);
 
-        // Assert
         assertEquals("200", response.getStatusCode());
         assertEquals(ResultEnum.FAIL, response.getMessage());
         verify(queueRepository, times(1)).findByQueueId(inputQueue.getQueueId());
@@ -66,7 +59,6 @@ class QueueServiceImplTest {
 
     @Test
     void updateQueueStatus_Success() {
-        // Arrange
         Queue inputQueue = new Queue();
         inputQueue.setQueueId(1);
         inputQueue.setTicketnumber("12345");
@@ -74,10 +66,8 @@ class QueueServiceImplTest {
         when(queueRepository.findByQueueId(inputQueue.getQueueId())).thenReturn(mock(Queue.class));
         when(queueRepository.updateQueueStatusByQueueId(anyString(), anyInt())).thenReturn(1);
 
-        // Act
         QueueResponse response = queueService.updateQueueStatus(inputQueue);
 
-        // Assert
         assertEquals("200", response.getStatusCode());
         assertEquals(ResultEnum.SUCCESS, response.getMessage());
         assertEquals("12345", response.getTicketnumber());
@@ -86,7 +76,6 @@ class QueueServiceImplTest {
     }
     @Test
     void updateQueueStatus_updateFail() {
-        // Arrange
         Queue inputQueue = new Queue();
         inputQueue.setQueueId(1);
         inputQueue.setTicketnumber("12345");
@@ -94,10 +83,8 @@ class QueueServiceImplTest {
         when(queueRepository.findByQueueId(inputQueue.getQueueId())).thenReturn(mock(Queue.class));
         when(queueRepository.updateQueueStatusByQueueId(anyString(), anyInt())).thenReturn(0);
 
-        // Act
         QueueResponse response = queueService.updateQueueStatus(inputQueue);
 
-        // Assert
         assertEquals("400", response.getStatusCode());
         assertEquals(ResultEnum.FAIL, response.getMessage());
         verify(queueRepository, times(1)).findByQueueId(inputQueue.getQueueId());
@@ -105,7 +92,6 @@ class QueueServiceImplTest {
     }
     @Test
     void getQueueByQueueRequest_ShouldReturnQueue() {
-        // Arrange
         QueueRequest queueRequest = new QueueRequest();
         queueRequest.setEventId(1);
         queueRequest.setSubjectId(1);

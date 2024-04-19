@@ -1,4 +1,5 @@
 package tbs.tbsapi.service;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,8 +12,8 @@ import tbs.tbsapi.domain.enums.EventType;
 import tbs.tbsapi.domain.enums.SeatStatus;
 import tbs.tbsapi.dto.AddEventDto;
 import tbs.tbsapi.dto.EditEventDto;
-import tbs.tbsapi.factory.ConcertFactory;
-import tbs.tbsapi.factory.SportsEventFactory;
+import tbs.tbsapi.factory.Events;
+import tbs.tbsapi.factory.EventsContext;
 import tbs.tbsapi.repository.*;
 import tbs.tbsapi.vo.request.GetEventRequest;
 import tbs.tbsapi.vo.request.GetListOfEventRequest;
@@ -51,40 +52,75 @@ class EventServiceImplTest {
     private SeatReservationRepository seatReservationRepository;
 
     @Mock
-    private ConcertFactory concertFactory;
-
-    @Mock
-    private SportsEventFactory sportsEventFactory;
+    private EventsContext eventsContext;
 
     @InjectMocks
     private EventServiceImpl eventService;
 
     @Test
-    void addConcert() {
+    void addEvent(){
         AddEventDto addEventDto = new AddEventDto();
-        when(concertFactory.addEvent(addEventDto)).thenReturn(new Event());
-        when(eventRepository.save(any())).thenReturn(new Event());
+        addEventDto.setEventType(EventType.CONCERT);
 
-        AddEventResponse response = eventService.addConcert(addEventDto);
+        Events events = mock(Events.class);
+        when(eventsContext.getEvent(addEventDto.getEventType())).thenReturn(events);
+
+        Event preSaveEvent = new Event();
+        when(events.addEvent(addEventDto)).thenReturn(preSaveEvent);
+
+        Event savedEvent = new Event();
+        savedEvent.setEventId(1);
+        savedEvent.setEventName("Test Event");
+        savedEvent.setEventFromDt(LocalDateTime.of(2024, 4, 1, 0, 0));
+        savedEvent.setEventToDt(LocalDateTime.of(2024, 4, 1, 10, 0));
+        savedEvent.setSubjectId(1);
+        savedEvent.setPlanId(1);
+        savedEvent.setArtistName("Test Artist");
+        savedEvent.setEventType(EventType.CONCERT);
+        savedEvent.setGenre("");
+        when(eventRepository.save(any())).thenReturn(savedEvent);
+
+        AddEventResponse response = eventService.addEvent(addEventDto);
 
         assertEquals("200", response.getStatusCode());
         assertEquals("SUCCESS", response.getMessage());
+        assertEquals(1, response.getEventId());
+        assertEquals("Test Event", response.getEventName());
+        assertEquals(LocalDateTime.of(2024, 4, 1, 0, 0), response.getEventFromDt());
+        assertEquals(LocalDateTime.of(2024, 4, 1, 10, 0), response.getEventToDt());
+        assertEquals(1, response.getSubjectId());
+        assertEquals(1, response.getPlanId());
+        assertEquals("Test Artist", response.getArtistName());
+        assertEquals(EventType.CONCERT, response.getEventType());
+        assertEquals("", response.getGenre());
+
+
     }
-
-    @Test
-    void addSportsEvent() {
-        AddEventDto addEventDto = new AddEventDto();
-        when(sportsEventFactory.addEvent(addEventDto)).thenReturn(new Event());
-        when(eventRepository.save(any())).thenReturn(new Event());
-
-        AddEventResponse response = eventService.addSportsEvent(addEventDto);
-
-        assertEquals("200", response.getStatusCode());
-        assertEquals("SUCCESS", response.getMessage());
-    }
+//    @Test
+//    void addConcert() {
+//        AddEventDto addEventDto = new AddEventDto();
+//        when(concertFactory.addEvent(addEventDto)).thenReturn(new Event());
+//        when(eventRepository.save(any())).thenReturn(new Event());
+//
+//        AddEventResponse response = eventService.addConcert(addEventDto);
+//
+//        assertEquals("200", response.getStatusCode());
+//        assertEquals("SUCCESS", response.getMessage());
+//    }
+//
+//    @Test
+//    void addSportsEvent() {
+//        AddEventDto addEventDto = new AddEventDto();
+//        when(sportsEventFactory.addEvent(addEventDto)).thenReturn(new Event());
+//        when(eventRepository.save(any())).thenReturn(new Event());
+//
+//        AddEventResponse response = eventService.addSportsEvent(addEventDto);
+//
+//        assertEquals("200", response.getStatusCode());
+//        assertEquals("SUCCESS", response.getMessage());
+//    }
     @Test
     void testGetListOfEvents() {
-        // Mock data for the request
         GetListOfEventRequest request = new GetListOfEventRequest();
         request.setEventId(1);
         request.setEventName("Test Event");
@@ -93,25 +129,20 @@ class EventServiceImplTest {
         request.setEventToDt(LocalDateTime.of(2024, 4, 30, 0, 0));
         request.setSubjectId(1);
 
-        // Mock data for the pageable
         Pageable pageable = Pageable.ofSize(10).withPage(0);
 
-        // Mock the repository response
         Page<GetEventResponse> mockPage = mock(Page.class);
         when(eventRepository.findEventList(1,"Test Event", "Test Artist", LocalDateTime.of(2024, 4, 1, 0, 0), LocalDateTime.of(2024, 4, 30, 0, 0), 1, pageable))
                 .thenReturn(mockPage);
 
-        // Call the method under test
         Page<GetEventResponse> resultPage = eventService.getListOfEvents(pageable, request);
 
-        // Verify that the repository method is called with the correct arguments
         verify(eventRepository).findEventList(
                 1, "Test Event", "Test Artist",
                 LocalDateTime.of(2024, 4, 1, 0, 0),
                 LocalDateTime.of(2024, 4, 30, 0, 0),
                 1, pageable);
 
-        // Assert the result
         assertEquals(mockPage, resultPage);
     }
     @Test
@@ -119,17 +150,28 @@ class EventServiceImplTest {
         Pageable pageable = mock(Pageable.class);
         GetListOfEventRequest request = new GetListOfEventRequest();
         request.setEventId(1);
-        request.setEventId(1);
-        request.setEventToDt(LocalDateTime.now());
-        request.setEventFromDt(LocalDateTime.now());
-        when(eventRepository.findEventList(eq(1), eq(null), eq(null), any(LocalDateTime.class), any(LocalDateTime.class), eq(null), eq(pageable)))
-                .thenReturn(mock(Page.class));
+        request.setEventName("Test Event");
+        request.setArtistName("Test Artist");
+        LocalDateTime eventFromDt = LocalDateTime.of(2024, 4, 19, 0, 0);
+        LocalDateTime eventToDt = LocalDateTime.of(2024, 4, 20, 0, 0);
+        request.setEventFromDt(eventFromDt);
+        request.setEventToDt(eventToDt);
+
+        Page<GetEventResponse> mockedPage = mock(Page.class);
+
+        when(eventRepository.findEventList(
+                eq(1), eq("Test Event"), eq("Test Artist"),
+                eq(eventFromDt), eq(eventToDt), eq(null), eq(pageable)))
+                .thenReturn(mockedPage);
 
         Page<GetEventResponse> response = eventService.getListOfEvents(pageable, request);
+        verify(eventRepository).findEventList(
+                eq(1), eq("Test Event"), eq("Test Artist"),
+                eq(eventFromDt), eq(eventToDt), eq(null), eq(pageable));
     }
 
     @Test
-    void getEventDetails() {
+    void getEventDetails_SeatStatusReserved() {
         GetEventRequest request = new GetEventRequest();
         request.setEventId(1);
 
@@ -148,7 +190,6 @@ class EventServiceImplTest {
         venue.setVenueName("Test Venue");
         venue.setAddress("Test Address");
 
-        // Mock sectionSeatRepository behavior
         SectionSeat sectionSeat = new SectionSeat();
         sectionSeat.setSectionId(1);
         sectionSeat.setTotalSeats(100);
@@ -161,7 +202,6 @@ class EventServiceImplTest {
         List<SectionSeat> sectionSeats = Collections.singletonList(sectionSeat);
         when(sectionSeatRepository.findAllByPlanId(seatingPlan.getPlanId())).thenReturn(sectionSeats);
 
-        // Mock seatRepository behavior
         Seat seat = new Seat();
         seat.setSeatId(1);
         seat.setSeatStatus(SeatStatus.available);
@@ -169,7 +209,6 @@ class EventServiceImplTest {
         List<Seat> seats = Collections.singletonList(seat);
         when(seatRepository.findAllBySectionId(sectionSeat.getSectionId())).thenReturn(seats);
 
-        // Mock seatReservationRepository behavior
         SeatReservation seatReservation = new SeatReservation();
         seatReservation.setSeatId(1);
 
@@ -180,10 +219,8 @@ class EventServiceImplTest {
         when(seatingPlanRepository.findByPlanId(event.getPlanId())).thenReturn(seatingPlan);
         when(venueRepository.findByVenueId(seatingPlan.getVenueId())).thenReturn(venue);
 
-        // Call the method under test
         EventDetailsResponse response = eventService.getEventDetails(request);
 
-        // Assertions
         assertEquals(event.getEventId(), response.getEventId());
         assertEquals(event.getEventName(), response.getEventName());
         assertEquals(event.getArtistName(), response.getArtistName());
@@ -192,9 +229,8 @@ class EventServiceImplTest {
         assertEquals(venue.getVenueName(), response.getSeatingPlanResponse().getVenueName());
         assertEquals(venue.getAddress(), response.getSeatingPlanResponse().getAddress());
 
-        // Additional assertions for section seat responses
         List<GetSectionSeatResponse> sectionSeatResponses = response.getSeatingPlanResponse().getSectionSeatResponses();
-        assertEquals(1, sectionSeatResponses.size()); // Assuming one section seat response in this case
+        assertEquals(1, sectionSeatResponses.size());
 
         GetSectionSeatResponse sectionSeatResponse = sectionSeatResponses.get(0);
         assertEquals(sectionSeat.getSectionId(), sectionSeatResponse.getSectionId());
@@ -204,23 +240,74 @@ class EventServiceImplTest {
         assertEquals(sectionSeat.getSeatSectionDescription(), sectionSeatResponse.getSeatSectionDescription());
         assertEquals(sectionSeat.getSectionRow(), sectionSeatResponse.getSectionRow());
         assertEquals(sectionSeat.getSectionCol(), sectionSeatResponse.getSectionCol());
-        // Assuming seat status is correctly set based on reservation
+
         assertEquals(SeatStatus.reserved, sectionSeatResponse.getSeatResponses().get(0).getSeatStatus());
     }
 
     @Test
+    void getEventDetails_SeatStatusAvailable() {
+        GetEventRequest request = new GetEventRequest();
+        request.setEventId(1);
+
+        Event event = new Event();
+        event.setEventId(1);
+        event.setSubjectId(1);
+        event.setEventName("Test Event");
+        event.setArtistName("Test Artist");
+
+        SeatingPlan seatingPlan = new SeatingPlan();
+        seatingPlan.setPlanId(1);
+        seatingPlan.setVenueId(1);
+
+        Venue venue = new Venue();
+        venue.setVenueId(1);
+        venue.setVenueName("Test Venue");
+        venue.setAddress("Test Address");
+
+        SectionSeat sectionSeat = new SectionSeat();
+        sectionSeat.setSectionId(1);
+        sectionSeat.setTotalSeats(100);
+        sectionSeat.setNoSeatsLeft(50);
+        sectionSeat.setSeatPrice(10.0);
+        sectionSeat.setSeatSectionDescription("Test Section");
+        sectionSeat.setSectionRow(10);
+        sectionSeat.setSectionCol(10);
+
+        List<SectionSeat> sectionSeats = Collections.singletonList(sectionSeat);
+        when(sectionSeatRepository.findAllByPlanId(seatingPlan.getPlanId())).thenReturn(sectionSeats);
+
+        Seat seat = new Seat();
+        seat.setSeatId(1);
+        seat.setSeatStatus(SeatStatus.reserved);
+
+        List<Seat> seats = Collections.singletonList(seat);
+        when(seatRepository.findAllBySectionId(sectionSeat.getSectionId())).thenReturn(seats);
+
+        SeatReservation seatReservation = new SeatReservation();
+
+
+        List<SeatReservation> reservedSeats = Collections.singletonList(seatReservation);
+        when(seatReservationRepository.findSeatReservationByEventId(anyInt(), anyInt())).thenReturn(reservedSeats);
+
+        when(eventRepository.findByEventId(request.getEventId())).thenReturn(event);
+        when(seatingPlanRepository.findByPlanId(event.getPlanId())).thenReturn(seatingPlan);
+        when(venueRepository.findByVenueId(seatingPlan.getVenueId())).thenReturn(venue);
+
+        EventDetailsResponse response = eventService.getEventDetails(request);
+
+        assertEquals(SeatStatus.available, response.getSeatingPlanResponse().getSectionSeatResponses().get(0).getSeatResponses().get(0).getSeatStatus());
+    }
+
+    @Test
     void editEvent_DontExist() {
-        // Arrange
         EditEventDto editEventDto = new EditEventDto();
         editEventDto.setEventId(1);
         editEventDto.setEventName("Updated Event Name");
 
         when(eventRepository.findByEventId(editEventDto.getEventId())).thenReturn(null);
 
-        // Act
         List<String> response = eventService.editEvent(editEventDto);
 
-        // Assert
         assertEquals(List.of("200", "Event does not exist"), response);
         verify(eventRepository, times(1)).findByEventId(editEventDto.getEventId());
         verify(eventRepository, never()).updateUser(any(), any(), any(), any(), any(), any(), any(), any(), any());
@@ -266,7 +353,6 @@ class EventServiceImplTest {
     }
     @Test
     void editEvent_NotUpdated() {
-        // Arrange
         EditEventDto editEventDto = new EditEventDto();
         editEventDto.setEventId(1);
         editEventDto.setEventName("Updated Event Name");
@@ -281,10 +367,8 @@ class EventServiceImplTest {
         when(eventRepository.findByEventId(editEventDto.getEventId())).thenReturn(new Event());
         when(eventRepository.updateUser(eq(1), eq("Updated Event Name"), anyString(), any(LocalDateTime.class), any(LocalDateTime.class), anyInt(), anyInt(), eq(EventType.CONCERT), anyString())).thenReturn(0);
 
-        // Act
         List<String> response = eventService.editEvent(editEventDto);
 
-        // Assert
         assertEquals(List.of("400", "Event not updated"), response);
     }
 

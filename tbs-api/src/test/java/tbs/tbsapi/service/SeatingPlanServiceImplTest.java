@@ -5,15 +5,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tbs.tbsapi.domain.*;
+import tbs.tbsapi.domain.Seat;
+import tbs.tbsapi.domain.SeatingPlan;
+import tbs.tbsapi.domain.SectionSeat;
+import tbs.tbsapi.domain.Venue;
 import tbs.tbsapi.domain.enums.SeatStatus;
 import tbs.tbsapi.dto.*;
-import tbs.tbsapi.repository.*;
+import tbs.tbsapi.repository.SeatRepository;
+import tbs.tbsapi.repository.SeatingPlanRepository;
+import tbs.tbsapi.repository.SectionSeatRepository;
+import tbs.tbsapi.repository.VenueRepository;
 import tbs.tbsapi.vo.request.GetSeatingPlanRequest;
-import tbs.tbsapi.vo.response.*;
+import tbs.tbsapi.vo.response.AddSeatingPlanResponse;
+import tbs.tbsapi.vo.response.GetSeatingPlanResponse;
+import tbs.tbsapi.vo.response.GetSectionSeatResponse;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +45,7 @@ class SeatingPlanServiceImplTest {
     private SeatingPlanServiceImpl seatingPlanService;
 
     @Test
-    void Test_AddSeatingPlan() {
+    void TestAddSeatingPlan() {
         AddSeatingPlanDto dto = new AddSeatingPlanDto();
         dto.setVenueId(1);
         dto.setPlanName("Test Plan");
@@ -78,7 +85,7 @@ class SeatingPlanServiceImplTest {
     }
 
     @Test
-    void testEditPlanDoesNotExist() {
+    void testEditSeatingPlan_DoesNotExist() {
         EditSeatingPlanDto dto = new EditSeatingPlanDto();
         dto.setPlanId(1);
         dto.setVenueId(1);
@@ -100,7 +107,7 @@ class SeatingPlanServiceImplTest {
     }
 
     @Test
-    void testEditSuccessfulPlanUpdate() {
+    void testEditSeatingPlan_SuccessfulPlanUpdate() {
         EditSeatingPlanDto dto = new EditSeatingPlanDto();
         dto.setPlanId(1);
         dto.setVenueId(1);
@@ -124,7 +131,7 @@ class SeatingPlanServiceImplTest {
     }
 
     @Test
-    void testEditPlanUpdateFailure() {
+    void testEditSeatingPlan_UpdateFailure() {
         EditSeatingPlanDto dto = new EditSeatingPlanDto();
         dto.setPlanId(1);
         dto.setVenueId(1);
@@ -146,9 +153,294 @@ class SeatingPlanServiceImplTest {
         verify(seatingPlanRepository, times(1)).updatePlan(anyInt(), anyString(), anyInt(), anyInt(), anyInt());
         verifyNoMoreInteractions(seatingPlanRepository);
     }
+    @Test
+    public void testEditSeatingPlan_AddNewSection() {
+        // Mock section seats
+        SectionSeat sectionSeat1 = new SectionSeat();
+        sectionSeat1.setSectionId(1);
+        sectionSeat1.setTotalSeats(100);
+        sectionSeat1.setSeatPrice(50.0);
+
+
+        List<SectionSeat> sectionSeats = new ArrayList<>();
+        sectionSeats.add(sectionSeat1);
+
+        // Mock seating plan
+        SeatingPlan seatingPlan = new SeatingPlan();
+        seatingPlan.setPlanId(1);
+
+        // Mock edit request
+        EditSeatingPlanDto editSeatingPlanDto = new EditSeatingPlanDto();
+        editSeatingPlanDto.setPlanId(1);
+        editSeatingPlanDto.setPlanName("Test Plan");
+        editSeatingPlanDto.setPlanRow(1);
+        editSeatingPlanDto.setPlanCol(1);
+        editSeatingPlanDto.setVenueId(1);
+
+        // Mock section seats
+        EditSectionSeatDto updatedSectionSeat1 = new EditSectionSeatDto();
+        updatedSectionSeat1.setTotalSeats(120);
+        updatedSectionSeat1.setSeatPrice(60.0);
+
+        List<EditSeatDto> seats1 = new ArrayList<>();
+        List<EditSeatDto> seats2 = new ArrayList<>();
+
+        updatedSectionSeat1.setSeats(seats1);
+
+        List<EditSectionSeatDto> updatedSectionSeats = new ArrayList<>();
+        updatedSectionSeats.add(updatedSectionSeat1);
+
+        editSeatingPlanDto.setSectionSeats(updatedSectionSeats);
+
+        when(sectionSeatRepository.save(any())).thenReturn(new SectionSeat());
+        when(seatingPlanRepository.updatePlan(1,"Test Plan",1,1,1)).thenReturn(1);
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(seatingPlan);
+
+        List<String> response = seatingPlanService.editSeatingPlan(editSeatingPlanDto);
+
+        assertEquals(2, response.size());
+        assertEquals("200", response.get(0));
+        assertEquals("SUCCESS", response.get(1));
+    }
+    @Test
+    public void testEditSeatingPlan_UpdateExistingSectionSeats_Success() {
+        // Mock section seats
+        SectionSeat sectionSeat1 = new SectionSeat();
+        sectionSeat1.setSectionId(1);
+        sectionSeat1.setTotalSeats(100);
+        sectionSeat1.setSeatPrice(50.0);
+
+
+        List<SectionSeat> sectionSeats = new ArrayList<>();
+        sectionSeats.add(sectionSeat1);
+
+        // Mock seating plan
+        SeatingPlan seatingPlan = new SeatingPlan();
+        seatingPlan.setPlanId(1);
+
+        // Mock edit request
+        EditSeatingPlanDto editSeatingPlanDto = new EditSeatingPlanDto();
+        editSeatingPlanDto.setPlanId(1);
+        editSeatingPlanDto.setPlanName("Test Plan");
+        editSeatingPlanDto.setPlanRow(1);
+        editSeatingPlanDto.setPlanCol(1);
+        editSeatingPlanDto.setVenueId(1);
+
+        // Mock section seats
+        EditSectionSeatDto updatedSectionSeat1 = new EditSectionSeatDto();
+        updatedSectionSeat1.setSectionId(1);
+        updatedSectionSeat1.setTotalSeats(120);
+        updatedSectionSeat1.setSeatPrice(60.0);
+
+        //Mock seats
+        List<EditSeatDto> seats1 = new ArrayList<>();
+        EditSeatDto seat = new EditSeatDto();
+        seat.setSeatId(1);
+        seat.setSeatName("Test Seat");
+        seat.setSeatRow(1);
+        seat.setSeatCol(1);
+        seats1.add(seat);
+        List<EditSeatDto> seats2 = new ArrayList<>();
+
+        updatedSectionSeat1.setSeats(seats1);
+
+        List<EditSectionSeatDto> updatedSectionSeats = new ArrayList<>();
+        updatedSectionSeats.add(updatedSectionSeat1);
+
+        editSeatingPlanDto.setSectionSeats(updatedSectionSeats);
+
+        when(seatingPlanRepository.updatePlan(1,"Test Plan",1,1,1)).thenReturn(1);
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(seatingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1, 1, 120, 120, 60.0, null, null, null)).thenReturn(1);
+        when(seatRepository.updateSeat(1,"Test Seat",1,1,null, 1)).thenReturn(1);
+
+        List<String> response = seatingPlanService.editSeatingPlan(editSeatingPlanDto);
+
+        assertEquals(2, response.size());
+        assertEquals("200", response.get(0));
+        assertEquals("SUCCESS", response.get(1));
+    }
+    @Test
+    public void testEditSeatingPlan_UpdateExistingSectionSeats_Fail() {
+        // Mock section seats
+        SectionSeat sectionSeat1 = new SectionSeat();
+        sectionSeat1.setSectionId(1);
+        sectionSeat1.setTotalSeats(100);
+        sectionSeat1.setSeatPrice(50.0);
+
+
+        List<SectionSeat> sectionSeats = new ArrayList<>();
+        sectionSeats.add(sectionSeat1);
+
+        // Mock seating plan
+        SeatingPlan seatingPlan = new SeatingPlan();
+        seatingPlan.setPlanId(1);
+
+        // Mock edit request
+        EditSeatingPlanDto editSeatingPlanDto = new EditSeatingPlanDto();
+        editSeatingPlanDto.setPlanId(1);
+        editSeatingPlanDto.setPlanName("Test Plan");
+        editSeatingPlanDto.setPlanRow(1);
+        editSeatingPlanDto.setPlanCol(1);
+        editSeatingPlanDto.setVenueId(1);
+
+        // Mock section seats
+        EditSectionSeatDto updatedSectionSeat1 = new EditSectionSeatDto();
+        updatedSectionSeat1.setSectionId(1);
+        updatedSectionSeat1.setTotalSeats(120);
+        updatedSectionSeat1.setSeatPrice(60.0);
+
+        //Mock seats
+        List<EditSeatDto> seats1 = new ArrayList<>();
+        EditSeatDto seat = new EditSeatDto();
+        seat.setSeatId(1);
+        seat.setSeatName("Test Seat");
+        seat.setSeatRow(1);
+        seat.setSeatCol(1);
+        seats1.add(seat);
+
+        updatedSectionSeat1.setSeats(seats1);
+
+        List<EditSectionSeatDto> updatedSectionSeats = new ArrayList<>();
+        updatedSectionSeats.add(updatedSectionSeat1);
+
+        editSeatingPlanDto.setSectionSeats(updatedSectionSeats);
+
+        when(seatingPlanRepository.updatePlan(1,"Test Plan",1,1,1)).thenReturn(1);
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(seatingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1, 1, 120, 120, 60.0, null, null, null)).thenReturn(0);
+
+        List<String> response = seatingPlanService.editSeatingPlan(editSeatingPlanDto);
+
+        assertEquals(2, response.size());
+        assertEquals("400", response.get(0));
+        assertEquals("SECTION SEAT NOT UPDATED", response.get(1));
+    }
+    @Test
+    public void testEditSeatingPlan_AddNewSeats() {
+        // Mock section seats
+        SectionSeat sectionSeat1 = new SectionSeat();
+        sectionSeat1.setSectionId(1);
+        sectionSeat1.setTotalSeats(100);
+        sectionSeat1.setSeatPrice(50.0);
+
+
+        List<SectionSeat> sectionSeats = new ArrayList<>();
+        sectionSeats.add(sectionSeat1);
+
+        // Mock seating plan
+        SeatingPlan seatingPlan = new SeatingPlan();
+        seatingPlan.setPlanId(1);
+
+        // Mock edit request
+        EditSeatingPlanDto editSeatingPlanDto = new EditSeatingPlanDto();
+        editSeatingPlanDto.setPlanId(1);
+        editSeatingPlanDto.setPlanName("Test Plan");
+        editSeatingPlanDto.setPlanRow(1);
+        editSeatingPlanDto.setPlanCol(1);
+        editSeatingPlanDto.setVenueId(1);
+
+        // Mock section seats
+        EditSectionSeatDto updatedSectionSeat1 = new EditSectionSeatDto();
+        updatedSectionSeat1.setSectionId(1);
+        updatedSectionSeat1.setTotalSeats(120);
+        updatedSectionSeat1.setSeatPrice(60.0);
+
+        //Mock seats
+        List<EditSeatDto> seats1 = new ArrayList<>();
+        EditSeatDto seat = new EditSeatDto();
+        seat.setSeatName("Test Seat");
+        seat.setSeatRow(1);
+        seat.setSeatCol(1);
+        seats1.add(seat);
+
+        Seat preSaveSeat = Seat.builder().seatName("Test Seat").seatRow(1).seatCol(1).seatStatus(SeatStatus.available).sectionId(1).build();
+        Seat mockCreatedSeat = new Seat();
+        mockCreatedSeat.setSeatName("Test Seat");
+        mockCreatedSeat.setSeatRow(1);
+        mockCreatedSeat.setSeatCol(1);
+
+        updatedSectionSeat1.setSeats(seats1);
+
+        List<EditSectionSeatDto> updatedSectionSeats = new ArrayList<>();
+        updatedSectionSeats.add(updatedSectionSeat1);
+
+        editSeatingPlanDto.setSectionSeats(updatedSectionSeats);
+
+        when(seatingPlanRepository.updatePlan(1,"Test Plan",1,1,1)).thenReturn(1);
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(seatingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1, 1, 120, 120, 60.0, null, null, null)).thenReturn(1);
+        when(seatRepository.save(preSaveSeat)).thenReturn(new Seat());
+
+        List<String> response = seatingPlanService.editSeatingPlan(editSeatingPlanDto);
+
+        assertEquals(2, response.size());
+        assertEquals("200", response.get(0));
+        assertEquals("SUCCESS", response.get(1));
+    }
+    @Test
+    public void testEditSeatingPlan_UpdateSeats_Fail() {
+        // Mock section seats
+        SectionSeat sectionSeat1 = new SectionSeat();
+        sectionSeat1.setSectionId(1);
+        sectionSeat1.setTotalSeats(100);
+        sectionSeat1.setSeatPrice(50.0);
+
+
+        List<SectionSeat> sectionSeats = new ArrayList<>();
+        sectionSeats.add(sectionSeat1);
+
+        // Mock seating plan
+        SeatingPlan seatingPlan = new SeatingPlan();
+        seatingPlan.setPlanId(1);
+
+        // Mock edit request
+        EditSeatingPlanDto editSeatingPlanDto = new EditSeatingPlanDto();
+        editSeatingPlanDto.setPlanId(1);
+        editSeatingPlanDto.setPlanName("Test Plan");
+        editSeatingPlanDto.setPlanRow(1);
+        editSeatingPlanDto.setPlanCol(1);
+        editSeatingPlanDto.setVenueId(1);
+
+        // Mock section seats
+        EditSectionSeatDto updatedSectionSeat1 = new EditSectionSeatDto();
+        updatedSectionSeat1.setSectionId(1);
+        updatedSectionSeat1.setTotalSeats(120);
+        updatedSectionSeat1.setSeatPrice(60.0);
+
+        //Mock seats
+        List<EditSeatDto> seats1 = new ArrayList<>();
+        EditSeatDto seat = new EditSeatDto();
+        seat.setSeatId(1);
+        seat.setSeatName("Test Seat");
+        seat.setSeatRow(1);
+        seat.setSeatCol(1);
+        seat.setSeatStatus(SeatStatus.available);
+        seats1.add(seat);
+
+
+        updatedSectionSeat1.setSeats(seats1);
+
+        List<EditSectionSeatDto> updatedSectionSeats = new ArrayList<>();
+        updatedSectionSeats.add(updatedSectionSeat1);
+
+        editSeatingPlanDto.setSectionSeats(updatedSectionSeats);
+
+        when(seatingPlanRepository.updatePlan(1,"Test Plan",1,1,1)).thenReturn(1);
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(seatingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1, 1, 120, 120, 60.0, null, null, null)).thenReturn(1);
+        when(seatRepository.updateSeat(1,"Test Seat",1,1,SeatStatus.available,1)).thenReturn(0);
+
+        List<String> response = seatingPlanService.editSeatingPlan(editSeatingPlanDto);
+
+        assertEquals(2, response.size());
+        assertEquals("400", response.get(0));
+        assertEquals("SEAT NOT UPDATED", response.get(1));
+    }
+
 
     @Test
-    void testEditPlanCategoryPlanDoesNotExist() {
+    void testEditPlanCategory_PlanDoesNotExist() {
         EditPlanSectionSeatDto dto = new EditPlanSectionSeatDto();
         dto.setPlanId(1);
         dto.setSectionSeats(new ArrayList<>());
@@ -164,7 +456,186 @@ class SeatingPlanServiceImplTest {
         verify(seatingPlanRepository, times(1)).findByPlanId(anyInt());
         verifyNoMoreInteractions(seatingPlanRepository);
     }
+    @Test
+    void testEditPlanCategory_AddNewSections_Success() {
+        // Setup
+        EditPlanSectionSeatDto dto = new EditPlanSectionSeatDto();
+        dto.setPlanId(1);
 
+        EditSectionSeatDto newSection = new EditSectionSeatDto();
+        newSection.setTotalSeats(100);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeats(new ArrayList<>()); // Set an empty list of seats instead of null
+
+        List<EditSectionSeatDto> newSections = new ArrayList<>();
+        newSections.add(newSection);
+        dto.setSectionSeats(newSections);
+
+        SeatingPlan existingPlan = new SeatingPlan();
+        existingPlan.setPlanId(1);
+
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(existingPlan);
+        when(sectionSeatRepository.save(any())).thenReturn(new SectionSeat());
+
+        // Execution
+        List<String> response = seatingPlanService.editPlanCategory(dto);
+
+        // Verification
+        assertEquals(2, response.size());
+        assertEquals("200", response.get(0));
+        assertEquals("SUCCESS", response.get(1));
+
+        verify(seatingPlanRepository, times(1)).findByPlanId(1);
+        verify(sectionSeatRepository, times(1)).save(any());
+        verifyNoMoreInteractions(seatingPlanRepository, sectionSeatRepository);
+    }
+
+    @Test
+    void testEditPlanCategory_UpdateSections_Success() {
+        // Setup
+        EditPlanSectionSeatDto dto = new EditPlanSectionSeatDto();
+        dto.setPlanId(1);
+
+        EditSectionSeatDto newSection = new EditSectionSeatDto();
+        newSection.setSectionId(1);
+        newSection.setTotalSeats(100);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeats(new ArrayList<>()); // Set an empty list of seats instead of null
+
+        List<EditSectionSeatDto> newSections = new ArrayList<>();
+        newSections.add(newSection);
+        dto.setSectionSeats(newSections);
+
+        SeatingPlan existingPlan = new SeatingPlan();
+        existingPlan.setPlanId(1);
+
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(existingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1,1,100,100,50.0,null,null,null)).thenReturn(1);
+
+
+        // Execution
+        List<String> response = seatingPlanService.editPlanCategory(dto);
+
+        // Verification
+        assertEquals(2, response.size());
+        assertEquals("200", response.get(0));
+        assertEquals("SUCCESS", response.get(1));
+
+        verify(seatingPlanRepository, times(1)).findByPlanId(1);
+        verifyNoMoreInteractions(seatingPlanRepository, sectionSeatRepository);
+    }
+    @Test
+    void testEditPlanCategory_UpdateSections_Fail() {
+        // Setup
+        EditPlanSectionSeatDto dto = new EditPlanSectionSeatDto();
+        dto.setPlanId(1);
+
+        EditSectionSeatDto newSection = new EditSectionSeatDto();
+        newSection.setSectionId(1);
+        newSection.setTotalSeats(100);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeats(new ArrayList<>()); // Set an empty list of seats instead of null
+
+        List<EditSectionSeatDto> newSections = new ArrayList<>();
+        newSections.add(newSection);
+        dto.setSectionSeats(newSections);
+
+        SeatingPlan existingPlan = new SeatingPlan();
+        existingPlan.setPlanId(1);
+
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(existingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1,1,100,100,50.0,null,null,null)).thenReturn(0);
+
+
+        // Execution
+        List<String> response = seatingPlanService.editPlanCategory(dto);
+
+        // Verification
+        assertEquals(2, response.size());
+        assertEquals("400", response.get(0));
+        assertEquals("SECTION SEAT NOT UPDATED", response.get(1));
+
+        verify(seatingPlanRepository, times(1)).findByPlanId(1);
+        verifyNoMoreInteractions(seatingPlanRepository, sectionSeatRepository);
+    }
+
+    @Test
+    void testEditPlanCategory_AddSectionSeat_Fail() {
+        // Setup
+        EditPlanSectionSeatDto dto = new EditPlanSectionSeatDto();
+        dto.setPlanId(1);
+
+        EditSectionSeatDto newSection = new EditSectionSeatDto();
+        newSection.setSectionId(1);
+        newSection.setTotalSeats(100);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeatPrice(50.0);
+
+        List<EditSeatDto> seatList = new ArrayList<>();
+        EditSeatDto seat = new EditSeatDto();
+        seat.setSeatName("Test Seat");
+        seatList.add(seat);
+        newSection.setSeats(seatList);
+
+        List<EditSectionSeatDto> newSections = new ArrayList<>();
+        newSections.add(newSection);
+        dto.setSectionSeats(newSections);
+
+        SeatingPlan existingPlan = new SeatingPlan();
+        existingPlan.setPlanId(1);
+
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(existingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1,1,100,100,50.0,null,null,null)).thenReturn(1);
+        when(seatRepository.save(any())).thenReturn(null);
+
+        // Execution
+        List<String> response = seatingPlanService.editPlanCategory(dto);
+
+        // Verification
+        assertEquals(2, response.size());
+        assertEquals("400", response.get(0));
+        assertEquals("SEAT NOT UPDATED", response.get(1));
+
+    }
+
+    @Test
+    void testEditPlanCategory_AddSectionSeat_Success() {
+        EditPlanSectionSeatDto dto = new EditPlanSectionSeatDto();
+        dto.setPlanId(1);
+
+        EditSectionSeatDto newSection = new EditSectionSeatDto();
+        newSection.setSectionId(1);
+        newSection.setTotalSeats(100);
+        newSection.setSeatPrice(50.0);
+        newSection.setSeatPrice(50.0);
+
+        List<EditSeatDto> seatList = new ArrayList<>();
+        EditSeatDto seat = new EditSeatDto();
+        seat.setSeatName("Test Seat");
+        seatList.add(seat);
+        newSection.setSeats(seatList);
+
+        List<EditSectionSeatDto> newSections = new ArrayList<>();
+        newSections.add(newSection);
+        dto.setSectionSeats(newSections);
+
+        SeatingPlan existingPlan = new SeatingPlan();
+        existingPlan.setPlanId(1);
+
+        when(seatingPlanRepository.findByPlanId(1)).thenReturn(existingPlan);
+        when(sectionSeatRepository.updateSectionSeat(1,1,100,100,50.0,null,null,null)).thenReturn(1);
+        when(seatRepository.save(any())).thenReturn(new Seat());
+
+        List<String> response = seatingPlanService.editPlanCategory(dto);
+
+        assertEquals(2, response.size());
+        assertEquals("200", response.get(0));
+        assertEquals("SUCCESS", response.get(1));
+
+    }
     @Test
     void testGetListofSeatingPlans() {
         SeatingPlan seatingPlan1 = new SeatingPlan();
@@ -316,7 +787,6 @@ class SeatingPlanServiceImplTest {
 
         GetSeatingPlanResponse response = seatingPlanService.getSeatingPlanDetails(request);
 
-        // response
         assertEquals(1, response.getPlanId());
         assertEquals("Test Plan", response.getPlanName());
         assertEquals(10, response.getPlanRow());
@@ -325,7 +795,6 @@ class SeatingPlanServiceImplTest {
         assertEquals("Test Venue", response.getVenueName());
         assertEquals("Test Address", response.getAddress());
 
-        // section seat details
         List<GetSectionSeatResponse> sectionSeats = response.getSectionSeatResponses();
         assertEquals(1, sectionSeats.size());
         GetSectionSeatResponse sectionSeatResponse = sectionSeats.get(0);
@@ -336,7 +805,6 @@ class SeatingPlanServiceImplTest {
         assertEquals(10, sectionSeatResponse.getSectionCol());
         assertEquals(50, sectionSeatResponse.getNoSeatsLeft());
 
-        // seat details
         List<Seat> seats = sectionSeatResponse.getSeatResponses();
         assertEquals(1, seats.size());
         Seat seatResponse = seats.get(0);
