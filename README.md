@@ -20,7 +20,7 @@
 
 ## tbs-frontend (Frontend)
 1. Run npm install
-2. Run npm start
+2. Run npm start 
 
 ## Download and Set Up RabbitMQ Locally (Windows) 
 1. Ensure that choco is installed locally in your machine (If not, refer to this link: https://chocolatey.org/install
