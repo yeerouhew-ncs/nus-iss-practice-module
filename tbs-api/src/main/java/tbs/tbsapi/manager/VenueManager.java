@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.service.VenueService;
 import tbs.tbsapi.vo.request.GetVenueRequest;
+import tbs.tbsapi.vo.request.SearchVenueRequest;
 import tbs.tbsapi.vo.response.GetVenueResponse;
 
 import java.util.List;
@@ -33,6 +34,15 @@ public class VenueManager {
                     "message", "NO MATCHING VENUE"
             ));
         }
+    }
+    public ResponseEntity<?> searchVenue(SearchVenueRequest venueRequest) {
+        List<GetVenueResponse> venueResponseList = venueService.searchVenue(venueRequest);
+        log.info("END: SEARCH VENUE DETAILS SUCCESSFUL");
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                "statusCode", "200",
+                "message", "SUCCESS",
+                "venueList", venueResponseList
+        ));
     }
 
     public ResponseEntity<?> getVenueList() {

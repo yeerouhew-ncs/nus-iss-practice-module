@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Event from "./features/event/containers/Event";
 import Login from "./features/authentication/containers/Login";
 import EventCreate from "./features/event/containers/EventCreate";
-import EventView from "./features/event/containers/EventView";
+// import EventView from "./features/event/containers/EventView";
 import PlanCreate from "./features/plan/containers/admin-container/PlanCreate";
 import PlanEdit from "./features/plan/containers/admin-container/PlanEdit";
 import AuthContext, { useAuthContext } from "./context/AuthContext";
@@ -31,6 +31,7 @@ import OrderPreview from "./features/payment/OrderPreview";
 import QueueView from "./features/queue/containers/QueueView";
 import UserPurchaseView from "./features/seating-plan/UserPurchaseView";
 import AdminOrganiserEventView from "./features/event/containers/AdminOrganiserEventView";
+import UserVenue from "./features/venue/UserVenue";
 const AppRoutes = () => {
   const [user, setUser] = useState<UserDetails>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -229,7 +230,7 @@ const AppRoutes = () => {
                 element={<UserEventView />}
               />
               <Route path="/user/order/preview" element={<OrderPreview />} />
-              <Route path="/user/venue/list" element={<UserEvent />} />
+              <Route path="/user/venue/list" element={<UserVenue />} />
               <Route path="/user/event/queue/:eventId" element={<QueueView />} />
               <Route path="/user/order/purchase/:eventId" element={<UserPurchaseView />} />
               <Route path="/user/payment/start" element={<PaymentStart />} />

@@ -1,0 +1,104 @@
+@import "../../styles/colors.scss";
+
+.eventHeader {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchContainer {
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px 20px;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.eventItemListHeader {
+  margin-top: 30px;
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--pure-white);
+  border-radius: 10px;
+
+  .eventDateTimeHeaderRow {
+    padding: 15px 40px;
+  }
+}
+
+.eventItemList {
+  margin-top: 10px;
+}
+
+.searchBtnRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.primaryBtn {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: none !important;
+}
+
+.primaryBtn:hover {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  text-decoration-line: underline !important;
+}
+
+.btnMarginRight {
+  margin-right: 5px;
+}
+
+.eventItemsRow {
+  display: flex;
+  margin-top: 15px;
+  padding: 20px 20px;
+}
+
+.eventCard {
+  padding: 10px;
+  //   border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  max-width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.placeholderImg {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+}
+
+.dateText {
+  color: rgb(100, 100, 100);
+  margin: 12px 0px 8px;
+  margin: 4px 0px 8px;
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 0;
+}
+
+.eventTitle {
+  font-size: 20px;
+  margin: 8px 0px 4px;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+
+.eventBody {
+  padding: 5px;
+}
+
+.eventCard:hover {
+  .eventTitle {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

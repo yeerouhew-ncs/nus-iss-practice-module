@@ -9,3 +9,8 @@ export interface VenueResponse {
   venueName: string;
   venueAddress: string;
 }
+
+export interface IVenueRequest {
+  venueName: string | null;
+  venueAddress: string | null;
+}

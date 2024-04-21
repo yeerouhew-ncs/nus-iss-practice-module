@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tbs.tbsapi.domain.Venue;
 import tbs.tbsapi.repository.VenueRepository;
 import tbs.tbsapi.vo.request.GetVenueRequest;
+import tbs.tbsapi.vo.request.SearchVenueRequest;
 import tbs.tbsapi.vo.response.GetVenueResponse;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class VenueServiceImpl implements VenueService {
         venueResponse.setVenueAddress(venue.getAddress());
 
         return venueResponse;
+    }
+    public List<GetVenueResponse> searchVenue(SearchVenueRequest venueRequest) {
+        return venueRepository.searchBy(venueRequest.getAddress(),venueRequest.getVenueName());
     }
 
     public List<GetVenueResponse> getVenueList() {

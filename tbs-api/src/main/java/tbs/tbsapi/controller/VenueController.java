@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tbs.tbsapi.manager.VenueManager;
 import tbs.tbsapi.vo.request.GetVenueRequest;
+import tbs.tbsapi.vo.request.SearchVenueRequest;
 
 @Log4j2
 @RestController
@@ -21,6 +22,11 @@ public class VenueController {
         return venueManager.getVenueDetails(venueRequest);
     }
 
+    @PostMapping(path = "/search")
+    public ResponseEntity<?> searchVenue(@RequestBody SearchVenueRequest venueRequest) {
+        log.info("START: SEARCH VENUES");
+        return venueManager.searchVenue(venueRequest);
+    }
     @PostMapping(path = "/get-list")
     public ResponseEntity<?> getVenueList() {
         log.info("START: GET LIST OF VENUES");
