@@ -17,7 +17,7 @@ public class QueueManager {
      Generates the ticket and adds it to the queue.
      */
     @Autowired
-    private QueueService queueService;
+    public QueueService queueService;
 
     public QueueResponse addtoQueue(QueueRequest queueRequest)
     {
