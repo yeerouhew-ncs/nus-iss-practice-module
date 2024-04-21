@@ -1,3 +1,4 @@
+# Dockerfile for tbs-frontend
 # Fetching the latest node image on apline linux
 FROM node:20-alpine as build
 
