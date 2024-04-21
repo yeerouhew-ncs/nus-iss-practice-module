@@ -21,7 +21,7 @@ RUN mvn package -DskipTests
 FROM openjdk:17-jdk-slim
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /app 
 
 # Copy the packaged JAR file from the build stage to the current directory in the container
 COPY --from=build /app/target/tbs-api-0.0.1-SNAPSHOT.jar app.jar
