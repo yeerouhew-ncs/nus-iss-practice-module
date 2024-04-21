@@ -13,7 +13,8 @@ import tbs.tbsapi.manager.OrderManager;
 @CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
-    private OrderManager orderManager;
+    OrderManager orderManager;
+  
     @GetMapping(value="/health")
     public ResponseEntity<String> health() {
 
