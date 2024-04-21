@@ -1,15 +1,14 @@
 spring:
+#  datasource:
+#    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
+#    username: user
+#    password: password
   datasource:
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
-    # PLEASE DO NOT CHANGE THE USERNAME AND PASSWORD
-    username: user
-    password: password
-  #datasource:
-  # driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  # url: jdbc:sqlserver://ec2-54-179-224-171.ap-southeast-1.compute.amazonaws.com:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
-  # username: sa
-  # password: Password1234!
+   driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+   url: jdbc:sqlserver://ec2-18-141-138-151.ap-southeast-1.compute.amazonaws.com:1433;encrypt=true;trustServerCertificate=true;databaseName=TBSDB;
+   username: sa
+   password: Password1234!
   sql:
     init:
       data-locations: classpath:data.sql
