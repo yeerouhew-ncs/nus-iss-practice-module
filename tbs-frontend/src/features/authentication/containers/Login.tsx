@@ -166,7 +166,7 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
           <div className={styles.logo}>
             <img src="./ticket-logo.png" width={"100px"} height={"100px"} />
           </div>
-          <div>TBS</div>
+          <div>TICKET BOOKING SYSTEM</div>
           <div className={styles.formGroup}>
             {!isLogin && (
               <div className={styles.registerForm}>
