@@ -77,29 +77,29 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({
   };
 
   const handleAdd = (data: any) => {
-    setErrorMsg("");
-    const isAddedRowExceeds = validateRow(data);
+    // setErrorMsg("");
+    // const isAddedRowExceeds = validateRow(data);
 
-    if (!isAddedRowExceeds) {
-      const category: Category = {
-        sectionId: selectedCategory?.sectionId,
-        sectionDesc: data?.sectionDesc,
-        sectionRow: Number(data?.sectionRow),
-        seatPrice: Number(data?.seatPrice),
-      };
+    // if (!isAddedRowExceeds) {
+    const category: Category = {
+      sectionId: selectedCategory?.sectionId,
+      sectionDesc: data?.sectionDesc,
+      sectionRow: Number(data?.sectionRow),
+      seatPrice: Number(data?.seatPrice),
+    };
 
-      // setCategoryList((prev) => [...(prev || []), category]);
-      setCategoryList((prev) => {
-        const updatedList = [...prev];
-        updatedList[selectedCategoryIndex] = category;
-        return updatedList;
-      });
-    } else {
-      console.log("ERROR");
-      setErrorMsg(
-        "Number of rows exceed the total number of rows for seating plan"
-      );
-    }
+    // setCategoryList((prev) => [...(prev || []), category]);
+    setCategoryList((prev) => {
+      const updatedList = [...prev];
+      updatedList[selectedCategoryIndex] = category;
+      return updatedList;
+    });
+    // } else {
+    //   console.log("ERROR");
+    //   setErrorMsg(
+    //     "Number of rows exceed the total number of rows for seating plan"
+    //   );
+    // }
 
     reset();
     setIsEditModalVisible(false);

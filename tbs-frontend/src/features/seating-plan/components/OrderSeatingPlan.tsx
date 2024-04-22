@@ -89,16 +89,13 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
     []
   );
 
+  console.log("transformedSeats {}", transformedSeats);
+
   const options: Options = {
     map: {
       rows: row,
       columns: col,
       seatTypes: {
-        // default: {
-        //   label: "Unassigned",
-        //   cssClass: `default`,
-        //   price: 0,
-        // },
         ...Object.fromEntries(
           Object.values(transformedSeats).map((seat: any, index: number) => [
             // `cat${index + 1}`,
@@ -207,9 +204,7 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
   return (
     <div>
       <Seatchart ref={seatchartRef} options={options} />
-      <div>
-
-      </div>
+      <div></div>
       <div className={styles.viewBtnGroup}>
         <button
           className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}

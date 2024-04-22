@@ -50,6 +50,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
   const validateRow = (data: any) => {
     const list = [...(categoryList || []), data];
+
     let totalAddedRows = list?.reduce(
       (total, seat) => total + Number(seat.sectionRow),
       0
@@ -84,9 +85,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         seatPrice: Number(data?.seatPrice),
       };
       setCategoryList((prev) => [...(prev || []), category]);
-      console.log("hello", category);
     } else {
-      console.log("ERROR");
       setErrorMsg(
         "Number of rows exceed the total number of rows for seating plan"
       );

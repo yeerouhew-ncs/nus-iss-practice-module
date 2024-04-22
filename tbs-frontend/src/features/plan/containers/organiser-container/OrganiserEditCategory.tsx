@@ -72,27 +72,57 @@ const OrganiserEditCategory = () => {
           console.log("seatingPlan ", seatingPlan);
           //   setPlan(seatingPlan);
 
-          let currentRow = 0;
-          const catList: Category[] =
+          // let currentRow = 0;
+          // const catList: Category[] =
+          //   response.seatingPlanDetails.sectionSeatResponses.map(
+          //     (item, index) => {
+          //       let groupSize = response.seatingPlanDetails.sectionSeatResponses
+          //         .slice(0, index + 1)
+          //         .reduce((acc, curr) => {
+          //           return acc + (curr.sectionRow === item.sectionRow ? 1 : 0);
+          //         }, 0);
+
+          //       return {
+          //         // ...item,
+          //         sectionId: Number(item.sectionId),
+          //         sectionDesc: item.seatSectionDescription,
+          //         sectionRow: currentRow + groupSize,
+          //         seatPrice: item.seatPrice,
+          //       };
+          //     }
+          //   );
+
+          // setCategoryList(catList);
+          let currentRow = 1; // Start row numbering from 2
+          const transformedList: Category[] =
             response.seatingPlanDetails.sectionSeatResponses.map(
-              (item, index) => {
-                let groupSize = response.seatingPlanDetails.sectionSeatResponses
-                  .slice(0, index + 1)
-                  .reduce((acc, curr) => {
-                    return acc + (curr.sectionRow === item.sectionRow ? 1 : 0);
-                  }, 0);
+              (item, index, array) => {
+                let row;
+                if (index === 0) {
+                  if (item.sectionRow === 0) {
+                    row = 1;
+                  } else {
+                    row = array[index].sectionRow + 1;
+                  }
+                } else {
+                  // Calculate the number of rows taken by the current section
+                  let prevSectionRow = array[index - 1].sectionRow;
+                  let numRowsTaken = item.sectionRow - prevSectionRow;
+                  row = currentRow + numRowsTaken - 1;
+                }
 
                 return {
-                  // ...item,
                   sectionId: Number(item.sectionId),
                   sectionDesc: item.seatSectionDescription,
-                  sectionRow: currentRow + groupSize,
+                  sectionRow: row,
                   seatPrice: item.seatPrice,
                 };
               }
             );
 
-          setCategoryList(catList);
+          console.log("transformedList: ", transformedList);
+
+          setCategoryList(transformedList);
         }
       } catch (error) {
         // TODO: error handling
