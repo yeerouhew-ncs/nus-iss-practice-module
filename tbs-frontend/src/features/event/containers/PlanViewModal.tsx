@@ -4,14 +4,16 @@ import styles from "./EventCreate.module.scss";
 import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
 import { getPlanDetailsApi } from "../../plan/plan.api";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
+import SeatingPlan, {
+  SectionSeatType,
+} from "../../seating-plan/components/SeatingPlan";
 
 type SeatingPlanType = {
   row: number;
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 interface PlanViewModalProps {

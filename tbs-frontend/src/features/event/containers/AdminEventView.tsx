@@ -10,7 +10,9 @@ import {
 import moment from "moment";
 import PlanViewModal from "./PlanViewModal";
 import { useAuthContext } from "../../../context/AuthContext";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
+import SeatingPlan, {
+  SectionSeatType,
+} from "../../seating-plan/components/SeatingPlan";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
 import { getPlanDetailsApi } from "../../plan/plan.api";
@@ -21,7 +23,7 @@ type SeatingPlanType = {
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const AdminEventView: React.FC = () => {
@@ -88,6 +90,7 @@ const AdminEventView: React.FC = () => {
             sectionDesc: section.seatSectionDescription,
             sectionRow: section.sectionRow,
             seatPrice: section.seatPrice,
+            seatResponses: section.seatResponses,
           }));
         console.log("sectionSeat", sectionSeat);
         // process section seat row
@@ -180,7 +183,6 @@ const AdminEventView: React.FC = () => {
         </div>
       </div>
 
-      
       <div className={`row`}>
         <div className={`col-md-6 ${styles.eventViewCol}`}>
           <div className={`fw-bold`}>Event Name</div>
@@ -188,9 +190,7 @@ const AdminEventView: React.FC = () => {
         </div>
         <div className={`col-md-6 ${styles.eventViewCol}`}>
           <div className={`fw-bold`}>Artist Name</div>
-          <div className={`${styles.eventViewValue}`}>
-            {event?.artistName}
-          </div>
+          <div className={`${styles.eventViewValue}`}>{event?.artistName}</div>
         </div>
         <div className={`col-md-6 ${styles.eventViewCol}`}>
           <div className={`fw-bold`}>Event Start Date</div>
@@ -203,8 +203,7 @@ const AdminEventView: React.FC = () => {
           <div className={`${styles.eventViewValue}`}>
             {moment(event?.eventToDt).format("DD-MMM-YYYY")}
           </div>
-      </div>
-    
+        </div>
 
         <div className={`row pt-4`}>
           <div className={`col-md-12 fw-bold ${styles.eventViewHeader}`}>
@@ -218,6 +217,7 @@ const AdminEventView: React.FC = () => {
                 col={plan.col}
                 sectionSeats={plan.sectionSeats}
                 isLegendVisible={true}
+                isViewEvent={true}
               />
             </div>
           </div>

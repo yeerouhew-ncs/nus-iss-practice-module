@@ -9,8 +9,6 @@ import {
 } from "../../../interfaces/event-interface";
 import moment from "moment";
 import { useAuthContext } from "../../../context/AuthContext";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
-import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import {
   GetSeatResponse,
   IGetPlanDetailsRequest,
@@ -235,10 +233,11 @@ const UserEventView: React.FC = () => {
               {/*  event={event}*/}
               {/*/>*/}
               <button
-                  type="button"
-                  className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
-                  onClick={navigateQueue}
-              ><span>Enter Queue</span>
+                type="button"
+                className={`btn ${styles.primaryBtn} btn-sm ${styles.btnMarginRight}`}
+                onClick={navigateQueue}
+              >
+                <span>Enter Queue</span>
               </button>
             </div>
           </div>

@@ -24,13 +24,14 @@ import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
 import { List } from "reactstrap";
 import { useAuthContext } from "../../../context/AuthContext";
 import { Form } from "react-bootstrap";
+import { SectionSeatType } from "../../seating-plan/components/SeatingPlan";
 
 type SeatingPlanType = {
   row: number;
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const EventEdit: React.FC = () => {
@@ -96,7 +97,10 @@ const EventEdit: React.FC = () => {
         }
         setSelectedPlanId(response.eventDetails.planId);
         console.log("response.eventDetails", response.eventDetails);
-        console.log("response.eventDetails.planId", response.eventDetails.planId);
+        console.log(
+          "response.eventDetails.planId",
+          response.eventDetails.planId
+        );
       }
     } catch (err) {
       setErrors(true);
@@ -231,6 +235,7 @@ const EventEdit: React.FC = () => {
             sectionDesc: section.seatSectionDescription,
             sectionRow: section.sectionRow,
             seatPrice: section.seatPrice,
+            seatResponses: section.seatResponses,
           }));
         console.log("sectionSeat", sectionSeat);
         // process section seat row
@@ -424,7 +429,9 @@ const EventEdit: React.FC = () => {
                       className="form-radio"
                       name="planId"
                       id="planId"
-                      checked={selectedPlanId.toString()  === plan.planId.toString()}
+                      checked={
+                        selectedPlanId.toString() === plan.planId.toString()
+                      }
                       value={plan.planId}
                       disabled
                     />

@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./OrganiserPlanView.module.scss";
 import { getPlanDetailsApi } from "../../plan.api";
 import { useNavigate, useParams } from "react-router-dom";
-import { IGetPlanDetailsRequest } from "../../../../interfaces/seating-plan-interface";
-import SeatingPlan from "../../../seating-plan/components/SeatingPlan";
+import {
+  GetSeatResponse,
+  IGetPlanDetailsRequest,
+} from "../../../../interfaces/seating-plan-interface";
+import SeatingPlan, {
+  SectionSeatType,
+} from "../../../seating-plan/components/SeatingPlan";
 import { Category } from "../admin-container/PlanCreate";
 
 type SeatingPlanType = {
@@ -11,7 +16,7 @@ type SeatingPlanType = {
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const OrganiserPlanView: React.FC = () => {
@@ -36,6 +41,7 @@ const OrganiserPlanView: React.FC = () => {
               sectionDesc: section.seatSectionDescription,
               sectionRow: section.sectionRow,
               seatPrice: section.seatPrice,
+              seatResponses: section.seatResponses,
             }));
           console.log("sectionSeat", sectionSeat);
           // process section seat row

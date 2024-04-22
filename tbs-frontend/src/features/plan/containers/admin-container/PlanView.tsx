@@ -6,7 +6,9 @@ import {
   IGetPlanDetailsRequest,
   PlanDetails,
 } from "../../../../interfaces/seating-plan-interface";
-import SeatingPlan from "../../../seating-plan/components/SeatingPlan";
+import SeatingPlan, {
+  SectionSeatType,
+} from "../../../seating-plan/components/SeatingPlan";
 import { Category } from "./PlanCreate";
 
 type SeatingPlanType = {
@@ -14,7 +16,7 @@ type SeatingPlanType = {
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const PlanView: React.FC = () => {
@@ -39,6 +41,7 @@ const PlanView: React.FC = () => {
               sectionDesc: section.seatSectionDescription,
               sectionRow: section.sectionRow,
               seatPrice: section.seatPrice,
+              seatResponses: section.seatResponses,
             }));
           console.log("sectionSeat", sectionSeat);
           // process section seat row

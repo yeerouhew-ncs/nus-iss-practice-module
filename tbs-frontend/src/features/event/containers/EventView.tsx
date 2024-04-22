@@ -10,7 +10,9 @@ import {
 import moment from "moment";
 import PlanViewModal from "./PlanViewModal";
 import { useAuthContext } from "../../../context/AuthContext";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
+import SeatingPlan, {
+  SectionSeatType,
+} from "../../seating-plan/components/SeatingPlan";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
 import { getPlanDetailsApi } from "../../plan/plan.api";
@@ -20,7 +22,7 @@ type SeatingPlanType = {
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const EventView: React.FC = () => {
@@ -87,6 +89,7 @@ const EventView: React.FC = () => {
             sectionDesc: section.seatSectionDescription,
             sectionRow: section.sectionRow,
             seatPrice: section.seatPrice,
+            seatResponses: section.seatResponses,
           }));
         console.log("sectionSeat", sectionSeat);
         // process section seat row
@@ -195,6 +198,7 @@ const EventView: React.FC = () => {
                 col={plan.col}
                 sectionSeats={plan.sectionSeats}
                 isLegendVisible={true}
+                isViewEvent={true}
               />
             </div>
           </div>

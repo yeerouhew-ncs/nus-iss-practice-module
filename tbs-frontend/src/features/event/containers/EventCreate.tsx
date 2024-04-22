@@ -17,13 +17,14 @@ import { Category } from "../../plan/containers/admin-container/PlanCreate";
 import { getPlanDetailsApi, getPlanListApi } from "../../plan/plan.api";
 import { useAuthContext } from "../../../context/AuthContext";
 import { Form } from "react-bootstrap";
+import { SectionSeatType } from "../../seating-plan/components/SeatingPlan";
 
 type SeatingPlanType = {
   row: number;
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const EventCreate: React.FC = () => {
@@ -59,17 +60,22 @@ const EventCreate: React.FC = () => {
 
   const checkEmptyValues = () => {
     if (
-      (document.getElementById("eventName") as HTMLInputElement).value.trim().length==0 ||
-      (document.getElementById("artistName") as HTMLInputElement).value.trim().length==0 ||
-      (document.getElementById("eventFromDt") as HTMLInputElement).value.trim().length==0 ||
-      (document.getElementById("eventToDt") as HTMLInputElement).value.trim().length==0 ||
-      (document.getElementById("eventType") as HTMLSelectElement).value.trim().length==0
+      (document.getElementById("eventName") as HTMLInputElement).value.trim()
+        .length == 0 ||
+      (document.getElementById("artistName") as HTMLInputElement).value.trim()
+        .length == 0 ||
+      (document.getElementById("eventFromDt") as HTMLInputElement).value.trim()
+        .length == 0 ||
+      (document.getElementById("eventToDt") as HTMLInputElement).value.trim()
+        .length == 0 ||
+      (document.getElementById("eventType") as HTMLSelectElement).value.trim()
+        .length == 0
     ) {
       return true;
     } else {
       return false;
     }
-  }
+  };
 
   const createAddEventDto = async () => {
     var formData = new FormData();
@@ -124,7 +130,7 @@ const EventCreate: React.FC = () => {
       if (response.statusCode === "200" && response.message === "SUCCESS") {
         console.log("SUCCESS");
         alert("Event saved successfully");
-        
+
         if (userInfo?.authorities[0].authority === "ADMIN")
           navigate("/admin/event/list");
         else if (userInfo?.authorities[0].authority === "ORGANISER")
@@ -137,8 +143,8 @@ const EventCreate: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    console.log("IN HANDLESUBMIT")
-    
+    console.log("IN HANDLESUBMIT");
+
     let emptyValues: boolean = checkEmptyValues();
 
     console.log("EMPTY VALUES", emptyValues);
@@ -187,6 +193,7 @@ const EventCreate: React.FC = () => {
             sectionDesc: section.seatSectionDescription,
             sectionRow: section.sectionRow,
             seatPrice: section.seatPrice,
+            seatResponses: section.seatResponses,
           }));
         console.log("sectionSeat", sectionSeat);
         // process section seat row

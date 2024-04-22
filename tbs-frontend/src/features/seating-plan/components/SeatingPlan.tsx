@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import SeatchartJS, { Options, SeatInfo } from "seatchart";
+import SeatchartJS, { Options, SeatInfo, SeatState } from "seatchart";
 import "./SeatingPlan.scss";
 import Seatchart from "./Seatchart";
+import { GetSeatResponse } from "../../../interfaces/seating-plan-interface";
 
 /*
 https://seatchart.js.org/classes/Seatchart.html
@@ -12,15 +13,24 @@ type DisabledSeats = {
   col: number;
 };
 
+export type SectionSeatType = {
+  sectionId?: number | null;
+  sectionDesc: string;
+  sectionRow: number;
+  seatPrice: number;
+  seatResponses: GetSeatResponse[];
+};
+
 type SeatingPlanProps = {
   row: number;
   col: number;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
   isLegendVisible: boolean;
   columnSpacers?: number[];
   disabledSeats?: DisabledSeats[];
   rowSpacers?: number[];
   setSeatList?: Dispatch<SetStateAction<SeatInfo[]>>;
+  isViewEvent?: boolean;
 };
 const SeatingPlan: React.FC<SeatingPlanProps> = ({
   row,
@@ -31,6 +41,7 @@ const SeatingPlan: React.FC<SeatingPlanProps> = ({
   disabledSeats,
   rowSpacers,
   setSeatList,
+  isViewEvent = false,
 }) => {
   console.log("SEATING PLAN ROW ", row, col);
   const seatchartRef = useRef<SeatchartJS>();
@@ -126,7 +137,28 @@ const SeatingPlan: React.FC<SeatingPlanProps> = ({
       setSeatList(getAllSeatInfo);
       console.log("option", options);
     }
-    // const selectedSeats = seatchartRef.current?.getCart();
+
+    console.log("iS EVENT EVENT", isViewEvent);
+
+    if (isViewEvent) {
+      // combine list of seats from each category
+      const combinedSeatResponses = sectionSeats.reduce(
+        (acc: GetSeatResponse[], section: SectionSeatType) =>
+          acc.concat(section.seatResponses),
+        []
+      );
+
+      // show seat availability on seatchart
+      for (let seat of combinedSeatResponses) {
+        if (seat) {
+          const seatStatus = seat.seatStatus as SeatState;
+          seatchartRef.current?.setSeat(
+            { row: seat.seatRow, col: seat.seatCol },
+            { state: seatStatus }
+          );
+        }
+      }
+    }
   }, []);
 
   return (

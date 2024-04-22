@@ -1,4 +1,4 @@
-// 
+//
 import React, { useEffect, useState } from "react";
 import styles from "./AdminOrganiserEventView.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,9 +11,14 @@ import {
 import moment from "moment";
 import PlanViewModal from "./PlanViewModal";
 import { useAuthContext } from "../../../context/AuthContext";
-import SeatingPlan from "../../seating-plan/components/SeatingPlan";
+import SeatingPlan, {
+  SectionSeatType,
+} from "../../seating-plan/components/SeatingPlan";
 import { Category } from "../../plan/containers/admin-container/PlanCreate";
-import { IGetPlanDetailsRequest } from "../../../interfaces/seating-plan-interface";
+import {
+  GetSeatResponse,
+  IGetPlanDetailsRequest,
+} from "../../../interfaces/seating-plan-interface";
 import { getPlanDetailsApi } from "../../plan/plan.api";
 import { isTwoWeeksLater } from "../../../utils/date-utils";
 
@@ -22,7 +27,7 @@ type SeatingPlanType = {
   col: number;
   planName: string;
   venueName: string;
-  sectionSeats: Category[];
+  sectionSeats: SectionSeatType[];
 };
 
 const AdminOrganiserEventView: React.FC = () => {
@@ -48,9 +53,9 @@ const AdminOrganiserEventView: React.FC = () => {
   };
 
   const redirectEditOnClick = () => {
-    if (userInfo?.authorities[0].authority === "ORGANISER"){
+    if (userInfo?.authorities[0].authority === "ORGANISER") {
       navigate("/organiser/event/edit/" + eventId);
-    } else if (userInfo?.authorities[0].authority === "ADMIN"){
+    } else if (userInfo?.authorities[0].authority === "ADMIN") {
       navigate("/admin/event/edit/" + eventId);
     }
   };
@@ -92,6 +97,7 @@ const AdminOrganiserEventView: React.FC = () => {
             sectionDesc: section.seatSectionDescription,
             sectionRow: section.sectionRow,
             seatPrice: section.seatPrice,
+            seatResponses: section.seatResponses,
           }));
         console.log("sectionSeat", sectionSeat);
         // process section seat row
@@ -200,6 +206,7 @@ const AdminOrganiserEventView: React.FC = () => {
                 col={plan.col}
                 sectionSeats={plan.sectionSeats}
                 isLegendVisible={true}
+                isViewEvent={true}
               />
             </div>
           </div>
@@ -208,23 +215,23 @@ const AdminOrganiserEventView: React.FC = () => {
         <br />
         <br />
         <div className={`${styles.viewBtnGroup} d-flex align-items-center`}>
-            <div
-              className={`btn ${styles.primaryBtn} btn-sm`}
-              onClick={navigateBack}
+          <div
+            className={`btn ${styles.primaryBtn} btn-sm`}
+            onClick={navigateBack}
+          >
+            Back
+          </div>
+          <div>
+            <button
+              type="button"
+              className={`btn btn-sm ${styles.primaryBtn}`}
+              onClick={redirectEditOnClick}
             >
-              Back
-            </div>
-            <div>
-              <button
-                type="button"
-                className={`btn btn-sm ${styles.primaryBtn}`}
-                onClick={redirectEditOnClick}
-              >
-                <span>Edit Event</span>
-              </button>
-            </div>
+              <span>Edit Event</span>
+            </button>
           </div>
         </div>
+      </div>
     </div>
   );
 };
