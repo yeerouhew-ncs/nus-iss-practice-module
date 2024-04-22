@@ -31,18 +31,23 @@ const OrganiserEditCategoryPreview = () => {
       return { ...seat, noRow, sectionRow: String(lastRowIndex) };
     });
 
+    console.log("updatedSectionSeats", updatedSectionSeats);
     let sectionSeatReq: EditSectionSeatReq[] = [];
     for (let category of updatedSectionSeats) {
       const sectionSeats = seatList
         .filter((seat) => seat.type === category.sectionDesc)
         .map((seat) => ({
-          seatId: "",
+          seatId: updatedSectionSeats
+            ?.filter((section: any) => section?.sectionDesc === seat.type)[0]
+            ?.seatResponses?.filter((s: any) => s?.seatName === seat.label)[0]
+            ?.seatId,
           seatName: seat.label,
           seatRow: seat.index.row,
           seatCol: seat.index.col,
+          seatStatus: seat.state,
         }));
 
-      console.log(sectionSeats);
+      console.log("sectionSeats organiser", sectionSeats);
 
       const cat = {
         sectionId: category.sectionId,

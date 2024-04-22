@@ -157,6 +157,8 @@ const OrderSeatingPlan: React.FC<SeatingPlanProps> = ({
       []
     );
 
+    console.log("COMBINED SEAT RESPONSE {}", combinedSeatResponses);
+
     // show seat availability on seatchart
     for (let seat of combinedSeatResponses) {
       const seatStatus = seat.seatStatus as SeatState;

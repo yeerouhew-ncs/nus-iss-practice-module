@@ -13,7 +13,7 @@ spring:
   sql:
     init:
       data-locations: classpath:data.sql
-      mode: always
+#      mode: always
   #  jpa:
   #    database-platform: org.hibernate.dialect.MySQL8Dialect
   #    hibernate:

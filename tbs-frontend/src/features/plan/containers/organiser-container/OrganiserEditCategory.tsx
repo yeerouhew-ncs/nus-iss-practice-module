@@ -35,42 +35,42 @@ const OrganiserEditCategory = () => {
       try {
         const response = await getPlanDetailsApi(mappedRequest);
         if (response.message === "SUCCESS" && response.statusCode === "200") {
-          console.log(response.seatingPlanDetails);
+          console.log("get plan details", response.seatingPlanDetails);
           setSelectedPlan(response.seatingPlanDetails);
-          const sectionSeat =
-            response.seatingPlanDetails.sectionSeatResponses.map((section) => ({
-              sectionDesc: section.seatSectionDescription,
-              sectionRow: section.sectionRow,
-              seatPrice: section.seatPrice,
-            }));
-          console.log("sectionSeat", sectionSeat);
+          // const sectionSeat =
+          //   response.seatingPlanDetails.sectionSeatResponses.map((section) => ({
+          //     sectionDesc: section.seatSectionDescription,
+          //     sectionRow: section.sectionRow,
+          //     seatPrice: section.seatPrice,
+          //   }));
+          // console.log("sectionSeat", sectionSeat);
           // process section seat row
 
-          const newSectionSeat = sectionSeat.map((item, index, array) => {
-            let sectionRow;
-            if (index === 0) {
-              sectionRow = item.sectionRow + 1;
-            } else {
-              sectionRow = item.sectionRow - array[index - 1].sectionRow;
-            }
-            return {
-              ...item,
-              sectionRow,
-            };
-          });
+          // const newSectionSeat = sectionSeat.map((item, index, array) => {
+          //   let sectionRow;
+          //   if (index === 0) {
+          //     sectionRow = item.sectionRow + 1;
+          //   } else {
+          //     sectionRow = item.sectionRow - array[index - 1].sectionRow;
+          //   }
+          //   return {
+          //     ...item,
+          //     sectionRow,
+          //   };
+          // });
 
-          console.log("newSectionSeat", newSectionSeat);
+          // console.log("newSectionSeat", newSectionSeat);
 
-          const seatingPlan = {
-            planName: response.seatingPlanDetails.planName,
-            venueName: response.seatingPlanDetails.venueName,
-            row: response.seatingPlanDetails.planRow,
-            col: response.seatingPlanDetails.planCol,
-            sectionSeats: newSectionSeat,
-          };
+          // const seatingPlan = {
+          //   planName: response.seatingPlanDetails.planName,
+          //   venueName: response.seatingPlanDetails.venueName,
+          //   row: response.seatingPlanDetails.planRow,
+          //   col: response.seatingPlanDetails.planCol,
+          //   sectionSeats: newSectionSeat,
+          // };
 
-          console.log("seatingPlan ", seatingPlan);
-          //   setPlan(seatingPlan);
+          // console.log("seatingPlan ", seatingPlan);
+          // setPlan(seatingPlan);
 
           // let currentRow = 0;
           // const catList: Category[] =
@@ -148,11 +148,21 @@ const OrganiserEditCategory = () => {
   };
 
   const handleEditPlan = () => {
+    console.log("selectedPlan", selectedPlan);
+    const categoryAndSeatList = categoryList.map((category) => {
+      return {
+        ...category,
+        seatResponses: selectedPlan?.sectionSeatResponses?.filter(
+          (section) => section.seatSectionDescription === category.sectionDesc
+        )[0]?.seatResponses,
+      };
+    });
+    console.log("categoryAndSeatList", categoryAndSeatList);
     navigate("/organiser/plan/edit-category/preview", {
       state: {
         planDetails: {
           planData: selectedPlan,
-          sectionSeats: categoryList,
+          sectionSeats: categoryAndSeatList,
         },
       },
       replace: true,

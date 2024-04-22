@@ -183,7 +183,6 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                         log.info("preSaveSeat {} ", preSaveSeat);
                         createdSeat = seatRepository.save(preSaveSeat);
                     } else {
-
                         updateSeat = seatRepository.updateSeat(
                                 seat.getSeatId(),
                                 seat.getSeatName(),
@@ -220,11 +219,13 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
             return response;
         }
 
+        log.info("EditPlanSectionSeatDto {}", editPlanSectionSeatDto);
         for(EditSectionSeatDto sectionSeat : editPlanSectionSeatDto.getSectionSeats()) {
             Integer updateSectionSeat = 0;
             SectionSeat saveSectionSeat = null;
             Integer sectionId = sectionSeat.getSectionId();
 
+            log.info("test test sectionSeat{} ", sectionSeat);
             if(sectionSeat.getSectionId() == null) {
                 SectionSeat preSaveSectionSeat = SectionSeat.builder()
                         .planId(editPlanSectionSeatDto.getPlanId())
@@ -255,22 +256,56 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
                 response.add("SECTION SEAT NOT UPDATED");
                 return response;
             }
-
-            // delete all the seats associated and add back
-            if(sectionSeat.getSectionId() != null) {
-                seatRepository.deleteBySectionId(sectionId);
-            }
-
+//
+//            // delete all the seats associated and add back
+//            if(sectionSeat.getSectionId() != null) {
+//                seatRepository.deleteBySectionId(sectionId);
+//            }
+//
             for(EditSeatDto seat: sectionSeat.getSeats()) {
-                Seat preSaveSeat = Seat.builder()
-                        .seatName(seat.getSeatName())
-                        .seatStatus(SeatStatus.available)
-                        .sectionId(sectionId)
-                        .build();
-                log.info("preSaveSeat {} ", preSaveSeat);
-                Seat updateSeat = seatRepository.save(preSaveSeat);
+//                Seat preSaveSeat = Seat.builder()
+//                        .seatName(seat.getSeatName())
+//                        .seatStatus(SeatStatus.available)
+//                        .sectionId(sectionId)
+//                        .build();
+//                log.info("preSaveSeat {} ", preSaveSeat);
+//                Seat updateSeat = seatRepository.save(preSaveSeat);
+//
+//                if(updateSeat == null) {
+//                    response.add("400");
+//                    response.add("SEAT NOT UPDATED");
+//                    return response;
+//                }
+                Seat createdSeat = null;
+                Integer updateSeat = 0;
 
-                if(updateSeat == null) {
+                log.info("test test seat {} ", seat);
+                if(seat.getSeatId() == null) {
+                    Seat preSaveSeat = Seat.builder()
+                            .seatName(seat.getSeatName())
+                            .seatRow(seat.getSeatRow())
+                            .seatCol(seat.getSeatCol())
+                            .seatStatus(SeatStatus.available)
+                            .sectionId(sectionId)
+                            .build();
+                    log.info("preSaveSeat {} ", preSaveSeat);
+                    createdSeat = seatRepository.save(preSaveSeat);
+                } else {
+
+                    updateSeat = seatRepository.updateSeat(
+                            seat.getSeatId(),
+                            seat.getSeatName(),
+                            seat.getSeatRow(),
+                            seat.getSeatCol(),
+                            seat.getSeatStatus(),
+                            sectionId
+                    );
+                }
+
+                log.info("createdSeat {} ", createdSeat);
+                log.info("updatedSeat", updateSeat);
+
+                if(createdSeat == null && updateSeat != 1) {
                     response.add("400");
                     response.add("SEAT NOT UPDATED");
                     return response;
@@ -351,6 +386,7 @@ public class SeatingPlanServiceImpl implements SeatingPlanService {
             sectionSeatResponse.setSectionId(category.getSectionId());
 
             List<Seat> seats = seatRepository.findAllBySectionId(category.getSectionId());
+            log.info("seats {}",seats);
             sectionSeatResponse.setSeatResponses(seats);
 
             sectionSeatResponsesList.add(sectionSeatResponse);

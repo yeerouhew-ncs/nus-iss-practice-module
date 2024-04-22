@@ -133,7 +133,7 @@ const PlanCreatePreview: React.FC = () => {
           seatCol: seat.index.col,
         }));
 
-      console.log(sectionSeats);
+      console.log("adding section seat ", sectionSeats);
 
       const cat = {
         totalSeats: category.noRow * planDetails.col,
