@@ -5,30 +5,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tbs.tbsapi.domain.Subject;
-import tbs.tbsapi.domain.enums.SubjectStatus;
 import tbs.tbsapi.dto.AddSubjectDto;
+import tbs.tbsapi.factory.SubjectFactoryImpl;
 import tbs.tbsapi.repository.SubjectRepository;
 import tbs.tbsapi.vo.response.RegisterUserResponse;
 
-import java.util.Optional;
 
 @Log4j2
 @Service
 public class AuthServiceImpl implements AuthService{
     @Autowired
+    SubjectFactoryImpl subjectFactory;
+
+    @Autowired
     SubjectRepository subjectRepository;
 
-    @Autowired  
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     public RegisterUserResponse registerUser(AddSubjectDto addSubjectDto) {
-        Subject preSaveSubject = Subject.builder()
-                .email(addSubjectDto.getEmail())
-                .fullName(addSubjectDto.getFullName())
-                .subjectRole(addSubjectDto.getSubjectRole())
-                .status(SubjectStatus.ACTIVE)
-                .password(passwordEncoder.encode(addSubjectDto.getPassword()))
-                .build();
+        Subject preSaveSubject = subjectFactory.addSubject(addSubjectDto);
 
         Subject saveSubject = subjectRepository.save(preSaveSubject);
 

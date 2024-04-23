@@ -10,14 +10,19 @@ import tbs.tbsapi.domain.Subject;
 import tbs.tbsapi.domain.enums.SubjectRole;
 import tbs.tbsapi.domain.enums.SubjectStatus;
 import tbs.tbsapi.dto.AddSubjectDto;
+import tbs.tbsapi.factory.SubjectFactoryImpl;
 import tbs.tbsapi.repository.SubjectRepository;
 import tbs.tbsapi.vo.response.RegisterUserResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceImplTest {
+
+    @Mock
+    private SubjectFactoryImpl subjectFactory;
 
     @Mock
     private SubjectRepository subjectRepository;
@@ -44,7 +49,8 @@ public class AuthServiceImplTest {
                 .password("encodedPassword")
                 .build();
 
-        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
+        lenient().when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
+        when(subjectFactory.addSubject(any(AddSubjectDto.class))).thenReturn(subject);
         when(subjectRepository.save(any(Subject.class))).thenReturn(subject);
 
         RegisterUserResponse response = authService.registerUser(addSubjectDto);
