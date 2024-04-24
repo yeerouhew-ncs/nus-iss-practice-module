@@ -8,7 +8,8 @@ import {
 } from "../../interfaces/authentication-interface";
 
 // const API_DOMAIN = "http://localhost:8081/";
-const API_DOMAIN = "http://13.250.121.172/";
+const API_DOMAIN =
+  "http://tbs-nlb-backend-b2e27a037c4d902e.elb.ap-southeast-1.amazonaws.com/";
 const REGISTER_URL = API_DOMAIN + "api/auth/register";
 const LOGIN_URL = API_DOMAIN + "api/auth/sign-in";
 const USER_INFO_URL = API_DOMAIN + "api/subject/subject-details";
