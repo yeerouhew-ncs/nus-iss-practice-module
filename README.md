@@ -19,7 +19,7 @@
 9. Maven run TbsApiApplication
 
 ## tbs-frontend (Frontend)
-1. Run npm install
+1. Run npm install 
 2. Run npm start
 
 ## Download and Set Up RabbitMQ Locally (Windows) 
