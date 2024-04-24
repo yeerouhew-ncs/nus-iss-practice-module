@@ -7,7 +7,8 @@ import {
   IUserInfoResponse,
 } from "../../interfaces/authentication-interface";
 
-const API_DOMAIN = "http://localhost:8081/";
+// const API_DOMAIN = "http://localhost:8081/";
+const API_DOMAIN = "http://13.250.121.172/";
 const REGISTER_URL = API_DOMAIN + "api/auth/register";
 const LOGIN_URL = API_DOMAIN + "api/auth/sign-in";
 const USER_INFO_URL = API_DOMAIN + "api/subject/subject-details";

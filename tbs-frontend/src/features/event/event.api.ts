@@ -10,7 +10,8 @@ import {
   IGetEventDetailsResponse,
 } from "../../interfaces/event-interface";
 
-const API_DOMAIN = "http://localhost:8081/";
+// const API_DOMAIN = "http://localhost:8081/";
+const API_DOMAIN = "http://13.250.121.172/";
 const GET_EVENT_LIST_URL = API_DOMAIN + "api/event/get-list";
 const ADD_EVENT_URL = API_DOMAIN + "api/event/add";
 const EDIT_EVENT_URL = API_DOMAIN + "api/event/edit";
