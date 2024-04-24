@@ -7,7 +7,8 @@ import {
 } from "../../interfaces/queue-interface";
 
 // const API_DOMAIN = "http://localhost:8081/";
-const API_DOMAIN = "http://13.250.121.172/";
+const API_DOMAIN =
+  "http://tbs-nlb-backend-b2e27a037c4d902e.elb.ap-southeast-1.amazonaws.com/";
 const JOIN_QUEUE_URL = API_DOMAIN + "api/queue/event";
 export const CHECK_QUEUE_URL = API_DOMAIN + "api/queue/check-queue";
 

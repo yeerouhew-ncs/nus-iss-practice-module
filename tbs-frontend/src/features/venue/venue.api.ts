@@ -6,7 +6,8 @@ import {
 } from "../../interfaces/venue-interface";
 
 // const API_DOMAIN = "http://localhost:8081/";
-const API_DOMAIN = "http://13.250.121.172/";
+const API_DOMAIN =
+  "http://tbs-nlb-backend-b2e27a037c4d902e.elb.ap-southeast-1.amazonaws.com/";
 const VENUE_API_MAPPING = API_DOMAIN + "api/venue";
 
 const SEARCH_VENUE_URL = VENUE_API_MAPPING + "/search";
