@@ -2,13 +2,14 @@ package tbs.tbsapi.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import tbs.tbsapi.builder.QueueBuilder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@Builder
+//@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -35,4 +36,8 @@ public class Queue {
 
     @Column(name = "QUEUE_STATUS")
     private String queueStatus;
+
+    public static QueueBuilder builder() {
+        return new QueueBuilder();
+    }
 }
